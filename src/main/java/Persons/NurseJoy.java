@@ -50,7 +50,7 @@ public class NurseJoy extends PokemonHandler{
     public String toString(){
         return "-----Nurse Information-----\n" + super.toString() + "\nYear of Admission:\t" + this.getNjAdmissionDateStr() + "\nYears of Experience:\t" + this.getNjExpYears() + "\nAvailable:\t\t" + this.isNjAvailable() + "\n\t-Pokemons to Attend-\n" + this.getpHPokeListStr();
     }
-    
+    //HOLAAAA
     @Override
     public String getpHPokeListStr(){
         if(super.phPokeList.isEmpty()){
