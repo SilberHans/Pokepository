@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Iinterfaces;
 
-/**
- *
- * @author CENTIC
- */
-public class Ground {
-    
+public interface Ground {
+    void earthquake(); // doble daño si el oponente este bajo tierra
+    void dig(); //se hace inmune al daño por este turno y ataca al siguiente (prioridad de ataque)
 }
