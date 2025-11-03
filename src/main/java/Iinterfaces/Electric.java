@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Iinterfaces;
 
-/**
- *
- * @author CENTIC
- */
-public class Electric {
-    
+public interface Electric {
+    void thunderShock();
+    void chargeEnergy(); //aumenta ataque especial x1.1
 }

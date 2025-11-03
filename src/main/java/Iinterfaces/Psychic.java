@@ -1,14 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Iinterfaces;
 
-/**
- *
- * @author CENTIC
- */
-public class Psychic {
-    
+public interface Psychic {
+    void psychic(); //baja defensa
+    void psyBeam(); //aplica confusion (50/50 de que el pokemon ataque) pero pa simplifcar quita un turno o anula daño
 }
-//test
