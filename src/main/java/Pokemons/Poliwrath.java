@@ -11,4 +11,4 @@ public class Poliwrath extends Pokemon implements Water,Fighting{
     public void punch(){}
     @Override
     public void lowKick(){}
-}
+}//
