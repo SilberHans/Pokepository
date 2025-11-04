@@ -15,21 +15,25 @@ public abstract class PokemonHandler extends Person{
         super(pName, pID, pRegion, pBirthDate, pPokeDollars);
         phPokeList = new ArrayList<>();
     }
-    
-    public void setphPokeList(ArrayList phPokeList){
+    public PokemonHandler(ArrayList<Pokemon> phPokeList, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
+        super(pName, pID, pRegion, pBirthDate, pPokeDollars);
         this.phPokeList = phPokeList;
     }
-    public void addphPokemon(Pokemon phPokemon){
+    
+    public void setPhPokeList(ArrayList phPokeList){
+        this.phPokeList = phPokeList;
+    }
+    public void addPhPokemon(Pokemon phPokemon){
         this.phPokeList.add(phPokemon);
     }
     
-    public ArrayList getphPokeList(){
+    public ArrayList getPhPokeList(){
         return this.phPokeList;
     }
-    public Pokemon getPokemon(int phPokemonPst){
-        return phPokeList.get(phPokemonPst);
+    public Pokemon getPhPokemon(int phPokemonPst){
+        return this.phPokeList.get(phPokemonPst);
     }
-    public abstract String getpHPokeListStr();
+    public abstract String getPhPokeListStr();
     
     @Override
     public String toString(){

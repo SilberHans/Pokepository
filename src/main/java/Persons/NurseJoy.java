@@ -4,6 +4,7 @@ import Pokemons.Pokemon;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class NurseJoy extends PokemonHandler{
     private LocalDate njAdmissionDate;
@@ -20,6 +21,12 @@ public class NurseJoy extends PokemonHandler{
         super(pName, pID, pRegion, pBirthDate, pPokeDollars);
         this.njAdmissionDate = njAdmissionDate;
         this.njExpYears = Period.between(njAdmissionDate, LocalDate.now()).getYears();
+        this.njAvailability = njAvailability;
+    }
+    public NurseJoy(LocalDate njAdmissionDate, int njExpYears, boolean njAvailability, ArrayList<Pokemon> phPokeList, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
+        super(phPokeList, pName, pID, pRegion, pBirthDate, pPokeDollars);
+        this.njAdmissionDate = njAdmissionDate;
+        this.njExpYears = njExpYears;
         this.njAvailability = njAvailability;
     }
 
@@ -48,11 +55,11 @@ public class NurseJoy extends PokemonHandler{
     
     @Override
     public String toString(){
-        return "-----Nurse Information-----\n" + super.toString() + "\nYear of Admission:\t" + this.getNjAdmissionDateStr() + "\nYears of Experience:\t" + this.getNjExpYears() + "\nAvailable:\t\t" + this.isNjAvailable() + "\n\t-Pokemons to Attend-\n" + this.getpHPokeListStr();
+        return "\n\n-----Nurse Information-----\n" + super.toString() + "\nYear of Admission:\t" + this.getNjAdmissionDateStr() + "\nYears of Experience:\t" + this.getNjExpYears() + "\nAvailable:\t\t" + this.isNjAvailable() + "\n\t-Pokemons to Attend-\n" + this.getPhPokeListStr();
     }
     
     @Override
-    public String getpHPokeListStr(){
+    public String getPhPokeListStr(){
         if(super.phPokeList.isEmpty()){
             return "No Pokémon have been assigned to this Nurse Joy.";
         }
@@ -65,6 +72,5 @@ public class NurseJoy extends PokemonHandler{
     @Override
     public void genericDialogue(){
     
-    }
-    
+    }  
 }
