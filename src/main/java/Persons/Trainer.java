@@ -1,6 +1,6 @@
 package Persons;
 
-import OtherClasses.Item;
+import Items.Item;
 import Pokemons.Pokemon;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class Trainer extends PokemonHandler{
     public void settItemList(ArrayList<Item> tItemList){
         this.tItemsList = tItemList;
     }
-    public void addtItemList(Item tItem){
+    public void addtItem(Item tItem){
         this.tItemsList.add(tItem);
     }
 
@@ -52,11 +52,11 @@ public class Trainer extends PokemonHandler{
 
     @Override
     public String toString(){
-        return "-----Trainer Information-----\n" + super.toString() + "\nMedals:\t" + this.gettMedals() + "\n\t-Pokemons-\n" + this.getpHPokeListStr() + "\n\t-Items-\n" +this.gettItemListStr();
+        return "\n\n-----Trainer Information-----\n" + super.toString() + "\nMedals:\t" + this.gettMedals() + "\n\t-Pokemons-\n" + this.getPhPokeListStr() + "\n\t-Items-\n" +this.gettItemListStr();
     }
     
     @Override
-    public String getpHPokeListStr(){
+    public String getPhPokeListStr(){
         if(super.phPokeList.isEmpty()){
             return "No Pokémon have been assigned to this Trainer.";
         }
