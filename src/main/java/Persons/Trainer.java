@@ -1,5 +1,15 @@
 package Persons;
 
+//GRAPHICS
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+import GameDesing.Graphics.*;
+
+
 import Items.Item;
 import Pokemons.Pokemon;
 import java.time.LocalDate;
@@ -78,5 +88,76 @@ public class Trainer extends PokemonHandler{
     
     public void newTrainer(){
         
+    }
+    
+    // Graphics
+    
+    BattlePanel bp;
+    KeyHandler keyH;
+    
+    public Trainer(BattlePanel bp,KeyHandler keyH){
+        this.bp=bp;
+        this.keyH=keyH;
+        setDefaultValues();
+        getTrainerImage();
+    }
+    
+    
+    
+    public void getTrainerImage() {         
+        try{
+            a1=ImageIO.read(getClass().getResourceAsStream("/trainer/1_1.png"));
+            a2=ImageIO.read(getClass().getResourceAsStream("/trainer/2_1.png"));
+            a3=ImageIO.read(getClass().getResourceAsStream("/trainer/3_1.png"));
+            a4=ImageIO.read(getClass().getResourceAsStream("/trainer/4_1.png"));
+            a5=ImageIO.read(getClass().getResourceAsStream("/trainer/5_1.png"));
+            
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void setDefaultValues(){
+        x=220;
+        y=280;
+        speed=0;
+        spriteCounter=0;
+        spriteNum=1;
+        direction="left";
+    }
+    
+    public void update(){
+        if (keyH.spcPressed){
+            spriteCounter++;
+            if (spriteCounter>8){
+                spriteNum++;
+                if(spriteNum>5){
+                    spriteNum=1;
+                }
+                spriteCounter=0;
+            }
+        }          
+    }
+    public void draw(Graphics2D g2){
+        
+        BufferedImage image=null;
+        switch(spriteNum){
+            case 1:
+                image=a1;
+                break;
+            case 2:
+                image=a2;
+                break;
+            case 3:
+                image=a3;
+                break;
+            case 4:
+                image=a4;
+                break;
+            case 5:
+                image=a5;
+                break;
+        }
+        g2.drawImage(image, x, y,bp.tileSize,bp.tileSize,null );
     }
 }

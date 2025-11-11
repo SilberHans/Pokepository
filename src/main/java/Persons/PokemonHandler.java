@@ -1,11 +1,22 @@
 package Persons;
 
 import Pokemons.Pokemon;
+import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 public abstract class PokemonHandler extends Person{
     ArrayList<Pokemon> phPokeList;
+    
+    public int x,y;
+    public int speed;
+    public BufferedImage a1,a2,a3,a4,a5;
+    public String direction;
+    public int spriteCounter;
+    public int spriteNum;
+    
+
     
     public PokemonHandler(){
         super();
