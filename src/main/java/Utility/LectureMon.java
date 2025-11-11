@@ -1,5 +1,9 @@
 package Utility;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import Utility.PokeWriting;
 import Pokemons.Pokemon;
 import Persons.Person;
 import java.io.BufferedReader;
@@ -10,7 +14,16 @@ import java.util.ArrayList;
 
 public final class LectureMon {
     
-    public static ArrayList<Person> pRead(String filePath){
+    public void Lecture(){
+        try{
+            String contend = "C:/pokeList";
+            System.out.println(contend);
+        }catch(Exception e){
+            e.printStackTrace();
+        } 
+    }
+    
+    public static ArrayList<Person> pLecture(String filePath){
         
         ArrayList<Person> persons = new ArrayList<>();
         
@@ -42,7 +55,7 @@ public final class LectureMon {
         return persons;
     }
    
-    public static ArrayList<Pokemon> pokeRead(String filePath, ArrayList<Person> persons){
+    public static ArrayList<Pokemon> pokeLecture(String filePath, ArrayList<Person> persons){
         
         ArrayList <Pokemon> pokemons = new ArrayList<>();
         
