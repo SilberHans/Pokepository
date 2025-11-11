@@ -11,12 +11,12 @@ public abstract class PokemonHandler extends Person{
         super();
         phPokeList = new ArrayList<>();
     }
-    public PokemonHandler(String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars){
-        super(pName, pID, pRegion, pBirthDate, pPokeDollars);
+    public PokemonHandler(String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+        super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         phPokeList = new ArrayList<>();
     }
-    public PokemonHandler(ArrayList<Pokemon> phPokeList, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
-        super(pName, pID, pRegion, pBirthDate, pPokeDollars);
+    public PokemonHandler(ArrayList<Pokemon> phPokeList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars) {
+        super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.phPokeList = phPokeList;
     }
     
@@ -31,7 +31,11 @@ public abstract class PokemonHandler extends Person{
         return this.phPokeList;
     }
     public Pokemon getPhPokemon(int phPokemonPst){
-        return this.phPokeList.get(phPokemonPst);
+        try{
+            return this.phPokeList.get(phPokemonPst);
+        }catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
     }
     public abstract String getPhPokeListStr();
     
