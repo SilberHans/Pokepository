@@ -1,17 +1,20 @@
 package Persons;
 
+import GameDesing.GenericDataBase;
 import Items.Item;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Trader extends Person{
     private double mPriceMultiplier;
     private ArrayList<Item> mInventory;
     
     public Trader(){
-        super();
-        this.mPriceMultiplier = 0;
+        String mRndmTempRegion = GenericDataBase.getRndmPersonRegion();
+        super(GenericDataBase.getRndmTraderName(),mRndmTempRegion, GenericDataBase.genRndmPersonID(2, mRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(50, 80), ThreadLocalRandom.current().nextInt(2500, 50001));
+        this.mPriceMultiplier = (ThreadLocalRandom.current().nextInt(5, 21)) / 10.0;
         this.mInventory = new ArrayList<>();
     }
     public Trader(double mPriceMultiplier, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
@@ -19,8 +22,8 @@ public class Trader extends Person{
         this.mPriceMultiplier = mPriceMultiplier;
         this.mInventory = new ArrayList<>();
     }
-    public Trader(double mPriceMultiplier, ArrayList<Item> mInventory, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars){
-        super(pName, pID, pRegion, pBirthDate, pPokeDollars);
+    public Trader(double mPriceMultiplier, ArrayList<Item> mInventory, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+        super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.mPriceMultiplier = mPriceMultiplier;
         this.mInventory = mInventory;
     }
@@ -57,7 +60,7 @@ public class Trader extends Person{
     
     @Override
     public String toString(){
-        return "\n\n-----Mercader Information-----" + super.toString() + "\nPrice Multiplier:\t" + this.getmPriceMultiplier() + "\n\t-Inventory-\n" + this.getmInventoryStr();
+        return "\t-----Mercader Information-----" + super.toString() + "\nPrice Multiplier:\t" + this.getmPriceMultiplier() + "\n\t-Inventory-\n" + this.getmInventoryStr();
     } 
     
     @Override
@@ -68,17 +71,17 @@ public class Trader extends Person{
     public String sellItem(Trainer mTrainer, int mItemPst){
         try{
             Item tempItem = this.getmItem(mItemPst);
-            Random randomDialog = new Random();
+            Random rndmDialog = new Random();
             if(tempItem.getiStock() >0){
                 mTrainer.addtItem(tempItem);
-                switch(randomDialog.nextInt(3)){
+                switch(rndmDialog.nextInt(3)){
                     case 0 -> {return "Thanks for your purchase!";}
                     case 1 -> {return "Much appreciated!";}
                     case 2 -> {return "Thank you, come again!";}
                     default -> {return "Uhh...";}
                 }
             }
-            switch(randomDialog.nextInt(3)){
+            switch(rndmDialog.nextInt(3)){
                 case 0 -> {return "That item’s sold out.";}
                 case 1 -> {return "Out of stock...";}
                 case 2 -> {return "All sold out for now.";}
@@ -87,5 +90,9 @@ public class Trader extends Person{
         }catch(ArrayIndexOutOfBoundsException e){
             return "Uhh... Sorry, I don’t carry that item";
         }
+    }
+    
+    public void genInventory(){
+        
     }
 }

@@ -14,8 +14,8 @@ public class Trainer extends PokemonHandler{
         this.tMedals = 0;
         this.tItemsList = new ArrayList<>();
     }
-    public Trainer(int tMedals, ArrayList<Item> tConsuList, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars){
-        super(pName, pID, pRegion, pBirthDate, pPokeDollars);
+    public Trainer(int tMedals, ArrayList<Item> tConsuList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+        super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.tMedals = tMedals;
         this.tItemsList = tConsuList;
     }
@@ -37,7 +37,11 @@ public class Trainer extends PokemonHandler{
         return tItemsList;
     }
     public Item gettItem(int tItemPst){
-        return this.tItemsList.get(tItemPst);
+        try{
+            return this.tItemsList.get(tItemPst);
+        }catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
     } 
     public String gettItemListStr(){
         if(this.tItemsList.isEmpty()){
@@ -52,7 +56,7 @@ public class Trainer extends PokemonHandler{
 
     @Override
     public String toString(){
-        return "\n\n-----Trainer Information-----\n" + super.toString() + "\nMedals:\t" + this.gettMedals() + "\n\t-Pokemons-\n" + this.getPhPokeListStr() + "\n\t-Items-\n" +this.gettItemListStr();
+        return "-----Trainer Information-----\n" + super.toString() + "\nMedals:\t" + this.gettMedals() + "\n\t-Pokemons-\n" + this.getPhPokeListStr() + "\n\t-Items-\n" +this.gettItemListStr();
     }
     
     @Override
