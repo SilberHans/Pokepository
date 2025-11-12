@@ -1,5 +1,6 @@
 package GameDesing.Graphics;
 
+import GameDesing.Game;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     final int screenHeight = tileSize * maxScreenRow;
 
     // SYSTEM
+    Game ga=new Game();
+    
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Random random = new Random();
@@ -44,7 +47,9 @@ public class pkSelectorPanel extends JPanel implements Runnable {
             "gyarados", "charmander", "dodrio", "dugtrio",
             "hitmonlee", "victreebel", "squirtle", "pikachu"
     };
-
+    
+    
+    
     // COORDENADAS DEL GRID
     int gridWidth = cols * (iconSize + spacing) - spacing;
     int gridHeight = rows * (iconSize + spacing) - spacing;

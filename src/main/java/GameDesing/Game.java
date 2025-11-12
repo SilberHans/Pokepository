@@ -55,4 +55,46 @@ public class Game {
         }
         return str + "\n\n" + this.gTrader.toString() + "\n\n" + this.gNurseJoy.toString();
     }
+
+    public Trainer getgTrainer1() {
+        return gTrainer1;
+    }
+
+    public void setgTrainer1(Trainer gTrainer1) {
+        this.gTrainer1 = gTrainer1;
+    }
+
+    public Trainer getgTrainer2() {
+        return gTrainer2;
+    }
+
+    public void setgTrainer2(Trainer gTrainer2) {
+        this.gTrainer2 = gTrainer2;
+    }
+
+    public Trader getgTrader() {
+        return gTrader;
+    }
+
+    public void setgTrader(Trader gTrader) {
+        this.gTrader = gTrader;
+    }
+
+    public NurseJoy getgNurseJoy() {
+        return gNurseJoy;
+    }
+
+    public void setgNurseJoy(NurseJoy gNurseJoy) {
+        this.gNurseJoy = gNurseJoy;
+    }
+
+    public ArrayList<Pokemon> getgPokemonList() {
+        return gPokemonList;
+    }
+
+    public void setgPokemonList(ArrayList<Pokemon> gPokemonList) {
+        this.gPokemonList = gPokemonList;
+    }
+    
+    
 }

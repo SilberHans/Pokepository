@@ -21,7 +21,7 @@ public class GraphicPart {
         panel.startGameThread();
         panel4.startGameThread();
         
-        window.add(panel3);
+        window.add(panel4);
         window.pack();
         
         
