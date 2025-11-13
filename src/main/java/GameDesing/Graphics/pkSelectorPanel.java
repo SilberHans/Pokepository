@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.util.Random;
+import Pokemons.*;
 
 public class pkSelectorPanel extends JPanel implements Runnable {
 
@@ -42,6 +43,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     final int spacing = 15;
     final int rows = 6;
     final int cols = 2;
+    
     String[] spriteNames = {
             "Alakazam", "Electrode", "arcanine", "bulbasaur",
             "gyarados", "charmander", "dodrio", "dugtrio",
@@ -50,6 +52,10 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     
     
     
+    Pokemon[] pokimones={
+    };
+    
+ 
     // COORDENADAS DEL GRID
     int gridWidth = cols * (iconSize + spacing) - spacing;
     int gridHeight = rows * (iconSize + spacing) - spacing;

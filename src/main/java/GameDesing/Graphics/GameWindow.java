@@ -5,24 +5,33 @@ import java.awt.*;
 
 public class GameWindow extends JFrame {
 
-    private JPanel currentPanel;
+    private JPanel panelMenu;
+    private JPanel panelSeleccion;
+    private JPanel panelBatalla;
 
     public GameWindow() {
-        setTitle("PokeArcade");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
+        setSize(800, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new CardLayout());
 
-        // Iniciar con el menú principal
-        showPanel(new BattlePanel());
+        panelMenu = new StartPanel();
+        panelSeleccion = new pkSelectorPanel();
+        panelBatalla = new BattlePanel();
+
+        add(panelMenu, "menu");
+        add(panelSeleccion, "seleccion");
+        add(panelBatalla, "batalla");
+
+        //cambiarPanel(GraphicPart.getEstado());
+        setVisible(true);
     }
 
-    public void showPanel(JPanel panel) {
-        if (currentPanel != null) remove(currentPanel);
-        currentPanel = panel;
-        add(currentPanel);
-        revalidate();
-        repaint();
-    } 
+    public void cambiarPanel(int estado) {
+        CardLayout cl = (CardLayout) getContentPane().getLayout();
+        switch (estado) {
+            case 0 -> cl.show(getContentPane(), "menu");
+            case 1 -> cl.show(getContentPane(), "seleccion");
+            case 2 -> cl.show(getContentPane(), "batalla");
+        }
+    }
 }

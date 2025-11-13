@@ -1,6 +1,6 @@
 package Persons;
 
-//GRAPHICS
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class Trainer extends PokemonHandler{
     private int tMedals;
     private ArrayList<Item> tItemsList;
-    
+ 
     public Trainer(){
         super();
         this.tMedals = 0;
@@ -94,17 +94,33 @@ public class Trainer extends PokemonHandler{
     
     BattlePanel bp;
     KeyHandler keyH;
+    String num;
     
-    public Trainer(BattlePanel bp,KeyHandler keyH){
+    public Trainer(BattlePanel bp,KeyHandler keyH,String num,boolean turn){
         this.bp=bp;
         this.keyH=keyH;
+        this.num=num;
+        setDefaultValues(turn);
+        getTrainerMoveImage();
+    }
+    public Trainer(pkSelectorPanel pSp,KeyHandler keyH,String num){
+        this.bp=bp;
+        this.keyH=keyH;
+        this.num=num;
         setDefaultValues();
-        getTrainerImage();
+        
     }
     
+    public void getTrainerStaticImage(){
+        try{
+            a1=ImageIO.read(getClass().getResourceAsStream("/trainer/1_1.png"));
+            a2=ImageIO.read(getClass().getResourceAsStream("/trainer/2_1.png"));           
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
     
-    
-    public void getTrainerImage() {         
+    public void getTrainerMoveImage() {         
         try{
             a1=ImageIO.read(getClass().getResourceAsStream("/trainer/1_1.png"));
             a2=ImageIO.read(getClass().getResourceAsStream("/trainer/2_1.png"));
@@ -117,13 +133,32 @@ public class Trainer extends PokemonHandler{
         }
     }
     
-    public void setDefaultValues(){
+     public void setDefaultValues(){
         x=220;
         y=280;
         speed=0;
         spriteCounter=0;
         spriteNum=1;
-        direction="left";
+        direction="left";    
+    }
+    
+    public void setDefaultValues(boolean turn){
+        if (turn){
+            x=220;
+            y=280;
+            speed=0;
+            spriteCounter=0;
+            spriteNum=1;
+            direction="left";
+        }
+        else{
+            x=220;
+            y=280;
+            speed=0;
+            spriteCounter=0;
+            spriteNum=1;
+            direction="left";
+        }
     }
     
     public void update(){

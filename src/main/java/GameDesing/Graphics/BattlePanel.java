@@ -24,7 +24,7 @@ public class BattlePanel extends JPanel implements Runnable{
     //SYSTEM
     KeyHandler keyH=new KeyHandler();
     Thread gameThread;
-    Trainer trainer=new Trainer(this,keyH);
+    //Trainer trainer=new Trainer(this,keyH);
     UI ui=new UI(this);
     int FPS=60;
     
@@ -82,7 +82,7 @@ public class BattlePanel extends JPanel implements Runnable{
     } 
     
     public void update(){
-        trainer.update();
+        //trainer.update();
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -90,7 +90,7 @@ public class BattlePanel extends JPanel implements Runnable{
         
         drawBattleBackground(g2);
         ui.draw(g2);
-        trainer.draw(g2);
+        //trainer.draw(g2);
         
         g2.dispose();
     }
