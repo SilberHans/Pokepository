@@ -47,7 +47,9 @@ public class Game {
         this.gPokemonList.add(new Squirtle(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Dugtrio(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
     }
-    
+    public ArrayList<Pokemon> getPokemonList(){
+        return this.gPokemonList;
+    }
     public String testPokemon(){
         String str = "";
         for(Pokemon tryPokemon: this.gPokemonList){

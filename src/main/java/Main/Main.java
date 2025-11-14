@@ -13,20 +13,19 @@ public class Main {
         
         //PokeWriting w = new PokeWriting();
         System.out.println("POKELIST");
-        ArrayList <Pokemon> pokemons = Utility.LectureMon.pokeLecture("./Pokelist.txt");
         
         System.out.println("PRINTING THE LIST CREATED");
-        for(Pokemon p: pokemons){
+        for(Pokemon p: game.getPokemonList()){
             System.out.println(p.toString());
         }
-        Utility.PokeWriting.pokeWriting("./PokeList.txt", pokemons);
+        Utility.PokeWriting.pokeWriting("./PokeList.txt", game.getPokemonList());
         
         //
         System.out.println("PERSONLIST");
         ArrayList <Pokemon> pPokemons = Utility.LectureMon.pokeLecture("./PersonList.txt");
         
         System.out.println("PRINTING THE LIST CREATED");
-        for(Pokemon p: pokemons){
+        for(Pokemon p: game.getPokemonList()){
             System.out.println(p.toString());
         }
         Utility.PokeWriting.pokeWriting("./PersonList.txt", pPokemons);
