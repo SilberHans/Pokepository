@@ -37,7 +37,6 @@ public class PokeWriting {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
             
             writer.write("POKELIST");
-            //
             writer.newLine();
             
             String line = "";

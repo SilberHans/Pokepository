@@ -11,7 +11,7 @@ public class Main {
         Game game = new Game();
         System.out.println(game.testPokemon());
         
-        PokeWriting w = new PokeWriting();
+        //PokeWriting w = new PokeWriting();
         System.out.println("POKELIST");
         ArrayList <Pokemon> pokemons = Utility.LectureMon.pokeLecture("./Pokelist.txt");
         
