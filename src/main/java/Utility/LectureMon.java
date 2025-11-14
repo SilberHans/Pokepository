@@ -9,41 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public final class LectureMon {
-    
-    public static ArrayList<Person> pLecture(String filePath){
-        
-        ArrayList<Person> persons = new ArrayList<>();
-        
-        String line = "";
-        String Line = null;
-        String pName = null;
-        String pID = null;
-        String pRegion = null;
-        LocalDate pBirthDate = null;
-        int pAge = 0;
-        int pPokeDollars= 0;
-
-        String njAdmissionDate = null;
-        int njExpYears= 0;
-        boolean njAvailability = true;
-
-        int tMedals = 0;
-        
-        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
-            reader.readLine();
-            
-            while((line=reader.readLine())!=null){
-                String[] parts = line.split(",");
-            }
-            reader.close();    
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        }
-        return persons;
-    }
-   
+       
     public static ArrayList<Pokemon> pokeLecture(String filePath){
-        
         ArrayList <Pokemon> pokemons = new ArrayList<>();
         
         String line = "";
@@ -74,6 +41,39 @@ public final class LectureMon {
         return pokemons;
     }
     
+    
+    public static ArrayList<Person> pLecture(String filePath){
+        ArrayList<Person> persons = new ArrayList<>();
+        
+        String line = "";
+        String Line = null;
+        String pName = null;
+        String pID = null;
+        String pRegion = null;
+        LocalDate pBirthDate = null;
+        int pAge = 0;
+        int pPokeDollars= 0;
+
+        String njAdmissionDate = null;
+        int njExpYears= 0;
+        boolean njAvailability = true;
+
+        int tMedals = 0;
+        
+        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+            reader.readLine();
+            
+            while((line=reader.readLine())!=null){
+                String[] parts = line.split(",");
+            }
+            reader.close();    
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return persons;
+    }
+    
+    //
     public static ArrayList<Pokemon> gameLecture(String filePath){
         ArrayList <Pokemon> gPokemonList = new ArrayList<>();
         String line = "";
