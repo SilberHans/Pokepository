@@ -1,6 +1,7 @@
 package GameDesing.Graphics;
 
 import GameDesing.Game;
+import Persons.Trainer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,7 +27,9 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     Thread gameThread;
     Random random = new Random();
     int FPS = 60;
-
+    Trainer trainer1=new Trainer(this,keyH,"3",false);
+    Trainer trainer2=new Trainer(this,keyH,"1",true);
+    
     // GAME STATE
     public final int t1State = 1;
     public final int t2State = 2;
@@ -38,6 +41,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     int t1Index = 0;
     int t2Index = 0;
 
+    
     // SPRITES
     final int iconSize = 70;
     final int spacing = 15;
@@ -59,8 +63,8 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     // COORDENADAS DEL GRID
     int gridWidth = cols * (iconSize + spacing) - spacing;
     int gridHeight = rows * (iconSize + spacing) - spacing;
-    int gridX = (screenWidth - gridWidth) / 2;
-    int gridY = (screenHeight - gridHeight) / 2;
+    int gridX = (screenWidth - gridWidth) /2;
+    int gridY = (screenHeight - gridHeight) /2;
 
     // CURSOR
     int selectedRow = 0;
@@ -100,7 +104,9 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     }
 
     public void draw(Graphics2D g2) throws IOException {
-
+        trainer1.static_draw(g2, 300);
+        trainer2.static_draw(g2, 300);
+      
         int index = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -174,6 +180,8 @@ public class pkSelectorPanel extends JPanel implements Runnable {
 
             keyH.enterPressed = false;
         }
+        trainer1.static_update();
+        trainer2.static_update();
     }
 
     @Override
