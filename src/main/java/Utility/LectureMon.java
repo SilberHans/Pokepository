@@ -16,7 +16,7 @@ public final class LectureMon {
     
     public void Lecture(){
         try{
-            String contend = "C:/pokeList";
+            String contend = "C:/PokeLecture";
             System.out.println(contend);
         }catch(Exception e){
             e.printStackTrace();
