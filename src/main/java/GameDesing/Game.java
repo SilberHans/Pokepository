@@ -20,6 +20,8 @@ import Pokemons.Dugtrio;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Utility.PokeWriting;
+
 public class Game {
     private Trainer gTrainer1;
     private Trainer gTrainer2;
@@ -46,10 +48,15 @@ public class Game {
         this.gPokemonList.add(new Pikachu(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Squirtle(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Dugtrio(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
+        System.out.println("POKELIST");
+        System.out.println("PRINTING THE LIST CREATED");
+        for(Pokemon p: this.gPokemonList){
+            System.out.println(p.toString());
+        }
+        Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
+    
     }
-    public ArrayList<Pokemon> getPokemonList(){
-        return this.gPokemonList;
-    }
+    
     public String testPokemon(){
         String str = "";
         for(Pokemon tryPokemon: this.gPokemonList){

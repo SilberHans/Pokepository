@@ -1,169 +1,169 @@
 POKELIST
 	-----Abra-----
-Nick Name:		Chad
+Nick Name:		Leafy
 Type:		Psychic
-Level:			82
-Potential:		Common
-Training:		Rookie
-Health Points		190
-Attack:			95
-Special Attack:		234
-Defense:		87
-Special Defense:	169
-Speed:			210	-Movement Set-
-Chad hasn’t learned any moves
+Level:			29
+Potential:		Solid
+Training:		Elite
+Health Points		80
+Attack:			43
+Special Attack:		92
+Defense:		40
+Special Defense:	69
+Speed:			84	-Movement Set-
+Leafy hasn’t learned any moves
 
 	-----Bulbasaur-----
-Nick Name:		Zeus
+Nick Name:		Fatty
 Type:		Grass and Poison
-Level:			82
-Potential:		Solid
+Level:			30
+Potential:		Exceptional
 Training:		Skilled
-Health Points		183
-Attack:			102
-Special Attack:		128
-Defense:		102
-Special Defense:	128
-Speed:			96	-Movement Set-
-Zeus hasn’t learned any moves
+Health Points		77
+Attack:			44
+Special Attack:		54
+Defense:		44
+Special Defense:	54
+Speed:			42	-Movement Set-
+Fatty hasn’t learned any moves
 
 	-----Charmander-----
-Nick Name:		Galahad
+Nick Name:		Jefe
 Type:		Fire
-Level:			76
-Potential:		Solid
-Training:		Elite
-Health Points		171
-Attack:			110
-Special Attack:		122
-Defense:		96
-Special Defense:	107
-Speed:			130	-Movement Set-
-Galahad hasn’t learned any moves
-
-	-----Eevee-----
-Nick Name:		Slayer
-Type:		Fire
-Level:			81
-Potential:		Solid
-Training:		Elite
-Health Points		267
-Attack:			213
-Special Attack:		197
-Defense:		165
-Special Defense:	165
-Speed:			189	-Movement Set-
-Slayer hasn’t learned any moves
-
-	-----Gastly-----
-Nick Name:		Galahad
-Type:		Grass and Poison
-Level:			72
-Potential:		Common
-Training:		Rookie
-Health Points		204
-Attack:			163
-Special Attack:		156
-Defense:		105
-Special Defense:	113
-Speed:			113	-Movement Set-
-Galahad hasn’t learned any moves
-
-	-----Geodude-----
-Nick Name:		Chispitas
-Type:		Water and Flying
-Level:			74
-Potential:		Solid
-Training:		Veteran
-Health Points		245
-Attack:			210
-Special Attack:		114
-Defense:		142
-Special Defense:	173
-Speed:			145	-Movement Set-
-Chispitas hasn’t learned any moves
-
-	-----Jigglypuff-----
-Nick Name:		Zero
-Type:		Normal and Flying
-Level:			81
-Potential:		Superior
-Training:		Skilled
-Health Points		212
-Attack:			207
-Special Attack:		126
-Defense:		142
-Special Defense:	126
-Speed:			207	-Movement Set-
-Zero hasn’t learned any moves
-
-	-----Machop-----
-Nick Name:		Tank
-Type:		Fighting
-Level:			75
+Level:			22
 Potential:		Common
 Training:		Hardened
-Health Points		167
-Attack:			192
-Special Attack:		65
-Defense:		92
-Special Defense:	177
-Speed:			143	-Movement Set-
-Tank hasn’t learned any moves
+Health Points		53
+Attack:			32
+Special Attack:		35
+Defense:		28
+Special Defense:	31
+Speed:			37	-Movement Set-
+Jefe hasn’t learned any moves
 
-	-----Meowth-----
-Nick Name:		Zappy
-Type:		Electric
-Level:			80
-Potential:		Exceptional
-Training:		Elite
-Health Points		222
-Attack:			121
-Special Attack:		169
-Defense:		153
-Special Defense:	169
-Speed:			281	-Movement Set-
-Zappy hasn’t learned any moves
+	-----Eevee-----
+Nick Name:		Baron
+Type:		Fire
+Level:			32
+Potential:		Solid
+Training:		Hardened
+Health Points		107
+Attack:			83
+Special Attack:		77
+Defense:		64
+Special Defense:	64
+Speed:			73	-Movement Set-
+Baron hasn’t learned any moves
 
-	-----Pikachu-----
-Nick Name:		Chaos
-Type:		Electric
-Level:			72
+	-----Gastly-----
+Nick Name:		Shiva
+Type:		Grass and Poison
+Level:			22
 Potential:		Solid
 Training:		Veteran
-Health Points		153
-Attack:			105
-Special Attack:		97
-Defense:		83
-Special Defense:	97
-Speed:			155	-Movement Set-
-Chaos hasn’t learned any moves
+Health Points		72
+Attack:			56
+Special Attack:		54
+Defense:		39
+Special Defense:	41
+Speed:			41	-Movement Set-
+Shiva hasn’t learned any moves
 
-	-----Squirtle-----
-Nick Name:		Helix
-Type:		Water
-Level:			72
+	-----Geodude-----
+Nick Name:		Verde
+Type:		Water and Flying
+Level:			28
+Potential:		Superior
+Training:		Veteran
+Health Points		101
+Attack:			85
+Special Attack:		48
+Defense:		59
+Special Defense:	71
+Speed:			60	-Movement Set-
+Verde hasn’t learned any moves
+
+	-----Jigglypuff-----
+Nick Name:		Fatty
+Type:		Normal and Flying
+Level:			25
 Potential:		Common
 Training:		Rookie
-Health Points		153
-Attack:			82
-Special Attack:		84
-Defense:		106
-Special Defense:	105
-Speed:			74	-Movement Set-
-Helix hasn’t learned any moves
+Health Points		65
+Attack:			60
+Special Attack:		35
+Defense:		40
+Special Defense:	35
+Speed:			60	-Movement Set-
+Fatty hasn’t learned any moves
+
+	-----Machop-----
+Nick Name:		Blue
+Type:		Fighting
+Level:			26
+Potential:		Superior
+Training:		Skilled
+Health Points		69
+Attack:			74
+Special Attack:		30
+Defense:		39
+Special Defense:	69
+Speed:			57	-Movement Set-
+Blue hasn’t learned any moves
+
+	-----Meowth-----
+Nick Name:		Brutus
+Type:		Electric
+Level:			32
+Potential:		Solid
+Training:		Hardened
+Health Points		87
+Attack:			44
+Special Attack:		63
+Defense:		57
+Special Defense:	63
+Speed:			108	-Movement Set-
+Brutus hasn’t learned any moves
+
+	-----Pikachu-----
+Nick Name:		Splash
+Type:		Electric
+Level:			27
+Potential:		Common
+Training:		Rookie
+Health Points		57
+Attack:			36
+Special Attack:		33
+Defense:		28
+Special Defense:	33
+Speed:			55	-Movement Set-
+Splash hasn’t learned any moves
+
+	-----Squirtle-----
+Nick Name:		Nova
+Type:		Water
+Level:			24
+Potential:		Exceptional
+Training:		Elite
+Health Points		66
+Attack:			39
+Special Attack:		40
+Defense:		47
+Special Defense:	46
+Speed:			36	-Movement Set-
+Nova hasn’t learned any moves
 
 	-----Vulpix-----
-Nick Name:		Odin
+Nick Name:		Bean
 Type:		Ground
-Level:			72
-Potential:		Exceptional
-Training:		Rookie
-Health Points		152
-Attack:			169
-Special Attack:		97
-Defense:		97
-Special Defense:	125
-Speed:			197	-Movement Set-
-Odin hasn’t learned any moves
+Level:			22
+Potential:		Solid
+Training:		Hardened
+Health Points		51
+Attack:			53
+Special Attack:		31
+Defense:		31
+Special Defense:	40
+Speed:			62	-Movement Set-
+Bean hasn’t learned any moves
 
