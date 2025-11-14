@@ -101,7 +101,7 @@ public class Trainer extends PokemonHandler{
         this.keyH=keyH;
         this.num=num;
         setDefaultValues(turn);
-        getTrainerMoveImage();
+        getTrainerMoveImage(num);
     }
     public Trainer(pkSelectorPanel pSp,KeyHandler keyH,String num){
         this.bp=bp;
@@ -111,26 +111,57 @@ public class Trainer extends PokemonHandler{
         
     }
     
-    public void getTrainerStaticImage(){
-        try{
-            a1=ImageIO.read(getClass().getResourceAsStream("/trainer/1_1.png"));
-            a2=ImageIO.read(getClass().getResourceAsStream("/trainer/2_1.png"));           
-        }catch(IOException e){
-            e.printStackTrace();
+    public void getTrainerStaticImage(Trainer trainer){
+        int x=Integer.parseInt(trainer.num);
+        switch (x){
+            case 1->{
+                try{
+                    a1=ImageIO.read(getClass().getResourceAsStream("/trainer_static/1_1.png"));
+                    a2=ImageIO.read(getClass().getResourceAsStream("/trainer_static/2_1.png"));           
+                }catch(IOException e){
+                    e.printStackTrace();
+                } break;
+            }    
+            case 2 -> {
+                try{
+                    a1=ImageIO.read(getClass().getResourceAsStream("/trainer_static/2_1.png"));
+                    a2=ImageIO.read(getClass().getResourceAsStream("/trainer_static/2_2.png"));           
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+            case 3 -> {
+                try{
+                    a1=ImageIO.read(getClass().getResourceAsStream("/trainer_static/3.png"));
+                    a2=ImageIO.read(getClass().getResourceAsStream("/trainer_static/3.png"));           
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+            case 4 -> {
+                try{
+                    a1=ImageIO.read(getClass().getResourceAsStream("/trainer_static/4_1.png"));
+                    a2=ImageIO.read(getClass().getResourceAsStream("/trainer_static/4_2.png"));           
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
-    
-    public void getTrainerMoveImage() {         
-        try{
-            a1=ImageIO.read(getClass().getResourceAsStream("/trainer/1_1.png"));
-            a2=ImageIO.read(getClass().getResourceAsStream("/trainer/2_1.png"));
-            a3=ImageIO.read(getClass().getResourceAsStream("/trainer/3_1.png"));
-            a4=ImageIO.read(getClass().getResourceAsStream("/trainer/4_1.png"));
-            a5=ImageIO.read(getClass().getResourceAsStream("/trainer/5_1.png"));
             
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        
+        
+    
+    public void getTrainerMoveImage(String num) {         
+        try{
+                    a1=ImageIO.read(getClass().getResourceAsStream("/trainer_move/"+num+"_1.png"));
+                    a2=ImageIO.read(getClass().getResourceAsStream("/trainer_move/"+num+"_2.png"));
+                    a3=ImageIO.read(getClass().getResourceAsStream("/trainer_move/"+num+"_3.png"));
+                    a4=ImageIO.read(getClass().getResourceAsStream("/trainer_move/"+num+"_4.png"));
+                    a5=ImageIO.read(getClass().getResourceAsStream("/trainer_move/"+num+"_5.png"));
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
     }
     
      public void setDefaultValues(){
@@ -144,20 +175,20 @@ public class Trainer extends PokemonHandler{
     
     public void setDefaultValues(boolean turn){
         if (turn){
-            x=220;
-            y=280;
+            x=120;
+            y=260;
             speed=0;
             spriteCounter=0;
             spriteNum=1;
             direction="left";
         }
         else{
-            x=220;
-            y=280;
+            x=480;
+            y=120;
             speed=0;
             spriteCounter=0;
             spriteNum=1;
-            direction="left";
+            direction="right";
         }
     }
     

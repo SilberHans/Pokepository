@@ -1,6 +1,7 @@
 package GameDesing.Graphics;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class UI{
     
@@ -76,71 +77,146 @@ public class UI{
     }
     
     public void draw(Graphics2D g2) {
-        drawT2UI(g2);
-        drawT1UI(g2);
-        drawBattleBox(g2);
+    drawEnemyUI(g2);
+    drawPlayerUI(g2);
     }
 
-    private void drawT2UI(Graphics2D g2) {
-        // Cuadro superior derecho (enemigo)
-        g2.setColor(new Color(245, 245, 245));
-        g2.fillRoundRect(480, 40, 240, 70, 15, 15);
-        g2.setColor(Color.BLACK);
-        g2.setFont(mainFont);
-        g2.drawString("Pikachu", 495, 65);
+    
+    private void drawEnemyUI(Graphics2D g2) {
 
-        // HP Bar
+        int boxX = 430;
+        int boxY = 40;
+
+        // Caja con borde oscuro (HG/SS style)
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(boxX, boxY, 250, 80, 15, 15);
+
         g2.setColor(Color.BLACK);
-        g2.drawRect(495, 75, 200, 10);
+        g2.drawRoundRect(boxX, boxY, 250, 80, 15, 15);
+
+        g2.setFont(mainFont);
+        g2.drawString("Pikachu", boxX + 15, boxY + 30);
+
+        // Barra HP
+        g2.drawRect(boxX + 15, boxY + 40, 200, 10);
         g2.setColor(new Color(0, 200, 0));
-        g2.fillRect(495, 75, 120, 10); // HP actual
+        g2.fillRect(boxX + 15, boxY + 40, 150, 10);
     }
 
-    private void drawT1UI(Graphics2D g2) {
-        // Cuadro inferior izquierdo (jugador)
-        g2.setColor(new Color(245, 245, 245));
-        g2.fillRoundRect(80, 330, 260, 100, 15, 15);
+   
+    private void drawPlayerUI(Graphics2D g2) {
+
+        int boxX = 80;
+        int boxY = 300;
+
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRoundRect(boxX, boxY, 260, 100, 15, 15);
+
         g2.setColor(Color.BLACK);
+        g2.drawRoundRect(boxX, boxY, 260, 100, 15, 15);
+
         g2.setFont(mainFont);
-        g2.drawString("Charles ♂ Lv9", 95, 355);
+        g2.drawString("Charles ♂ Lv9", boxX + 15, boxY + 25);
 
-        // HP Bar
-        g2.setColor(Color.BLACK);
-        g2.drawRect(95, 365, 200, 10);
+        // HP bar
+        g2.drawRect(boxX + 15, boxY + 35, 200, 10);
         g2.setColor(new Color(0, 200, 0));
-        g2.fillRect(95, 365, 180, 10);
+        g2.fillRect(boxX + 15, boxY + 35, 180, 10);
 
-        // Texto HP
         g2.setFont(smallFont);
         g2.setColor(Color.BLACK);
-        g2.drawString("HP: 25 / 27", 95, 390);
+        g2.drawString("HP: 25 / 27", boxX + 15, boxY + 60);
     }
 
-    private void drawBattleBox(Graphics2D g2) {
-        // Cuadro de texto principal
-        g2.setColor(new Color(255, 255, 255, 230));
-        g2.fillRoundRect(40, 420, 680, 130, 20, 20);
-        g2.setColor(Color.RED);
-        g2.drawRoundRect(40, 420, 680, 130, 20, 20);
+    public void drawBattleLayout(Graphics2D g2, int panelWidth, int panelHeight, BufferedImage battleBg) {
 
-        // Texto principal
-        g2.setFont(mainFont);
-        g2.drawString("HOLA QUE HACE?", 60, 450);
+       // =========================
+       // 1. DIBUJAR FONDO ESCALADO
+       // =========================
 
-        // Cuadro interno de opciones
-        g2.setColor(new Color(240, 240, 240));
-        g2.fillRoundRect(400, 460, 300, 80, 20, 20);
-        g2.setColor(Color.BLACK);
-        g2.setFont(new Font("Arial", Font.BOLD, 20));
+       int bgOriginalW = battleBg.getWidth();
+       int bgOriginalH = battleBg.getHeight();
 
-        g2.drawString("Scratch", 420, 490);
-        g2.drawString("Growl", 420, 520);
-        g2.drawString("Ember", 550, 490);
-        g2.drawString("-", 550, 520);
+       double ratio = (double) bgOriginalW / bgOriginalH;
+       int bgWidth = panelWidth;                 // 768
+       int bgHeight = (int) (bgWidth / ratio);   // 358 (exacto)
 
-        // Datos de PP
-        g2.setFont(new Font("Consolas", Font.BOLD, 16));
-        g2.drawString("PP 25/25", 600, 545);
-        g2.drawString("Type/Fire", 600, 565);
-    }
+       g2.drawImage(battleBg, 0, 0, bgWidth, bgHeight, null);
+
+
+       // =========================
+       // 2. CUADRO GRANDE INFERIOR
+       // =========================
+
+       int bigBoxY = bgHeight;     // 358
+       int bigBoxHeight = panelHeight - bgHeight;  // 218
+
+       g2.setColor(new Color(255, 255, 255));
+       g2.fillRect(0, bigBoxY, panelWidth, bigBoxHeight);
+
+       g2.setColor(Color.BLACK);
+       g2.drawRect(0, bigBoxY, panelWidth, bigBoxHeight);
+
+
+       // =========================
+       // 3. CUADRO INTERNO
+       // =========================
+
+       int innerX = 20;
+       int innerY = bigBoxY + 20;
+       int innerW = panelWidth - 40;
+       int innerH = bigBoxHeight - 40;
+
+       g2.setColor(new Color(230, 230, 230));
+       g2.fillRoundRect(innerX, innerY, innerW, innerH, 20, 20);
+
+       g2.setColor(Color.GRAY);
+       g2.drawRoundRect(innerX, innerY, innerW, innerH, 20, 20);
+
+
+       // =========================
+       // 4. SUBDIVISIÓN: TEXTO Y OPCIONES
+       // =========================
+
+       int boxMargin = 10;
+       int half = innerW / 2;
+
+       // --------------------------
+       // TEXTO (izquierda)
+       // --------------------------
+       int textX = innerX + boxMargin;
+       int textY = innerY + boxMargin;
+       int textW = half - (boxMargin * 2);
+       int textH = innerH - (boxMargin * 2);
+
+       g2.setColor(new Color(250, 250, 250));
+       g2.fillRoundRect(textX, textY, textW, textH, 15, 15);
+
+       g2.setColor(Color.DARK_GRAY);
+       g2.drawRoundRect(textX, textY, textW, textH, 15, 15);
+
+       g2.setColor(Color.GRAY);
+       g2.setFont(new Font("Arial", Font.PLAIN, 28));
+       g2.drawString("Texto", textX + 20, textY + 40);
+
+
+       // --------------------------
+       // OPCIONES (derecha)
+       // --------------------------
+       int optX = innerX + half + boxMargin;
+       int optY = innerY + boxMargin;
+       int optW = half - (boxMargin * 2);
+       int optH = innerH - (boxMargin * 2);
+
+       g2.setColor(new Color(250, 250, 250));
+       g2.fillRoundRect(optX, optY, optW, optH, 15, 15);
+
+       g2.setColor(Color.DARK_GRAY);
+       g2.drawRoundRect(optX, optY, optW, optH, 15, 15);
+
+       g2.setColor(Color.GRAY);
+       g2.setFont(new Font("Arial", Font.PLAIN, 28));
+       g2.drawString("Opciones", optX + 20, optY + 40);
+   }
+   
 }
