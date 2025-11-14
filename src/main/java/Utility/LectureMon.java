@@ -1,9 +1,5 @@
 package Utility;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import Utility.PokeWriting;
 import Pokemons.Pokemon;
 import Persons.Person;
 import java.io.BufferedReader;
@@ -13,15 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public final class LectureMon {
-    
-    public void Lecture(){
-        try{
-            String contend = "C:/PokeLecture";
-            System.out.println(contend);
-        }catch(Exception e){
-            e.printStackTrace();
-        } 
-    }
     
     public static ArrayList<Person> pLecture(String filePath){
         
@@ -55,7 +42,7 @@ public final class LectureMon {
         return persons;
     }
    
-    public static ArrayList<Pokemon> pokeLecture(String filePath, ArrayList<Person> persons){
+    public static ArrayList<Pokemon> pokeLecture(String filePath){
         
         ArrayList <Pokemon> pokemons = new ArrayList<>();
         
@@ -85,5 +72,22 @@ public final class LectureMon {
             System.err.println("Error reading file: " + e.getMessage());
         }
         return pokemons;
+    }
+    
+    public static ArrayList<Pokemon> gameLecture(String filePath){
+        ArrayList <Pokemon> gPokemonList = new ArrayList<>();
+        String line = "";
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            reader.readLine();
+            
+            while((line=reader.readLine())!=null){    
+                String[] parts = line.split(",");
+            }
+            reader.close();    
+        }catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return gPokemonList;
     }
 }
