@@ -1,20 +1,78 @@
 
 package Utility;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import Persons.Person;
+import Pokemons.Pokemon;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PokeWriting {
     
-    public void Writing(){
-        try{
-            Path path = Files.writeString(Path.of("C:/PokeLecture.txt"), "Hola", StandardOpenOption.CREATE_NEW);
-            System.out.println(path);
-            String inf = Files.readString(path);
-            System.out.println(inf);
+    public static void pWriting(String filePath, ArrayList<Person> persons){
+        
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
             
-        }catch(Exception e){
-            e.printStackTrace();
-        } 
+            writer.write("PERSONLIST");
+            //
+            writer.newLine();
+            
+            String line = "";
+            for(Person p: persons){
+                line = p.toString();
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("The file was created: " + filePath);
+            
+        }catch(IOException e){
+            System.err.println("Error: File could not be created" + e.getMessage());
+        }
+    }
+    
+    public static void pokeWriting(String filePath, ArrayList<Pokemon> pokemons){
+        
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+            
+            writer.write("POKELIST");
+            //
+            writer.newLine();
+            
+            String line = "";
+            for(Pokemon p: pokemons){
+                line = p.toString();
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("The file was created: " + filePath);
+            
+        }catch(IOException e){
+            System.err.println("Error: File could not be created" + e.getMessage());
+        }
+    }
+    
+    public static void gameWriting(String filePath, ArrayList<Pokemon> gPokemonList){
+        
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+            
+            writer.write("GAME");
+            //
+            writer.newLine();
+            
+            String line = "";
+            for(Pokemon g: gPokemonList){
+                line = g.toString();
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("The file was created: " + filePath);
+            
+        }catch(IOException e){
+            System.err.println("Error: File could not be created" + e.getMessage());
+        }
     }
 }
