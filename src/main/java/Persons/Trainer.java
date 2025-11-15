@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import GameDesing.Graphics.*;
+import java.awt.geom.AffineTransform;
 
 
 import Items.Item;
@@ -160,6 +161,36 @@ public class Trainer extends PokemonHandler{
         }
     }
 
+    //INVERTIR SPRITE
+        
+    public static BufferedImage flipImageHorizontally(BufferedImage original) {
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        // Crear nueva imagen
+        BufferedImage flipped = new BufferedImage(width, height, original.getType());
+
+        // Crear transformación de espejo horizontal
+        AffineTransform transform = new AffineTransform();
+        transform.translate(width, 0);  // Mover al lado derecho
+        transform.scale(-1, 1);         // Voltear horizontalmente
+
+        // Dibujar la imagen transformada
+        Graphics2D g = flipped.createGraphics();
+        g.setTransform(transform);
+        g.drawImage(original, 0, 0, null);
+        g.dispose();
+
+        return flipped;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     // carga segura de sprites de movimiento (a1..a5)
     private void loadMoveSpritesSafe(String num) {
         try {
@@ -174,13 +205,6 @@ public class Trainer extends PokemonHandler{
         }
     }
 
-    // método público para cambiar skin en tiempo de ejecución
-    public void changeSkin(int newNum) {
-        this.num = Integer.toString(newNum);
-        loadStaticSpritesSafe(this.num);
-        loadMoveSpritesSafe(this.num);
-    }
-
     // util: parse seguro
     private int safeParse(String s, int fallback) {
         try {
@@ -190,10 +214,10 @@ public class Trainer extends PokemonHandler{
         }
     }
 
-    // valores por defecto
+    // valores por defecto selectPK
     public void setDefaultValuesPK(boolean turn) {
         if (turn) {
-            x = 120; y = 260; direction = "left";
+            x = 10; y = 120; direction = "left";
         } else {
             x = 480; y = 120; direction = "right";
         }
@@ -202,10 +226,10 @@ public class Trainer extends PokemonHandler{
         spriteNum = 1;
     }
 
-    // setDefault según turno (usa posiciones recomendadas)
+    // setDefault según turno 
     public void setDefaultValues(boolean turn) {
         if (turn) {
-            x = 120; y = 260; direction = "left";
+            x = 5; y = 260; direction = "left";
         } else {
             x = 480; y = 120; direction = "right";
         }
@@ -217,14 +241,14 @@ public class Trainer extends PokemonHandler{
     // animación estática de 2 frames (se usa en selección)
     public void static_update() {
         spriteCounter++;
-        if (spriteCounter > 8) {
+        if (spriteCounter > 20) {
             spriteNum++;
             if (spriteNum > 2) spriteNum = 1;
             spriteCounter = 0;
         }
     }
 
-    // animación normal (movimiento) si la necesitas
+    // animación normal (movimiento) 
     public void update() {
         if (keyH != null && keyH.spcPressed) {
             spriteCounter++;
@@ -239,8 +263,11 @@ public class Trainer extends PokemonHandler{
     // dibujado estático con tamaño personalizado (para pkSelectorPanel)
     public void static_draw(Graphics2D g2, int drawSize) {
         BufferedImage image = (spriteNum == 2) ? a2 : a1;
+        if(this.direction.equalsIgnoreCase("left")){
+            image=flipImageHorizontally(image);
+        }
         if (image == null) return;
-
+        
         // si bp no es null usa x,y; si solo pSp existe usamos x,y también
         g2.drawImage(image, x, y, drawSize, drawSize, null);
     }

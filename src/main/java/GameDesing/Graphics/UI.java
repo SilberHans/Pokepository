@@ -8,6 +8,7 @@ public class UI{
     TraderPanel tp;
     BattlePanel bp;
     StartPanel sp;
+    pkSelectorPanel pSp;
     Font mainFont, smallFont;
     
     
@@ -27,6 +28,32 @@ public class UI{
         this.bp = bp;
         this.mainFont = new Font("Arial", Font.BOLD, 22);
         this.smallFont = new Font("Consolas", Font.PLAIN, 16);
+    }
+    
+    public UI(pkSelectorPanel pSp){
+        this.pSp=pSp;
+        this.mainFont = new Font("Arial", Font.BOLD, 22);
+        this.smallFont = new Font("Consolas", Font.PLAIN, 16);
+    }
+    
+    public void drawSelectBox(Graphics2D g2){
+        int x=tp.screenWidth/2;
+        int y=tp.tileSize/2;
+        int width=x-36;
+        int height=tp.tileSize*6;
+        
+        
+        //FONDO VENTANA
+        Color c=new Color(255, 255, 200, 200);
+        g2.setColor(c);
+        g2.fillRoundRect(x,y, width, height, 20, 20);
+        
+        //BORDE
+        c=new Color(255,255,180);
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x,y, width, height, 20, 20);
+        
     }
     
     public void drawInfoBox(Graphics2D g2){
@@ -69,11 +96,6 @@ public class UI{
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x,y, width, height, 20, 20);
         
-        
-
-        // Texto principal
-        //g2.setFont(smallFont);
-        //g2.drawString("Sales",350,90);
     }
     
     public void draw(Graphics2D g2) {
