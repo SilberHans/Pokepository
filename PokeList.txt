@@ -1,169 +1,169 @@
 POKELIST
 	-----Abra-----
-Nick Name:		ElPutoAmo
+Nick Name:		Red
 Type:		Psychic
-Level:			83
-Potential:		Exceptional
-Training:		Rookie
-Health Points		207
-Attack:			111
-Special Attack:		252
-Defense:		102
-Special Defense:	185
-Speed:			227	-Movement Set-
-ElPutoAmo hasn’t learned any moves
+Level:			65
+Potential:		Solid
+Training:		Elite
+Health Points		166
+Attack:			89
+Special Attack:		200
+Defense:		83
+Special Defense:	148
+Speed:			180	-Movement Set-
+Red hasn’t learned any moves
 
 	-----Bulbasaur-----
-Nick Name:		Link
+Nick Name:		Mirage
 Type:		Grass and Poison
-Level:			88
-Potential:		Common
-Training:		Rookie
-Health Points		183
-Attack:			97
-Special Attack:		125
-Defense:		97
-Special Defense:	125
-Speed:			90	-Movement Set-
-Link hasn’t learned any moves
+Level:			61
+Potential:		Exceptional
+Training:		Veteran
+Health Points		151
+Attack:			90
+Special Attack:		109
+Defense:		90
+Special Defense:	109
+Speed:			85	-Movement Set-
+Mirage hasn’t learned any moves
 
 	-----Charmander-----
-Nick Name:		Mochi
+Nick Name:		Cyro
 Type:		Fire
-Level:			87
-Potential:		Common
-Training:		Rookie
-Health Points		169
-Attack:			99
-Special Attack:		113
-Defense:		84
-Special Defense:	96
-Speed:			122	-Movement Set-
-Mochi hasn’t learned any moves
+Level:			62
+Potential:		Superior
+Training:		Elite
+Health Points		144
+Attack:			93
+Special Attack:		103
+Defense:		82
+Special Defense:	91
+Speed:			109	-Movement Set-
+Cyro hasn’t learned any moves
 
 	-----Eevee-----
-Nick Name:		Destiny
+Nick Name:		Slayer
 Type:		Fire
-Level:			83
-Potential:		Solid
-Training:		Veteran
-Health Points		271
-Attack:			216
-Special Attack:		200
-Defense:		166
-Special Defense:	166
-Speed:			191	-Movement Set-
-Destiny hasn’t learned any moves
+Level:			71
+Potential:		Common
+Training:		Elite
+Health Points		222
+Attack:			174
+Special Attack:		160
+Defense:		132
+Special Defense:	132
+Speed:			153	-Movement Set-
+Slayer hasn’t learned any moves
 
 	-----Gastly-----
-Nick Name:		Blue
+Nick Name:		Poseidon
 Type:		Grass and Poison
-Level:			83
-Potential:		Superior
-Training:		Elite
-Health Points		261
-Attack:			214
-Special Attack:		206
-Defense:		148
-Special Defense:	156
-Speed:			156	-Movement Set-
-Blue hasn’t learned any moves
+Level:			61
+Potential:		Solid
+Training:		Rookie
+Health Points		178
+Attack:			142
+Special Attack:		136
+Defense:		94
+Special Defense:	100
+Speed:			100	-Movement Set-
+Poseidon hasn’t learned any moves
 
 	-----Geodude-----
-Nick Name:		Ion
+Nick Name:		Soff
 Type:		Water and Flying
-Level:			88
-Potential:		Common
-Training:		Rookie
-Health Points		274
-Attack:			233
-Special Attack:		119
-Defense:		152
-Special Defense:	189
-Speed:			156	-Movement Set-
-Ion hasn’t learned any moves
+Level:			67
+Potential:		Superior
+Training:		Veteran
+Health Points		229
+Attack:			197
+Special Attack:		110
+Defense:		135
+Special Defense:	163
+Speed:			138	-Movement Set-
+Soff hasn’t learned any moves
 
 	-----Jigglypuff-----
-Nick Name:		Waffles
+Nick Name:		Athena
 Type:		Normal and Flying
-Level:			88
-Potential:		Superior
-Training:		Hardened
-Health Points		229
-Attack:			224
-Special Attack:		136
-Defense:		153
-Special Defense:	136
-Speed:			224	-Movement Set-
-Waffles hasn’t learned any moves
+Level:			70
+Potential:		Solid
+Training:		Veteran
+Health Points		185
+Attack:			180
+Special Attack:		110
+Defense:		124
+Special Defense:	110
+Speed:			180	-Movement Set-
+Athena hasn’t learned any moves
 
 	-----Machop-----
-Nick Name:		Zappy
+Nick Name:		Pal
 Type:		Fighting
-Level:			87
+Level:			63
 Potential:		Exceptional
-Training:		Elite
-Health Points		224
-Attack:			253
-Special Attack:		105
-Defense:		137
-Special Defense:	236
-Speed:			196	-Movement Set-
-Zappy hasn’t learned any moves
+Training:		Rookie
+Health Points		156
+Attack:			176
+Special Attack:		69
+Defense:		91
+Special Defense:	163
+Speed:			134	-Movement Set-
+Pal hasn’t learned any moves
 
 	-----Meowth-----
-Nick Name:		Zap
+Nick Name:		King
 Type:		Electric
-Level:			85
-Potential:		Exceptional
-Training:		Rookie
-Health Points		223
-Attack:			116
-Special Attack:		167
-Defense:		150
-Special Defense:	167
-Speed:			286	-Movement Set-
-Zap hasn’t learned any moves
+Level:			66
+Potential:		Solid
+Training:		Skilled
+Health Points		168
+Attack:			84
+Special Attack:		123
+Defense:		110
+Special Defense:	123
+Speed:			216	-Movement Set-
+King hasn’t learned any moves
 
 	-----Pikachu-----
-Nick Name:		Excalibur
+Nick Name:		Fang
 Type:		Electric
-Level:			82
-Potential:		Exceptional
-Training:		Skilled
-Health Points		177
-Attack:			123
-Special Attack:		114
-Defense:		98
-Special Defense:	114
-Speed:			180	-Movement Set-
-Excalibur hasn’t learned any moves
+Level:			70
+Potential:		Solid
+Training:		Rookie
+Health Points		145
+Attack:			98
+Special Attack:		91
+Defense:		77
+Special Defense:	91
+Speed:			147	-Movement Set-
+Fang hasn’t learned any moves
 
 	-----Squirtle-----
-Nick Name:		Queen
+Nick Name:		Artemis
 Type:		Water
-Level:			81
-Potential:		Exceptional
+Level:			71
+Potential:		Common
 Training:		Rookie
-Health Points		188
-Attack:			108
-Special Attack:		111
-Defense:		136
-Special Defense:	134
-Speed:			100	-Movement Set-
-Queen hasn’t learned any moves
+Health Points		146
+Attack:			76
+Special Attack:		78
+Defense:		100
+Special Defense:	98
+Speed:			68	-Movement Set-
+Artemis hasn’t learned any moves
 
 	-----Vulpix-----
-Nick Name:		Nova
+Nick Name:		Zelda
 Type:		Ground
-Level:			89
-Potential:		Common
+Level:			67
+Potential:		Solid
 Training:		Hardened
-Health Points		178
-Attack:			199
-Special Attack:		110
-Defense:		110
-Special Defense:	146
-Speed:			235	-Movement Set-
-Nova hasn’t learned any moves
+Health Points		139
+Attack:			154
+Special Attack:		87
+Defense:		87
+Special Defense:	114
+Speed:			181	-Movement Set-
+Zelda hasn’t learned any moves
 

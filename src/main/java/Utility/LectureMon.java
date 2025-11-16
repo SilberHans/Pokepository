@@ -73,7 +73,7 @@ public final class LectureMon {
         return persons;
     }
     
-    //
+    /*
     public static ArrayList<Pokemon> gameLecture(String filePath){
         ArrayList <Pokemon> gPokemonList = new ArrayList<>();
         String line = "";
@@ -89,5 +89,5 @@ public final class LectureMon {
             System.err.println("Error reading file: " + e.getMessage());
         }
         return gPokemonList;
-    }
+    }*/
 }

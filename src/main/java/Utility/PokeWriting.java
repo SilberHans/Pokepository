@@ -49,27 +49,4 @@ public class PokeWriting {
             System.err.println("Error: File could not be created" + e.getMessage());
         }
     }
-    
-    
-    public static void gameWriting(String filePath, ArrayList<Pokemon> gPokemonList){
-        
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
-            
-            writer.write("GAME");
-            //
-            writer.newLine();
-            
-            String line = "";
-            for(Pokemon g: gPokemonList){
-                line = g.toString();
-                writer.write(line);
-                writer.newLine();
-            }
-            writer.close();
-            System.out.println("The file was created: " + filePath);
-            
-        }catch(IOException e){
-            System.err.println("Error: File could not be created" + e.getMessage());
-        }
-    }
 }
