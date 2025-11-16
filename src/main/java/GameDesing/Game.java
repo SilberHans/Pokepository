@@ -57,10 +57,12 @@ public class Game {
         }
         Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
         
-        this.gPersonList.add(new Trainer());
-        this.gPersonList.add(new Trainer());
-        this.gPersonList.add(new Trader());
-        this.gPersonList.add(new NurseJoy());
+        //no deja crear la lista pq el localDate esta null
+        this.gPersonList = new ArrayList<>();
+        this.gPersonList.add(this.gTrainer1);
+        this.gPersonList.add(this.gTrainer2);
+        this.gPersonList.add(this.gTrader);
+        this.gPersonList.add(this.gNurseJoy);
         System.out.println("PERSONLIST");
         System.out.println("PRINTING THE LIST CREATE");
         for(Person p: this.gPersonList){
