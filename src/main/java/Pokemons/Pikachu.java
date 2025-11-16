@@ -9,6 +9,7 @@ public class Pikachu extends Pokemon{
 
     public Pikachu(int pkLevel){
         super(pkLevel, PkTypeEnum.Electric, null, 35, 55, 50, 40, 50, 90);
+        super.setPkNickName("Pikachu");
     }
     
     @Override

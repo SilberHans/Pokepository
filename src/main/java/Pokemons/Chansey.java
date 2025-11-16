@@ -9,6 +9,7 @@ public class Chansey extends Pokemon{
 
     public Chansey(int pkLevel){
         super(pkLevel, PkTypeEnum.Normal, null, 250, 5, 35, 5, 105, 50);
+        super.setPkNickName("Chansey");
     }
     
     @Override

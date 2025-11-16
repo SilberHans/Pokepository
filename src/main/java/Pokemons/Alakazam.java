@@ -11,6 +11,7 @@ public class Alakazam extends Pokemon{
     
     public Alakazam(int pkLevel){
         super(pkLevel, PkTypeEnum.Psychic, null, 55, 50, 135, 45, 95, 120);
+        super.setPkNickName("Alakazam");
     }
 
     @Override

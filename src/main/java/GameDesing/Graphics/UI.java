@@ -384,9 +384,9 @@ public class UI{
 
         int x = optX + 20; // Coordenada X (ya calculada)
         int y = optY + 40; // Coordenada Y (ya calculada)
-        int itemHeight = 30; // Espacio entre ítems
+        int itemHeight = 20; // Espacio entre ítems
 
-        g2.setFont(mainFont);
+        g2.setFont(mainFont.deriveFont(17f));
 
         for (int i = 0; i < options.length; i++) {
             if (options[i] == null) continue;

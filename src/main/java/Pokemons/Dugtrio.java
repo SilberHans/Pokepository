@@ -9,6 +9,7 @@ public class Dugtrio extends Pokemon{
 
     public Dugtrio(int pkLevel){
         super(pkLevel, PkTypeEnum.Ground, null, 35, 100, 50, 50, 70, 120);
+        super.setPkNickName("Dugtrio");
     }
     
     @Override

@@ -9,6 +9,7 @@ public class Gyarados extends Pokemon{
 
     public Gyarados(int pkLevel){
         super(pkLevel, PkTypeEnum.Water, PkTypeEnum.Flying, 95, 125, 60, 79, 100, 81);
+        super.setPkNickName("Gyarados");
     }
     
     @Override

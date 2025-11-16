@@ -9,6 +9,7 @@ public class Bulbasaur extends Pokemon{
 
     public Bulbasaur(int pkLevel){
         super(pkLevel, PkTypeEnum.Grass, PkTypeEnum.Poison, 45, 49, 65, 49, 65, 45);
+        super.setPkNickName("Bullbasaur");
     }
     
     @Override

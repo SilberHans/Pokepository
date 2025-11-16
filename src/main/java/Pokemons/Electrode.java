@@ -9,6 +9,7 @@ public class Electrode extends Pokemon{
 
     public Electrode(int pkLevel){
         super(pkLevel, PkTypeEnum.Electric, null, 60, 50, 80, 70, 80, 150);
+        super.setPkNickName("Electrode");
     }
     
     @Override

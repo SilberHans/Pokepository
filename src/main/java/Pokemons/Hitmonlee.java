@@ -9,6 +9,7 @@ public class Hitmonlee extends Pokemon{
 
     public Hitmonlee(int pkLevel){
         super(pkLevel, PkTypeEnum.Fighting, null, 50, 120, 35, 53, 110, 87);
+        super.setPkNickName("Hitmonlee");
     }
     
     @Override

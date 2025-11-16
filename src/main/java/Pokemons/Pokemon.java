@@ -41,7 +41,7 @@ public abstract class Pokemon {
     public abstract void loadSprites();
     
     public Pokemon(int pkLevel, PkTypeEnum pkType1, PkTypeEnum pkType2, int pkBaseHp, int pkBaseAttack, int pkBaseSpecialAttack, int pkBaseDefense, int pkBaseSpecialDefense, int pkBaseSpeed){
-        this.pkNickName = GenericDataBase.getRndmPokemonNickName();
+        this.pkNickName = null;
         this.pkType1 = pkType1;
         this.pkType2 = pkType2;
         this.pkLevel = pkLevel;

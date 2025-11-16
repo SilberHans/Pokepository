@@ -9,6 +9,7 @@ public class Dodrio extends Pokemon{
 
     public Dodrio(int pkLevel){
         super(pkLevel, PkTypeEnum.Normal, PkTypeEnum.Flying, 60, 110, 60, 70, 60, 110);
+        super.setPkNickName("Dodrio");
     }
     
     @Override

@@ -9,6 +9,7 @@ public class Squirtle extends Pokemon{
     
     public Squirtle(int pkLevel){
         super(pkLevel, PkTypeEnum.Water, null, 44, 48, 50, 65, 64, 43);
+        super.setPkNickName("Squirtle");
     }
     
     @Override

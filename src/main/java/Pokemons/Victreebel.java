@@ -9,6 +9,7 @@ public class Victreebel extends Pokemon{
 
     public Victreebel(int pkLevel){
         super(pkLevel, PkTypeEnum.Grass, PkTypeEnum.Poison, 80, 105, 100, 65, 70, 70);
+        super.setPkNickName("Victreebel");
     }
     
     @Override

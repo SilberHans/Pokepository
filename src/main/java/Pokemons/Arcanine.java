@@ -11,6 +11,7 @@ public class Arcanine extends Pokemon{
 
     public Arcanine(int pkLevel){
         super(pkLevel, PkTypeEnum.Fire, null, 90, 110, 100, 80, 80, 95);
+        super.setPkNickName("Arcanine");
     }
     
     @Override

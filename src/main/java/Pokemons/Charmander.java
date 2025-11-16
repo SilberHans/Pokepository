@@ -9,6 +9,7 @@ public class Charmander extends Pokemon{
 
     public Charmander(int pkLevel){
         super(pkLevel, PkTypeEnum.Fire, null, 39, 52, 60, 43, 50, 65);
+        super.setPkNickName("Charmander");
     }
     
     @Override
