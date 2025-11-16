@@ -11,12 +11,7 @@ public class Main {
         Game game = new Game();
         System.out.println(game.testPokemon());
         
-        /*System.out.println("POKELIST");
-        System.out.println("PRINTING THE LIST CREATED");
-        for(Pokemon p: game.getPokemonList()){
-            System.out.println(p.toString());
-        }
-        Utility.PokeWriting.pokeWriting("./PokeList.txt", game.getPokemonList());
+        /*
         
         
         System.out.println("PERSONLIST");
