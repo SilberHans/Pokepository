@@ -1,4 +1,2 @@
 pName,pRegion,pID,pBirthDate,pPokeDollars
-aweuq,Kanto,2233,----,1000
-Lalo,Kanto,1234,2000/01/01,1000
-Lola,Kanto,3333,02-01-03,100
+

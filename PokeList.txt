@@ -1,169 +1,169 @@
 POKELIST
 	-----Abra-----
-Nick Name:		Verde
+Nick Name:		Sonic
 Type:		Psychic
-Level:			23
+Level:			59
 Potential:		Common
-Training:		Rookie
-Health Points		60
-Attack:			29
-Special Attack:		68
-Defense:		27
-Special Defense:	50
-Speed:			62	-Movement Set-
-Verde hasn’t learned any moves
+Training:		Veteran
+Health Points		146
+Attack:			76
+Special Attack:		177
+Defense:		71
+Special Defense:	130
+Speed:			159	-Movement Set-
+Sonic hasn’t learned any moves
 
 	-----Bulbasaur-----
-Nick Name:		Jerry
+Nick Name:		Vector
 Type:		Grass and Poison
-Level:			23
-Potential:		Solid
-Training:		Rookie
-Health Points		56
-Attack:			30
-Special Attack:		38
-Defense:		30
-Special Defense:	38
-Speed:			28	-Movement Set-
-Jerry hasn’t learned any moves
+Level:			58
+Potential:		Zero
+Training:		Elite
+Health Points		130
+Attack:			71
+Special Attack:		90
+Defense:		71
+Special Defense:	90
+Speed:			67	-Movement Set-
+Vector hasn’t learned any moves
 
 	-----Charmander-----
-Nick Name:		Peanut
+Nick Name:		Beta
 Type:		Fire
-Level:			25
-Potential:		Common
-Training:		Veteran
-Health Points		59
-Attack:			35
-Special Attack:		39
-Defense:		31
-Special Defense:	34
-Speed:			42	-Movement Set-
-Peanut hasn’t learned any moves
+Level:			63
+Potential:		Superior
+Training:		Skilled
+Health Points		139
+Attack:			87
+Special Attack:		97
+Defense:		76
+Special Defense:	85
+Speed:			103	-Movement Set-
+Beta hasn’t learned any moves
 
 	-----Eevee-----
-Nick Name:		Zen
+Nick Name:		Queen
 Type:		Fire
-Level:			18
-Potential:		Common
-Training:		Rookie
-Health Points		61
-Attack:			45
-Special Attack:		42
-Defense:		35
-Special Defense:	35
-Speed:			40	-Movement Set-
-Zen hasn’t learned any moves
+Level:			56
+Potential:		Solid
+Training:		Skilled
+Health Points		180
+Attack:			142
+Special Attack:		131
+Defense:		108
+Special Defense:	108
+Speed:			125	-Movement Set-
+Queen hasn’t learned any moves
 
 	-----Gastly-----
-Nick Name:		Zippy
+Nick Name:		Brenda
 Type:		Grass and Poison
-Level:			22
+Level:			55
 Potential:		Solid
 Training:		Elite
-Health Points		75
-Attack:			59
-Special Attack:		57
-Defense:		42
-Special Defense:	44
-Speed:			44	-Movement Set-
-Zippy hasn’t learned any moves
+Health Points		169
+Attack:			137
+Special Attack:		131
+Defense:		93
+Special Defense:	98
+Speed:			98	-Movement Set-
+Brenda hasn’t learned any moves
 
 	-----Geodude-----
-Nick Name:		Jumbo
+Nick Name:		Kaiser
 Type:		Water and Flying
-Level:			24
-Potential:		Exceptional
-Training:		Rookie
-Health Points		87
-Attack:			73
-Special Attack:		41
-Defense:		51
-Special Defense:	61
-Speed:			52	-Movement Set-
-Jumbo hasn’t learned any moves
+Level:			59
+Potential:		Common
+Training:		Elite
+Health Points		198
+Attack:			170
+Special Attack:		93
+Defense:		115
+Special Defense:	140
+Speed:			118	-Movement Set-
+Kaiser hasn’t learned any moves
 
 	-----Jigglypuff-----
-Nick Name:		Cyro
+Nick Name:		Bubbles
 Type:		Normal and Flying
-Level:			18
-Potential:		Solid
+Level:			58
+Potential:		Common
 Training:		Hardened
-Health Points		55
-Attack:			50
-Special Attack:		32
-Defense:		35
-Special Defense:	32
-Speed:			50	-Movement Set-
-Cyro hasn’t learned any moves
+Health Points		144
+Attack:			139
+Special Attack:		81
+Defense:		93
+Special Defense:	81
+Speed:			139	-Movement Set-
+Bubbles hasn’t learned any moves
 
 	-----Machop-----
-Nick Name:		Jefe
+Nick Name:		Vector
 Type:		Fighting
-Level:			24
-Potential:		Common
-Training:		Elite
-Health Points		64
-Attack:			69
-Special Attack:		28
-Defense:		36
-Special Defense:	64
-Speed:			53	-Movement Set-
-Jefe hasn’t learned any moves
+Level:			60
+Potential:		Solid
+Training:		Rookie
+Health Points		141
+Attack:			160
+Special Attack:		58
+Defense:		80
+Special Defense:	148
+Speed:			120	-Movement Set-
+Vector hasn’t learned any moves
 
 	-----Meowth-----
-Nick Name:		Waddles
+Nick Name:		Knuckles
 Type:		Electric
-Level:			24
-Potential:		Perfect
-Training:		Elite
-Health Points		74
-Attack:			40
-Special Attack:		55
-Defense:		50
-Special Defense:	55
-Speed:			88	-Movement Set-
-Waddles hasn’t learned any moves
+Level:			57
+Potential:		Common
+Training:		Hardened
+Health Points		142
+Attack:			68
+Special Attack:		103
+Defense:		91
+Special Defense:	103
+Speed:			182	-Movement Set-
+Knuckles hasn’t learned any moves
 
 	-----Pikachu-----
-Nick Name:		Shadow
+Nick Name:		Splash
 Type:		Electric
-Level:			23
+Level:			62
 Potential:		Solid
-Training:		Veteran
-Health Points		56
-Attack:			37
-Special Attack:		35
-Defense:		30
-Special Defense:	35
-Speed:			53	-Movement Set-
-Shadow hasn’t learned any moves
+Training:		Rookie
+Health Points		126
+Attack:			84
+Special Attack:		78
+Defense:		65
+Special Defense:	78
+Speed:			127	-Movement Set-
+Splash hasn’t learned any moves
 
 	-----Squirtle-----
-Nick Name:		Soff
+Nick Name:		Natsu
 Type:		Water
-Level:			23
-Potential:		Common
-Training:		Rookie
-Health Points		56
-Attack:			29
-Special Attack:		30
-Defense:		37
-Special Defense:	37
-Speed:			27	-Movement Set-
-Soff hasn’t learned any moves
+Level:			63
+Potential:		Exceptional
+Training:		Elite
+Health Points		159
+Attack:			96
+Special Attack:		99
+Defense:		118
+Special Defense:	117
+Speed:			90	-Movement Set-
+Natsu hasn’t learned any moves
 
 	-----Vulpix-----
-Nick Name:		Waffles
+Nick Name:		Zen
 Type:		Ground
-Level:			17
-Potential:		Exceptional
-Training:		Veteran
-Health Points		46
-Attack:			46
-Special Attack:		29
-Defense:		29
-Special Defense:	36
-Speed:			53	-Movement Set-
-Waffles hasn’t learned any moves
+Level:			54
+Potential:		Common
+Training:		Elite
+Health Points		116
+Attack:			127
+Special Attack:		73
+Defense:		73
+Special Defense:	95
+Speed:			149	-Movement Set-
+Zen hasn’t learned any moves
 

@@ -63,7 +63,6 @@ public final class LectureMon {
                             }
                             pPokeDollars= Integer.parseInt(parts[4]);     
                     }
-                    persons.add(new Trainer());
                     persons.add(new Trader());
                     persons.add(new NurseJoy());
                 }catch(Exception e){

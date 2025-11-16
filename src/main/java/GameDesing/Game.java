@@ -50,12 +50,21 @@ public class Game {
         this.gPokemonList.add(new Pikachu(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Squirtle(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Dugtrio(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
+        
         System.out.println("POKELIST");
         System.out.println("PRINTING THE LIST CREATED");
         for(Pokemon p: this.gPokemonList){
             System.out.println(p.toString());
         }
         Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
+        
+        System.out.println("\nPERSONLIST");
+        ArrayList <Person> persons = Utility.LectureMon.pLecture("./PersonList.txt");
+        System.out.println("PRINTING THE TRAINERS CREATED");
+        for(Person p: persons){
+            System.out.println(p.toString()+"\n\n");
+        }
+        Utility.PokeWriting.pWriting("./infoPersonList.txt", persons);
     }
     
     public String testPokemon(){
