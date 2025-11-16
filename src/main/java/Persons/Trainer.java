@@ -21,8 +21,9 @@ public class Trainer extends PokemonHandler {
     private ArrayList<Item> tItemsList;
 
 
-    public Trainer() {
+    public Trainer(String name) {
         super();
+        super.setpName(name);
         this.tMedals = 0;
         this.tItemsList = new ArrayList<>();
         this.keyH = null;

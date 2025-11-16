@@ -1,5 +1,6 @@
 package GameDesing.Graphics;
 
+import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
@@ -101,12 +102,24 @@ public class StartPanel extends JPanel implements Runnable {
     private void runOption() {
         switch (selectedOption) {
             case 0 -> { //Create
-                GraphicPart.createGame();
-                System.out.println("Iniciando nueva partida...");
-                GraphicPart.cambiarPanel(GraphicPart.STATE_SELECTOR);
-             
+                
+                String trainer1Name = getTrainerName("Ingrese nombre para Trainer 1:");
+
+
+                if (trainer1Name != null) {
+                    String trainer2Name = getTrainerName("Ingrese nombre para Trainer 2:");
+
+
+                    if (trainer2Name != null) {
+                        GraphicPart.createGame(trainer1Name, trainer2Name);
+                        System.out.println("Iniciando nueva partida...");
+                        GraphicPart.cambiarPanel(GraphicPart.STATE_SELECTOR);
+                    }
+                }
             }
+            
             case 1 -> System.out.println("Cargar partida (aún no implementado)");
+            
             case 2 -> System.exit(0);
         }
     }
@@ -143,5 +156,31 @@ public class StartPanel extends JPanel implements Runnable {
             g2.setColor(Color.WHITE);
             g2.drawString(text, x, y);
         }
+    }
+    
+    private String getTrainerName(String prompt) {
+        String name = null;
+        boolean isValid = false;
+        
+        while (!isValid) {
+            name = JOptionPane.showInputDialog(this,prompt,"Nuevo Juego",JOptionPane.PLAIN_MESSAGE);
+
+            // Si el usuario presiona "Cancelar"
+            if (name == null) {
+                return null; 
+            }
+
+            // Validaciones (basadas en tu clase PersonValidations)
+            if (name.isBlank()) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (name.length() > 20) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede tener más de 20 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!name.matches("[A-Z a-z]+")) {
+                JOptionPane.showMessageDialog(this, "El nombre solo puede contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                isValid = true; // El nombre es válido
+            }
+        }
+        return name;
     }
 }

@@ -300,7 +300,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
                         trainer1Pokemons[t1Index++] = chosenPokemon;
                         pokemonSelected[index] = true; // Marcar como seleccionado
 
-                        gameMessage = "Trainer 1 eligió:\n" + chosenPokemon;
+                        gameMessage = trainer1.getpName()+ " eligió:\n "+ chosenPokemon;
                         trainer1.addPhPokemon(chosenPokemonn);
                         gameMessage2 = ""; // Limpiar mensaje anterior
                         System.out.println(gameMessage);
@@ -311,7 +311,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
                         trainer2Pokemons[t2Index++] = chosenPokemon;
                         pokemonSelected[index] = true; // Marcar como seleccionado
 
-                        gameMessage2 = "Trainer 2 eligió:\n" + chosenPokemon;
+                        gameMessage2 = trainer2.getpName()+ " eligió:\n "+ chosenPokemon;
                         trainer2.addPhPokemon(chosenPokemonn);
                         gameMessage = ""; // Limpiar mensaje anterior
                         System.out.println(gameMessage2);

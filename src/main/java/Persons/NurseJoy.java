@@ -3,17 +3,21 @@ package Persons;
 import GameDesing.GenericDataBase;
 import Pokemons.Chansey;
 import Pokemons.Pokemon;
+import java.awt.image.BufferedImage; // Importar
+import java.io.IOException; // Importar
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.imageio.ImageIO; // Importar
 
 public class NurseJoy extends PokemonHandler{
     private Pokemon njPokeAssistant;
     private LocalDate njAdmissionDate;
     private int njExpYears;
     private boolean njAvailability;
-    
+    private BufferedImage sprite; // Sprite de la Enfermera Joy
+
     public NurseJoy(){
         String njRndmTempRegion = GenericDataBase.getRndmPersonRegion();
         super("Joy", njRndmTempRegion, GenericDataBase.genRndmPersonID(1, njRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(20, 30), ThreadLocalRandom.current().nextInt(1000, 12501));
@@ -22,21 +26,51 @@ public class NurseJoy extends PokemonHandler{
         this.njAdmissionDate = njRndmTempAdmissionDate;
         this.njExpYears = Period.between(njRndmTempAdmissionDate, LocalDate.now()).getYears();
         this.njAvailability = true;
+        loadSprite(); // Cargar el sprite al crear
     }
+    
     public NurseJoy(LocalDate njAdmissionDate, boolean njAvailability, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super("Joy", pID, pRegion, pBirthDate, pPokeDollars);
         this.njPokeAssistant = new Chansey(100);
         this.njAdmissionDate = njAdmissionDate;
         this.njExpYears = Period.between(njAdmissionDate, LocalDate.now()).getYears();
         this.njAvailability = njAvailability;
+        loadSprite(); // Cargar el sprite al crear
     }
+    
     public NurseJoy(Pokemon njPokeAssistant, LocalDate njAdmissionDate, boolean njAvailability, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super("Joy", pID, pRegion, pBirthDate, pPokeDollars);
         this.njPokeAssistant = njPokeAssistant;
         this.njAdmissionDate = njAdmissionDate;
         this.njExpYears = Period.between(njAdmissionDate, LocalDate.now()).getYears();
         this.njAvailability = njAvailability;
+        loadSprite(); // Cargar el sprite al crear
     }
+    
+    // --- NUEVOS MÉTODOS PARA SPRITE ---
+    
+    /**
+     * Carga el sprite de la Enfermera Joy desde los recursos.
+     */
+    public void loadSprite() {
+        try {
+            // Asegúrate de tener una imagen en esta ruta: src/main/resources/persons/nurse_joy_sprite.png
+            this.sprite = ImageIO.read(getClass().getResourceAsStream("/persons/nurse_joy_sprite.png"));
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println("Error cargando sprite de NurseJoy: " + e.getMessage());
+            this.sprite = null; // Dejar el sprite como null si no se encuentra
+        }
+    }
+
+    /**
+     * Devuelve el sprite cargado de la Enfermera Joy.
+     * @return El BufferedImage del sprite.
+     */
+    public BufferedImage getSprite() {
+        return this.sprite;
+    }
+
+    // --- FIN DE MÉTODOS DE SPRITE ---
 
     public void setNjPokeAssistant(Pokemon njPokeAssistant){
         this.njPokeAssistant = njPokeAssistant;

@@ -155,6 +155,12 @@ public class BattlePanel extends JPanel implements Runnable {
         trainer1.update();
         trainer2.update();
         
+        if (keyH.escPressed) {
+            stopBattle(); // Llama al método para detener y cambiar de panel
+            keyH.escPressed = false; // Resetea la tecla
+            return; // Salta el resto del update de batalla
+        }
+        
         // Lógica de la batalla
         switch (battleState) {
             case STATE_START:
@@ -514,6 +520,10 @@ public class BattlePanel extends JPanel implements Runnable {
             gameThread = null;
         }
         this.removeKeyListener(keyH);
-        System.out.println("BattlePanel detenido");
+        System.out.println("BattlePanel detenido, cambiando a NurseJoyPanel...");
+
+        // Cambiar al panel de la Enfermera Joy
+        GraphicPart.cambiarPanel(GraphicPart.STATE_NURSE_JOY);
+        // --- FIN DE MODIFICACIÓN ---
     }
 }

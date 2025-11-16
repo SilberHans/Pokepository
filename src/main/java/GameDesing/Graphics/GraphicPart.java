@@ -10,6 +10,7 @@ public class GraphicPart {
     public static final int STATE_BATTLE = 1;
     public static final int STATE_TRADER = 2;
     public static final int STATE_SELECTOR = 3;
+    public static final int STATE_NURSE_JOY = 4; // NUEVO ESTADO
 
     // Estado actual
     public static int gameState = STATE_START;
@@ -21,6 +22,7 @@ public class GraphicPart {
     public static BattlePanel battlePanel;
     public static TraderPanel traderPanel;
     public static pkSelectorPanel selectorPanel;
+    public static NurseJoyPanel nurseJoyPanel; // NUEVO PANEL
 
     //Conectando GAME
     private static Game game;
@@ -40,6 +42,7 @@ public class GraphicPart {
         battlePanel = null;
         traderPanel = null;
         selectorPanel = null;
+        nurseJoyPanel = null; // NUEVO
 
         // Mostrar el panel inicial
         cambiarPanel(STATE_START);
@@ -48,8 +51,8 @@ public class GraphicPart {
         window.setVisible(true);
     }
     
-    public static void createGame() {
-        game = new Game();
+    public static void createGame(String trainer1Name, String trainer2Name) {
+        game = new Game(trainer1Name, trainer2Name);
         System.out.println("¡New Game creado con Pokémon y Trainers!");
 
         selectorPanel = new pkSelectorPanel(game);
@@ -82,6 +85,15 @@ public class GraphicPart {
                 window.add(selectorPanel);
                 selectorPanel.startGameThread();
                 selectorPanel.requestFocusInWindow();
+            }
+            // NUEVO CASE PARA NURSE JOY
+            case STATE_NURSE_JOY -> {
+                if (nurseJoyPanel == null) { // Crear el panel si no existe
+                    nurseJoyPanel = new NurseJoyPanel(game);
+                }
+                window.add(nurseJoyPanel);
+                nurseJoyPanel.startGameThread();
+                nurseJoyPanel.requestFocusInWindow();
             }
         }
 

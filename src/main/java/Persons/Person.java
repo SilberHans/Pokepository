@@ -1,11 +1,13 @@
 package Persons;
 
+import Iinterfaces.MoneyHandler; // Importar la interfaz
 import Utility.PersonValidations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-public abstract class Person{
+// Añadir 'implements MoneyHandler'
+public abstract class Person implements MoneyHandler {
     private String pName;
     private final String pRegion;
     private final String pID;
@@ -39,6 +41,8 @@ public abstract class Person{
     public void setpAge(LocalDate pBirthDate){
         this.pAge = Period.between(pBirthDate, LocalDate.now()).getYears();
     }
+    
+    // Implementación de setpPokeDollars (ya existía, pero ahora es parte de la interfaz)
     public void setpPokeDollars(int pPokeDollars){
         this.pPokeDollars = pPokeDollars;
     }
@@ -61,6 +65,8 @@ public abstract class Person{
     public int getpAge(){
         return this.pAge;
     }
+    
+    // Implementación de getpPokeDollars (ya existía, pero ahora es parte de la interfaz)
     public int getpPokeDollars(){
         return this.pPokeDollars;
     }
@@ -71,4 +77,50 @@ public abstract class Person{
     }
     
     public abstract void genericDialogue();
+
+    // --- MÉTODOS DE MONEYHANDLER IMPLEMENTADOS ---
+    
+    /**
+     * Añade dinero al total del entrenador.
+     * @param amount La cantidad a ganar.
+     */
+    @Override
+    public void earnMoney(int amount) {
+        if (amount > 0) {
+            this.pPokeDollars += amount;
+        }
+    }
+
+    /**
+     * Resta dinero del total del entrenador. No permite que baje de 0.
+     * @param amount La cantidad a perder.
+     */
+    @Override
+    public void loseMoney(int amount) {
+        if (amount > 0) {
+            this.pPokeDollars -= amount;
+            if (this.pPokeDollars < 0) {
+                this.pPokeDollars = 0;
+            }
+        }
+    }
+    
+    /**
+     * (Implementado por compatibilidad de interfaz)
+     * Reemplazado por setpPokeDollars(int amount)
+     */
+    @Override
+    public void setMoney(int amount) {
+        this.setpPokeDollars(amount);
+    }
+
+    /**
+     * (Implementado por compatibilidad de interfaz)
+     * Reemplazado por getpPokeDollars()
+     */
+    @Override
+    public void getMoney(int amount) {
+        // Este método en la interfaz parece estar mal definido (debería ser getMoney() y retornar int)
+        // Lo implementamos vacío y usamos getpPokeDollars() en su lugar.
+    }
 }

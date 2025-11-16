@@ -140,12 +140,12 @@ public class TraderPanel extends JPanel implements Runnable {
                     trainer1Items[t1ItemIndex] = selectedItemName;
                     trainer1.addtItem(selectedItemNames);
                     t1ItemIndex++;
-                    traderDialog = "¡Trainer 1 compró " + selectedItemName + "!";
+                    traderDialog = "¡"+trainer1.getpName()+ " compró " + selectedItemName + "!";
                     
                     // Si T1 terminó, pasa a T2
                     if (t1ItemIndex == trainer1Items.length) {
                         gameState = t2State;
-                        traderDialog = "¡Turno del Trainer 2! ¿Tú qué quieres?";
+                        traderDialog = "¡Turno de " + trainer2.getpName()+ "! ¿Tú qué quieres?";
                     }
                 }
             } 
@@ -154,7 +154,7 @@ public class TraderPanel extends JPanel implements Runnable {
                     trainer2Items[t2ItemIndex] = selectedItemName;
                     trainer2.addtItem(selectedItemNames);
                     t2ItemIndex++;
-                    traderDialog = "¡Trainer 2 compró " + selectedItemName + "!";
+                    traderDialog ="¡"+trainer2.getpName()+ " compró " + selectedItemName + "!";
                     
                     // Si T2 terminó, la compra finaliza
                     if (t2ItemIndex == trainer2Items.length) {
@@ -209,7 +209,7 @@ public class TraderPanel extends JPanel implements Runnable {
         
         ui.drawTraderDialogBox(g2, traderDialog);
 
-        ui.drawTrainerInfoBoxes(g2, gameState, t1, t2);
+        ui.drawTrainerInfoBoxes(g2,gameState,t1, t2,trainer1.getpName(),trainer2.getpName());
         
         ui.drawTraderBox(g2);
 

@@ -27,9 +27,9 @@ public class Game {
     private NurseJoy gNurseJoy;
     private ArrayList<Pokemon> gPokemonList;
     
-    public Game(){
-        this.gTrainer1 = new Trainer();
-        this.gTrainer2 = new Trainer();
+    public Game(String trainer1Name,String trainer2Name){
+        this.gTrainer1 = new Trainer(trainer1Name);
+        this.gTrainer2 = new Trainer(trainer2Name);
         this.gTrader = new Trader();
         this.gNurseJoy = new NurseJoy();
         this.gPokemonList = new ArrayList<>();

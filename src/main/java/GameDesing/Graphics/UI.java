@@ -1,5 +1,7 @@
 package GameDesing.Graphics;
 
+import Persons.Trainer; // Importar Trainer
+import Pokemons.Pokemon; // Importar Pokemon
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,17 +14,18 @@ public class UI{
     TraderPanel tp;
     BattlePanel bp;
     StartPanel sp;
+    NurseJoyPanel njp; // Añadir referencia a NurseJoyPanel
     Font mainFont, smallFont;
     
     
     public UI(StartPanel sp){
-        this.sp=sp;
+        this.sp = sp;
         this.mainFont = new Font("Arial", Font.BOLD, 22);
         this.smallFont = new Font("Consolas", Font.PLAIN, 16);
     }
     
     public UI(TraderPanel tp){
-        this.tp=tp;
+        this.tp = tp;
         try {
             // Fuentes
             InputStream fontStream = getClass().getResourceAsStream("/fonts/Pokemon Classic.ttf");
@@ -46,6 +49,23 @@ public class UI{
             e.printStackTrace();
             System.out.println("Error cargando recursos.");
             mainFont = new Font("Arial", Font.PLAIN, 36);
+        }
+    }
+    
+    // NUEVO CONSTRUCTOR PARA NURSEJOYPANEL
+    public UI(NurseJoyPanel njp) {
+        this.njp = njp;
+        try {
+            // Fuentes
+            InputStream fontStream = getClass().getResourceAsStream("/fonts/Pokemon Classic.ttf");
+            this.mainFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(16f); // Tamaño base 16
+            this.smallFont = mainFont.deriveFont(12f); // Tamaño pequeño 12
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error cargando recursos.");
+            mainFont = new Font("Arial", Font.PLAIN, 16);
+            smallFont = new Font("Arial", Font.PLAIN, 12);
         }
     }
     
@@ -158,7 +178,7 @@ public class UI{
     }
 
     //TRAINERS BOXES
-    public void drawTrainerInfoBoxes(Graphics2D g2, int gameState, BufferedImage img1, BufferedImage img2) {
+    public void drawTrainerInfoBoxes(Graphics2D g2, int gameState, BufferedImage img1, BufferedImage img2,String trainer1,String trainer2) {
         int boxWidth = 250;
         int boxHeight = 50;
         int spacing = 8;
@@ -170,8 +190,8 @@ public class UI{
         int y2 = tp.screenHeight - boxHeight - 10; // Abajo
         
         // Dibujar ambas cajas
-        drawSingleTrainerBox(g2, startX, y1, "Trainer 1", img1, gameState == tp.t1State);
-        drawSingleTrainerBox(g2, startX, y2, "Trainer 2", img2, gameState == tp.t2State);
+        drawSingleTrainerBox(g2, startX, y1, trainer1, img1, gameState == tp.t1State);
+        drawSingleTrainerBox(g2, startX, y2, trainer2, img2, gameState == tp.t2State);
     }
 
     //TRAINER-INDIVIDUAL-BOX
@@ -211,6 +231,7 @@ public class UI{
         g2.setStroke(new BasicStroke(1)); 
     }
     
+    // Método 'drawWrappedString' reutilizado (ya existe)
     private void drawWrappedString(Graphics2D g2, String s, int x, int y, int wrapWidth) {
         FontMetrics fm = g2.getFontMetrics();
         String[] words = s.split(" ");
@@ -406,6 +427,111 @@ public class UI{
                 g2.setColor(windowTextColor2); // Color de texto normal
                 g2.drawString(options[i], x, currentY);
             }
+        }
+    }
+    
+    // --- MÉTODOS DE DIBUJO PARA NURSEJOYPANEL ---
+    
+    /**
+     * Dibuja el cuadro de diálogo principal de la Enfermera Joy.
+     */
+    public void drawNurseDialog(Graphics2D g2, String message) {
+        int boxX = 10;
+        int boxHeight = 100;
+        int boxY = njp.screenHeight - boxHeight - 10;
+        int boxWidth = njp.screenWidth - 20;
+
+        // Sombra
+        g2.setColor(new Color(0, 0, 0, 100));
+        g2.fillRoundRect(boxX + 5, boxY + 5, boxWidth, boxHeight, 25, 25);
+        
+        // Caja
+        g2.setColor(new Color(255, 220, 220)); // Rosa pálido
+        g2.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 25, 25);
+        
+        // Borde
+        g2.setColor(new Color(220, 100, 100)); // Rosa más oscuro
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(boxX, boxY, boxWidth, boxHeight, 25, 25);
+        
+        // Texto
+        g2.setStroke(new BasicStroke(1));
+        g2.setColor(new Color(60, 60, 60)); // Texto oscuro
+        g2.setFont(mainFont.deriveFont(18f));
+        drawWrappedString(g2, message, boxX + 20, boxY + 30, boxWidth - 40);
+    }
+    
+    /**
+     * Dibuja el panel de un entrenador individual para la curación.
+     */
+    public void drawTrainerHealBox(Graphics2D g2, Trainer trainer, int x, int y, int width, int height, boolean isActive, int selectedPokemon) {
+        
+        // Color de borde activo/inactivo
+        if (isActive) {
+            g2.setColor(Color.YELLOW);
+            g2.setStroke(new BasicStroke(4));
+        } else {
+            g2.setColor(new Color(190, 160, 90)); // Dorado oscuro
+            g2.setStroke(new BasicStroke(2));
+        }
+
+        // Sombra y Caja
+        g2.setColor(new Color(0, 0, 0, 70));
+        g2.fillRoundRect(x + 3, y + 3, width, height, 20, 20);
+        g2.setColor(windowBgColor); // Reusar color amarillo pálido de Trader
+        g2.fillRoundRect(x, y, width, height, 20, 20);
+        
+        // Borde (dibujado después del relleno)
+        if (isActive) g2.setColor(Color.YELLOW); else g2.setColor(new Color(190, 160, 90));
+        g2.drawRoundRect(x, y, width, height, 20, 20);
+
+        // --- Contenido de la Caja ---
+        g2.setStroke(new BasicStroke(1));
+        int padding = 15;
+        int currentY = y + padding;
+
+        // 1. Nombre del Entrenador
+        g2.setFont(mainFont.deriveFont(18f));
+        g2.setColor(windowTextColor);
+        g2.drawString(trainer.getpName(), x + padding, currentY + 18);
+        currentY += 30;
+
+        // 2. Dinero del Entrenador
+        g2.setFont(smallFont.deriveFont(14f));
+        g2.setColor(new Color(10, 100, 30)); // Verde oscuro
+        g2.drawString(trainer.getpPokeDollars() + "$", x + padding, currentY + 18);
+        currentY += 35;
+        
+        // 3. Lista de Pokémon
+        g2.setFont(mainFont.deriveFont(16f));
+        int lineHeight = 22; // Espacio entre líneas de Pokémon
+
+        for (int i = 0; i < 6; i++) {
+            Pokemon pk = trainer.getPhPokemon(i);
+            if (pk == null) continue; // Si no hay Pokémon en este slot
+
+            String name = pk.getPkNickName();
+            String hp = pk.getPkHp() + " / " + pk.getPkMaxHp();
+            int lineY = currentY + (i * lineHeight) + 16;
+            
+            // Cursor
+            if (isActive && i == selectedPokemon) {
+                g2.setColor(Color.RED);
+                g2.drawString(">", x + padding - 10, lineY);
+            }
+
+            // Color de HP (verde, amarillo, rojo)
+            double hpPercent = (double) pk.getPkHp() / pk.getPkMaxHp();
+            if (hpPercent > 0.5) {
+                g2.setColor(windowTextColor); // Normal
+            } else if (hpPercent > 0.2) {
+                g2.setColor(new Color(200, 150, 0)); // Amarillo
+            } else {
+                g2.setColor(Color.RED); // Rojo
+            }
+            
+            g2.drawString(name, x + padding, lineY);
+            g2.drawString(hp, x + width - padding - g2.getFontMetrics().stringWidth(hp), lineY);
         }
     }
 }
