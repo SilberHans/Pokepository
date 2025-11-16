@@ -3,6 +3,7 @@ package GameDesing;
 import Persons.Trainer;
 import Persons.Trader;
 import Persons.NurseJoy;
+import Persons.Person;
 import Pokemons.Alakazam;
 import Pokemons.Bulbasaur;
 import Pokemons.Chansey;
@@ -28,6 +29,7 @@ public class Game {
     private Trader gTrader;
     private NurseJoy gNurseJoy;
     private ArrayList<Pokemon> gPokemonList;
+    private ArrayList<Person> gPersonList;
     
     public Game(){
         this.gTrainer1 = new Trainer();
@@ -54,7 +56,17 @@ public class Game {
             System.out.println(p.toString());
         }
         Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
-    
+        
+        this.gPersonList.add(new Trainer());
+        this.gPersonList.add(new Trainer());
+        this.gPersonList.add(new Trader());
+        this.gPersonList.add(new NurseJoy());
+        System.out.println("PERSONLIST");
+        System.out.println("PRINTING THE LIST CREATE");
+        for(Person p: this.gPersonList){
+            System.out.println(p.toString());
+        }
+        Utility.PokeWriting.pWriting("./PersonList.txt", this.gPersonList);
     }
     
     public String testPokemon(){
