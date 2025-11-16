@@ -57,7 +57,7 @@ public class Game {
         }
         Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
         
-        //no deja crear la lista pq el localDate esta null
+        //no deja crear la lista pq el localDate esta null (pongale fecha fija a Joy y al trader)
         this.gPersonList = new ArrayList<>();
         this.gPersonList.add(this.gTrainer1);
         this.gPersonList.add(this.gTrainer2);
