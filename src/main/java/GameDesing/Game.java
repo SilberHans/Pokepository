@@ -56,19 +56,6 @@ public class Game {
             System.out.println(p.toString());
         }
         Utility.PokeWriting.pokeWriting("./PokeList.txt", this.gPokemonList);
-        
-        //no deja crear la lista pq el localDate esta null (pongale fecha fija a Joy y al trader)
-        this.gPersonList = new ArrayList<>();
-        this.gPersonList.add(this.gTrainer1);
-        this.gPersonList.add(this.gTrainer2);
-        this.gPersonList.add(this.gTrader);
-        this.gPersonList.add(this.gNurseJoy);
-        System.out.println("PERSONLIST");
-        System.out.println("PRINTING THE LIST CREATE");
-        for(Person p: this.gPersonList){
-            System.out.println(p.toString());
-        }
-        Utility.PokeWriting.pWriting("./PersonList.txt", this.gPersonList);
     }
     
     public String testPokemon(){

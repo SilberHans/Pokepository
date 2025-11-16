@@ -1,6 +1,7 @@
 
 package Utility;
 import Persons.Person;
+import Persons.Trainer;
 import Pokemons.Pokemon;
 
 import java.io.BufferedWriter;
@@ -30,10 +31,11 @@ public class PokeWriting {
         }
     }
     
-    public static void pWriting(String filePath, ArrayList<Person> persons){
+        public static void pWriting(String filePath, ArrayList<Person> persons){
         
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
-            writer.write("PERSONLIST");
+            writer.write("PERSONLIST\n");
+            writer.write("pName,pRegion,pID,pBirthDate,pPokeDollars");
             writer.newLine();
             String line = "";
             

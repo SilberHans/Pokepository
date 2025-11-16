@@ -1,0 +1,155 @@
+PERSONLIST
+pName,pRegion,pID,pBirthDate,pPokeDollars
+-----Trainer Information-----
+
+Name:			
+Region:			
+ID:			
+Birth Date:		Fecha no disponible
+Age:			0
+PokeDollars:		0
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
+	-----Mercader Information-----
+Name:			Cyrus
+Region:			AEos
+ID:			TRD-AEos-971
+Birth Date:		05/03/1955
+Age:			70
+PokeDollars:		25864
+Price Multiplier:	0.9
+	-Inventory-
+No Items in Stock Yet...
+	-----Nurse Joy Information-----
+
+Name:			Joy
+Region:			Ransei
+ID:			NJ-Ransei-861
+Birth Date:		12/10/2004
+Age:			21
+PokeDollars:		6737
+Year of Admission:	2022/07/06
+Years of Experience:	3
+
+	-----Chansey-----
+Nick Name:		Volta
+Type:		Normal
+Level:			73
+Potential:		Exceptional
+Training:		Veteran
+Health Points		476
+Attack:			40
+Special Attack:		84
+Defense:		40
+Special Defense:	186
+Speed:			106	-Movement Set-
+Volta hasn’t learned any moves
+
+Availability:		true
+	-Pokemons to Attend-
+No Pokemon have been assigned to this Nurse Joy.
+-----Trainer Information-----
+
+Name:			
+Region:			
+ID:			
+Birth Date:		Fecha no disponible
+Age:			0
+PokeDollars:		0
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
+	-----Mercader Information-----
+Name:			Sombra
+Region:			Fiore
+ID:			TRD-Fiore-193
+Birth Date:		18/12/1968
+Age:			56
+PokeDollars:		46719
+Price Multiplier:	1.5
+	-Inventory-
+No Items in Stock Yet...
+	-----Nurse Joy Information-----
+
+Name:			Joy
+Region:			Ferrum
+ID:			NJ-Ferrum-516
+Birth Date:		11/10/1999
+Age:			26
+PokeDollars:		4918
+Year of Admission:	2021/05/01
+Years of Experience:	4
+
+	-----Chansey-----
+Nick Name:		Stony
+Type:		Normal
+Level:			42
+Potential:		Common
+Training:		Skilled
+Health Points		266
+Attack:			13
+Special Attack:		38
+Defense:		13
+Special Defense:	97
+Speed:			51	-Movement Set-
+Stony hasn’t learned any moves
+
+Availability:		true
+	-Pokemons to Attend-
+No Pokemon have been assigned to this Nurse Joy.
+-----Trainer Information-----
+
+Name:			
+Region:			
+ID:			
+Birth Date:		Fecha no disponible
+Age:			0
+PokeDollars:		0
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
+	-----Mercader Information-----
+Name:			Musgo
+Region:			Kalos
+ID:			TRD-Kalos-254
+Birth Date:		26/10/1952
+Age:			73
+PokeDollars:		20177
+Price Multiplier:	1.4
+	-Inventory-
+No Items in Stock Yet...
+	-----Nurse Joy Information-----
+
+Name:			Joy
+Region:			Sinnoh
+ID:			NJ-Sinnoh-617
+Birth Date:		12/10/2003
+Age:			22
+PokeDollars:		12122
+Year of Admission:	2019/11/07
+Years of Experience:	6
+
+	-----Chansey-----
+Nick Name:		Knight
+Type:		Normal
+Level:			52
+Potential:		Solid
+Training:		Skilled
+Health Points		332
+Attack:			20
+Special Attack:		51
+Defense:		20
+Special Defense:	124
+Speed:			67	-Movement Set-
+Knight hasn’t learned any moves
+
+Availability:		true
+	-Pokemons to Attend-
+No Pokemon have been assigned to this Nurse Joy.
