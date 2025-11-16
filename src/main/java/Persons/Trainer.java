@@ -1,11 +1,8 @@
 package Persons;
 
-
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import javax.imageio.ImageIO;
 import GameDesing.Graphics.*;
 import java.awt.geom.AffineTransform;
@@ -15,22 +12,31 @@ import Items.Item;
 import Pokemons.Pokemon;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.JPanel;
 
-public class Trainer extends PokemonHandler{
+public class Trainer extends PokemonHandler {
+
     private int tMedals;
     private ArrayList<Item> tItemsList;
- 
-    public Trainer(){
+
+
+    public Trainer() {
         super();
         this.tMedals = 0;
         this.tItemsList = new ArrayList<>();
+        this.keyH = null;
+        this.bp = null;
+        this.pSp = null;
+        this.a1 = this.a2 = this.a3 = this.a4 = this.a5 = null;
     }
-    public Trainer(int tMedals, ArrayList<Item> tConsuList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+
+    public Trainer(int tMedals, ArrayList<Item> tConsuList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars) {
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.tMedals = tMedals;
         this.tItemsList = tConsuList;
     }
 
+    
     public void settMedals(int tMedals){
         this.tMedals = tMedals;
     }
@@ -71,66 +77,83 @@ public class Trainer extends PokemonHandler{
     }
     
     @Override
-    public String getPhPokeListStr(){
-        if(super.phPokeList.isEmpty()){
+    public String getPhPokeListStr() {
+        if (super.phPokeList.isEmpty()) {
             return "No Pokémon have been assigned to this Trainer.";
         }
         String str = "";
-        for(Pokemon pokemonTry: super.phPokeList){
-            str = pokemonTry.toString();
+        for (Pokemon pokemonTry : super.phPokeList) {
+            str += pokemonTry.toString() + "\n"; 
         }
         return str;
     }
-
+    
+    public String[] getPokemonNames() {
+        if (super.phPokeList.isEmpty()) {
+            return new String[]{"No Pokémon"};
+        }
+        
+      
+        String[] pokemonNames = new String[super.phPokeList.size()];
+ 
+        for (int i = 0; i < super.phPokeList.size(); i++) {
+            pokemonNames[i] = super.phPokeList.get(i).getPkNickName();
+        }
+        
+        return pokemonNames;
+    }
+    
+    
     @Override
     public void genericDialogue() {
-    
     }
     
-    public void newTrainer(){
-        
+    public void newTrainer() {
     }
-    
-    // ----- Gráficos -----
-    private BattlePanel bp = null;
-    private pkSelectorPanel pSp = null;
-    private KeyHandler keyH;
-    public String num;          // "1","2","3","4" etc.
 
-    // Sprites (a1..a5 para movimiento; a1,a2 usados también para la animación estática)
+
+    //GRAPHICSS
+    
+    private BattlePanel bp;
+    private pkSelectorPanel pSp;
+    private KeyHandler keyH;
+    public String num; // "1","2","3","4"
+
+    // Sprites
     private BufferedImage a1, a2, a3, a4, a5;
 
-    // posición y animación
+    // Posición y animación
     public int x, y;
     private int speed;
     private int spriteCounter;
     private int spriteNum;
     public String direction;
 
-    // constructor para BattlePanel (uso en batalla)
-    public Trainer(BattlePanel bp, KeyHandler keyH, String num, boolean turn) {
-        this.bp = bp;
+
+    public void initGraphics(JPanel panel, KeyHandler keyH, String spriteNum, boolean isTurn) {
+       
         this.keyH = keyH;
-        this.num = num;
-        setDefaultValues(turn);
-        loadMoveSpritesSafe(num);
-        loadStaticSpritesSafe(num);
+        this.num = spriteNum;
+        
+        if (panel instanceof pkSelectorPanel) {
+            loadStaticSpritesSafe(spriteNum);
+            this.pSp = (pkSelectorPanel) panel;
+            this.bp = null; // 
+            setDefaultValuesPK(isTurn); 
+            
+        } else if (panel instanceof BattlePanel) {
+            loadMoveSpritesSafe(spriteNum); 
+            this.bp = (BattlePanel) panel;
+            this.pSp = null;
+            setDefaultValues(isTurn); 
+        }
+        
+        System.out.println("Gráficos del Trainer " + num + " inicializados para " + panel.getClass().getSimpleName());
     }
 
-    // constructor para pkSelectorPanel (uso en selección)
-    public Trainer(pkSelectorPanel pSp, KeyHandler keyH, String num,boolean turn) {
-        this.pSp = pSp;
-        this.keyH = keyH;
-        this.num = num;
-        setDefaultValuesPK(turn); // no turn específico
-        loadStaticSpritesSafe(num);
-        // no cargamos movimiento pesado aquí (opcional)
-    }
 
-    // carga segura de sprites estáticos (a1 y a2)
     private void loadStaticSpritesSafe(String num) {
         try {
-            // rutas que tienes: /trainer_static/1_1.png, /trainer_static/2_1.png etc.
             int id = safeParse(num, 1);
             switch (id) {
                 case 1 -> {
@@ -150,7 +173,6 @@ public class Trainer extends PokemonHandler{
                     a2 = ImageIO.read(getClass().getResourceAsStream("/trainer_static/4_2.png"));
                 }
                 default -> {
-                    // fallback: intentar cargar num directamente si tus nombres difieren
                     a1 = ImageIO.read(getClass().getResourceAsStream("/trainer_static/" + num + ".png"));
                     a2 = a1;
                 }
@@ -161,37 +183,19 @@ public class Trainer extends PokemonHandler{
         }
     }
 
-    //INVERTIR SPRITE
-        
     public static BufferedImage flipImageHorizontally(BufferedImage original) {
+        if (original == null) return null; // Chequeo de seguridad
         int width = original.getWidth();
         int height = original.getHeight();
-
-        // Crear nueva imagen
         BufferedImage flipped = new BufferedImage(width, height, original.getType());
-
-        // Crear transformación de espejo horizontal
-        AffineTransform transform = new AffineTransform();
-        transform.translate(width, 0);  // Mover al lado derecho
-        transform.scale(-1, 1);         // Voltear horizontalmente
-
-        // Dibujar la imagen transformada
         Graphics2D g = flipped.createGraphics();
-        g.setTransform(transform);
+        g.transform(AffineTransform.getTranslateInstance(width, 0));
+        g.transform(AffineTransform.getScaleInstance(-1, 1));
         g.drawImage(original, 0, 0, null);
         g.dispose();
-
         return flipped;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    // carga segura de sprites de movimiento (a1..a5)
+
     private void loadMoveSpritesSafe(String num) {
         try {
             a1 = ImageIO.read(getClass().getResourceAsStream("/trainer_move/" + num + "_1.png"));
@@ -201,17 +205,11 @@ public class Trainer extends PokemonHandler{
             a5 = ImageIO.read(getClass().getResourceAsStream("/trainer_move/" + num + "_5.png"));
         } catch (IOException e) {
             e.printStackTrace();
-            // no fatal: dejamos lo que haya
         }
     }
 
-    // util: parse seguro
     private int safeParse(String s, int fallback) {
-        try {
-            return Integer.parseInt(s);
-        } catch (Exception e) {
-            return fallback;
-        }
+        try { return Integer.parseInt(s); } catch (Exception e) { return fallback; }
     }
 
     // valores por defecto selectPK
@@ -219,26 +217,26 @@ public class Trainer extends PokemonHandler{
         if (turn) {
             x = 10; y = 120; direction = "left";
         } else {
-            x = 480; y = 120; direction = "right";
+            x = 480; y = 120; direction = "right"; 
         }
         speed = 0;
         spriteCounter = 0;
         spriteNum = 1;
     }
 
-    // setDefault según turno 
+    // setDefault según turno (Batalla)
     public void setDefaultValues(boolean turn) {
         if (turn) {
-            x = 5; y = 260; direction = "left";
+            x = 80; y = 358; direction = "left";
         } else {
-            x = 480; y = 120; direction = "right";
+            x = 500; y = 120; direction = "right";
         }
         speed = 0;
         spriteCounter = 0;
         spriteNum = 1;
     }
 
-    // animación estática de 2 frames (se usa en selección)
+    // animaciion quietos
     public void static_update() {
         spriteCounter++;
         if (spriteCounter > 20) {
@@ -248,31 +246,29 @@ public class Trainer extends PokemonHandler{
         }
     }
 
-    // animación normal (movimiento) 
-    public void update() {
-        if (keyH != null && keyH.spcPressed) {
-            spriteCounter++;
+    // animación normal 
+    public void epicThrow() {
+        // Chequeo de seguridad
+        if (keyH == null) return; 
+        spriteCounter++;
             if (spriteCounter > 8) {
                 spriteNum++;
                 if (spriteNum > 5) spriteNum = 1;
                 spriteCounter = 0;
             }
-        }
     }
 
-    // dibujado estático con tamaño personalizado (para pkSelectorPanel)
+    // dibujado para pk
     public void static_draw(Graphics2D g2, int drawSize) {
         BufferedImage image = (spriteNum == 2) ? a2 : a1;
-        if(this.direction.equalsIgnoreCase("left")){
-            image=flipImageHorizontally(image);
-        }
-        if (image == null) return;
         
-        // si bp no es null usa x,y; si solo pSp existe usamos x,y también
+        if (image == null) return; // No dibujar si no se cargó
+        
+
         g2.drawImage(image, x, y, drawSize, drawSize, null);
     }
 
-    // dibujado en batalla (usa bp.tileSize si está disponible)
+    // dibujado en batalla
     public void draw(Graphics2D g2) {
         BufferedImage image = switch (spriteNum) {
             case 1 -> a1;
@@ -288,6 +284,5 @@ public class Trainer extends PokemonHandler{
         g2.drawImage(image, x, y, size, size, null);
     }
 
-    // Exponer setters de posición por si quieres colocarlos desde el panel
     public void setPosition(int x, int y) { this.x = x; this.y = y; }
-    }
+}

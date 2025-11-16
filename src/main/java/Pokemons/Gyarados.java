@@ -1,7 +1,9 @@
 package Pokemons;
 
 import Pokemons.Logic.PkTypeEnum;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.imageio.ImageIO;
 
 public class Gyarados extends Pokemon{
 
@@ -23,5 +25,16 @@ public class Gyarados extends Pokemon{
             case 3 -> {return "Skreee-onk!";}
             default -> {return "Uhh...";}
         }   
+    }
+    @Override
+    public void loadSprites() {
+        try {
+            this.aback=ImageIO.read(getClass().getResourceAsStream("/battle/Gyarados_espalda.png"));
+            this.afront=ImageIO.read(getClass().getResourceAsStream("/battle/Gyarados_frente.png"));
+        } catch (IOException ex) {
+            this.aback=null;
+            this.afront=null;
+            System.out.println("ERROR CARGANDO IMAGENES");
+        }
     }
 }

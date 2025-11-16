@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import java.util.Random;
 import Pokemons.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class pkSelectorPanel extends JPanel implements Runnable {
 
@@ -18,22 +19,46 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale;
     final int maxScreenCol = 12;
     final int maxScreenRow = 9;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    public final int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
+    
     private Font msgFont;
+    private Trainer trainer1;
+    private Trainer trainer2;
+    private Game game;
+    private KeyHandler keyH;
+    private Random random = new Random();
     
     // SYSTEM
-    Game ga=new Game();
-    KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
-    Random random = new Random();
-    UI ui=new UI(this);
-    int FPS = 60;
-    int for1=random.nextInt(4)+1;
-    Trainer trainer1=new Trainer(this,keyH,Integer.toString(for1),true);
-    Trainer trainer2=new Trainer(this,keyH,generateRandom(for1),false);
+    public pkSelectorPanel(Game game) {
+        this.game=game;
+        try {
+            background = selectBackground();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        trainer1=game.getgTrainer1();
+        trainer2=game.getgTrainer2();
+        this.keyH = new KeyHandler();
+        
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
+        this.loadResources();
+        
+        int for1=random.nextInt(4)+1;
+        
+        this.trainer1.initGraphics(this, keyH, Integer.toString(for1), true);
+        this.trainer2.initGraphics(this, keyH, generateRandom(for1), false);
+        
+    }    
     
-    //Generate random sprite
+    Thread gameThread;
+    int FPS = 60;
+    
+    
+    //Generate random sprite != trainer1
     public String generateRandom(int for1){
         int for2=random.nextInt(4)+1;
         while(for1==for2){
@@ -66,15 +91,14 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     final int cols = 2;
     
     String[] spriteNames = {
-            "Alakazam", "Electrode", "arcanine", "bulbasaur",
-            "gyarados", "charmander", "dodrio", "dugtrio",
-            "hitmonlee", "victreebel", "squirtle", "pikachu"
+            "Alakazam", "Electrode", "Arcanine", "Bulbasaur",
+            "Gyarados", "Charmander", "Dodrio", "Dugtrio",
+            "Hitmonlee", "Victreebel", "Squirtle", "Pikachu"
     };
     
     
     
-    Pokemon[] pokimones={
-    };
+    
     
  
     // COORDENADAS DEL GRID
@@ -90,19 +114,6 @@ public class pkSelectorPanel extends JPanel implements Runnable {
     BufferedImage background;
     BufferedImage chat;
 
-    public pkSelectorPanel() {
-        try {
-            background = selectBackground();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setDoubleBuffered(true);
-        this.addKeyListener(keyH);
-        this.setFocusable(true);
-        this.loadResources();
-    }
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -128,7 +139,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("⚠️ Error cargando recursos. Usando fuente por defecto.");
+            System.out.println("Error cargando recursos. Usando fuente por defecto.");
         }
     }
 
@@ -271,6 +282,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
         if (keyH.enterPressed) {
             int index = selectedRow * cols + selectedCol;
             String chosenPokemon = spriteNames[index];
+            Pokemon chosenPokemonn= this.game.getgPokemonList().get(index);
 
             // Verificar seleccionado
             if (pokemonSelected[index]) {
@@ -278,6 +290,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
                 if (gameState == t1State) {
                     gameMessage2 = ""; // Limpiar mensaje del otro trainer
                 } else {
+                    gameMessage2 = "¡Pokémon ya\nseleccionado!";
                     gameMessage = ""; // Limpiar mensaje del otro trainer
                 }
             } else {
@@ -288,6 +301,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
                         pokemonSelected[index] = true; // Marcar como seleccionado
 
                         gameMessage = "Trainer 1 eligió:\n" + chosenPokemon;
+                        trainer1.addPhPokemon(chosenPokemonn);
                         gameMessage2 = ""; // Limpiar mensaje anterior
                         System.out.println(gameMessage);
                         gameState = t2State;
@@ -298,6 +312,7 @@ public class pkSelectorPanel extends JPanel implements Runnable {
                         pokemonSelected[index] = true; // Marcar como seleccionado
 
                         gameMessage2 = "Trainer 2 eligió:\n" + chosenPokemon;
+                        trainer2.addPhPokemon(chosenPokemonn);
                         gameMessage = ""; // Limpiar mensaje anterior
                         System.out.println(gameMessage2);
                         gameState = t1State;
@@ -316,13 +331,13 @@ public class pkSelectorPanel extends JPanel implements Runnable {
 
         
         if (battleReady && System.currentTimeMillis() - battleStartTime >= DELAY) {
-            startBattleTransition();
+            startTraderTransition();
         }
         trainer1.static_update();
         trainer2.static_update();
     }
     
-    private void startBattleTransition() {
+    private void startTraderTransition() {
         if (battleReady) {
         battleReady = false;
         
@@ -339,9 +354,9 @@ public class pkSelectorPanel extends JPanel implements Runnable {
         normalPokemonSprites = null;
         selectedPokemonSprites = null;
         System.out.println("Panel de selección limpiado");
+        GraphicPart.traderPanel=new TraderPanel(game);
         
-        // 3. Cambiar de panel
-        System.out.println("Cambiando a panel de batalla...");
+        System.out.println("Cambiando a panel de compra...");
         GraphicPart.cambiarPanel(GraphicPart.STATE_TRADER);
         }
     }

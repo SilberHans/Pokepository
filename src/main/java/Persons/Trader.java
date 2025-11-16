@@ -2,6 +2,7 @@ package Persons;
 
 import GameDesing.GenericDataBase;
 import Items.Item;
+import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,6 +18,8 @@ public class Trader extends Person {
         super(GenericDataBase.getRndmTraderName(), mRndmTempRegion, GenericDataBase.genRndmPersonID(2, mRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(50, 80), ThreadLocalRandom.current().nextInt(2500, 50001));
         this.mPriceMultiplier = (ThreadLocalRandom.current().nextInt(5, 21)) / 10.0;
         this.mInventory = new ArrayList<>();
+        this.mInventory.add(new Item("Pocima","Pocima potenciadora folla como un toro crack",2,3));
+        this.mInventory.add(new Item("Sopa de garvanzos","Sopita bien rica bien sabrosona sabe a pollo",2,3));
     }
 
     public Trader(double mPriceMultiplier, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
@@ -55,17 +58,39 @@ public class Trader extends Person {
         return this.mInventory.get(mItemPst);
     }
 
-    public String getmInventoryStr() {
-        String str = "";
-        for (Item tryItem : this.mInventory) {
-            str += tryItem.toString();
+    public String[] getmInventoryStr() {
+        if (this.mInventory.isEmpty()) {
+            return new String[]{"No Items in Stock"};
         }
-        if (!str.equals("")) {
-            return str;
+        String[] itemNames = new String[this.mInventory.size()];
+        for (int i = 0; i < this.mInventory.size(); i++) {
+            itemNames[i] = this.mInventory.get(i).getiName(); 
         }
-        return "No Items in Stock Yet...";
+        return itemNames;
     }
-
+    
+    public String[] getmInventoryDescription(){
+        if (this.mInventory.isEmpty()) {
+            return new String[]{"No Items in Stock"};
+        }
+        String[] itemDescript = new String[this.mInventory.size()];
+        for (int i = 0; i < this.mInventory.size(); i++) {
+            itemDescript[i] = this.mInventory.get(i).iDescription(); 
+        }
+        return itemDescript;
+    }
+    
+    public BufferedImage[] getmInventoryIMG(){
+        if (this.mInventory.isEmpty()) {
+            return null;
+        }
+        BufferedImage[] img = new BufferedImage[this.mInventory.size()];
+        for (int i = 0; i < this.mInventory.size(); i++) {
+            img[i]= this.mInventory.get(i).getImg(); 
+        }
+        return img;
+    }
+    
     @Override
     public String toString() {
         return "\t-----Mercader Information-----" + super.toString() + "\nPrice Multiplier:\t" + this.getmPriceMultiplier() + "\n\t-Inventory-\n" + this.getmInventoryStr();

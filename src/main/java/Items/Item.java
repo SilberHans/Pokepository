@@ -1,17 +1,23 @@
 package Items;
 
-public abstract class Item {
+import java.awt.image.BufferedImage;
+
+public class Item {
     private String iName;
     private int iPrice;
     private int iStock;
+    private BufferedImage img;
+    private String iDescription;
     
     public Item(){
         this.iName = "";
         this.iPrice = 0;
         this.iStock = 0;
+        this.img=null;
     }
-    public Item(String iName, int iPrice, int iStock) {
+    public Item(String iName, String iDescription,int iPrice, int iStock ) {
         this.iName = iName;
+        this.iDescription=iDescription;
         this.iPrice = iPrice;
         this.iStock = iStock;
     }
@@ -25,7 +31,14 @@ public abstract class Item {
     public void setiStock(int iStock) {
         this.iStock = iStock;
     }
+    public void setiIMG(BufferedImage img){
+        this.img=img;
+    }
 
+    public BufferedImage getImg() {
+        return img;
+    }
+    
     public String getiName() {
         return this.iName;
     }
@@ -41,5 +54,7 @@ public abstract class Item {
         return "\nName:\t" + this.getiName() + "\nPrice:\t" + this.getiPrice() + "\nStock:\t" + this.iStock;
     }
     
-    public abstract String iDescription();
+    public String iDescription(){
+        return this.iDescription;
+    }
 }

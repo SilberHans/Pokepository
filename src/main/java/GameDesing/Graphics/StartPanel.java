@@ -101,15 +101,17 @@ public class StartPanel extends JPanel implements Runnable {
     private void runOption() {
         switch (selectedOption) {
             case 0 -> { //Create
+                GraphicPart.createGame();
                 System.out.println("Iniciando nueva partida...");
                 GraphicPart.cambiarPanel(GraphicPart.STATE_SELECTOR);
+             
             }
             case 1 -> System.out.println("Cargar partida (aún no implementado)");
             case 2 -> System.exit(0);
         }
     }
 
-    // --- Drawing ---
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

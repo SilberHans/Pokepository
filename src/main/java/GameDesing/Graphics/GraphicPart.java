@@ -1,5 +1,6 @@
 package GameDesing.Graphics;
 
+import GameDesing.Game;
 import javax.swing.JFrame;
 
 public class GraphicPart {
@@ -12,16 +13,19 @@ public class GraphicPart {
 
     // Estado actual
     public static int gameState = STATE_START;
-
     // Ventana principal
     private static JFrame window;
 
     // Paneles del juego
     private static StartPanel startPanel;
-    private static BattlePanel battlePanel;
-    private static TraderPanel traderPanel;
-    private static pkSelectorPanel selectorPanel;
+    public static BattlePanel battlePanel;
+    public static TraderPanel traderPanel;
+    public static pkSelectorPanel selectorPanel;
 
+    //Conectando GAME
+    private static Game game;
+    
+    
     public static void main(String[] args) {
         // Crear ventana
         window = new JFrame();
@@ -29,11 +33,13 @@ public class GraphicPart {
         window.setResizable(false);
         window.setTitle("PokeBattle");
 
+        //
+        
         // Inicializar paneles
         startPanel = new StartPanel();
-        battlePanel = new BattlePanel();
-        traderPanel = new TraderPanel();
-        selectorPanel = new pkSelectorPanel();
+        battlePanel = null;
+        traderPanel = null;
+        selectorPanel = null;
 
         // Mostrar el panel inicial
         cambiarPanel(STATE_START);
@@ -41,12 +47,15 @@ public class GraphicPart {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
     }
+    
+    public static void createGame() {
+        game = new Game();
+        System.out.println("¡New Game creado con Pokémon y Trainers!");
 
-    /**
-     * Cambia el panel visible según el estado del juego.
-     */
+        selectorPanel = new pkSelectorPanel(game);
+    }
+        
     public static void cambiarPanel(int nuevoEstado) {
-        // Detener hilo anterior (si aplica)
         if (window.getContentPane().getComponentCount() > 0) {
             window.getContentPane().removeAll();
         }

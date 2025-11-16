@@ -1,7 +1,9 @@
 package Pokemons;
 
 import Pokemons.Logic.PkTypeEnum;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.imageio.ImageIO;
 
 public class Dugtrio extends Pokemon{
 
@@ -22,6 +24,17 @@ public class Dugtrio extends Pokemon{
             case 2 -> {return "Dug-dug-dug!";}
             case 3 -> {return "Trio!";}
             default -> {return "Uhh...";}
+        }
+    }
+    @Override
+    public void loadSprites() {
+        try {
+            this.aback=ImageIO.read(getClass().getResourceAsStream("/battle/Dugtrio_espalda.png"));
+            this.afront=ImageIO.read(getClass().getResourceAsStream("/battle/Dugtrio_frente.png"));
+        } catch (IOException ex) {
+            this.aback=null;
+            this.afront=null;
+            System.out.println("ERROR CARGANDO IMAGENES");
         }
     }
 }

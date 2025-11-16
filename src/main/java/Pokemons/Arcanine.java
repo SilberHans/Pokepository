@@ -1,7 +1,11 @@
 package Pokemons;
 
 import Pokemons.Logic.PkTypeEnum;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 public class Arcanine extends Pokemon{
 
@@ -22,6 +26,18 @@ public class Arcanine extends Pokemon{
             case 2 -> {return "Grrrr-nine!";}
             case 3 -> {return "Aaaa-rooo!";}
             default -> {return "Uhh...";}
+        }
+    }
+    
+    @Override
+    public void loadSprites() {
+        try {
+            this.aback=ImageIO.read(getClass().getResourceAsStream("/battle/Arcanine_espalda.png"));
+            this.afront=ImageIO.read(getClass().getResourceAsStream("/battle/Arcanine_frente.png"));
+        } catch (IOException ex) {
+            this.aback=null;
+            this.afront=null;
+            System.out.println("ERROR CARGANDO IMAGENES");
         }
     }
 }

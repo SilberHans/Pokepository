@@ -8,6 +8,7 @@ import Pokemons.Logic.PkTypeEnum;
 import Pokemons.Movements.Move;
 import Pokemons.Movements.PkEffectsEnum;
 import Utility.PokemonValidations;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Map;
@@ -32,8 +33,13 @@ public abstract class Pokemon {
     protected ArrayList<Move> pkMoveSet;
     protected PkStatus pkStatus;
     protected Map<PkEffectsEnum, Integer> pkEffects;
-    protected Map<PkStatsEnum, Integer> pkStatsStages;   
-            
+    protected Map<PkStatsEnum, Integer> pkStatsStages;
+    protected BufferedImage afront;
+    protected BufferedImage aback;
+    public String[] actions={"ATTACK 1","ATTACK 2","DEFEND","ÄTTACK 3"};
+    
+    public abstract void loadSprites();
+    
     public Pokemon(int pkLevel, PkTypeEnum pkType1, PkTypeEnum pkType2, int pkBaseHp, int pkBaseAttack, int pkBaseSpecialAttack, int pkBaseDefense, int pkBaseSpecialDefense, int pkBaseSpeed){
         this.pkNickName = GenericDataBase.getRndmPokemonNickName();
         this.pkType1 = pkType1;
