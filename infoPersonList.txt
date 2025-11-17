@@ -1,39 +1,39 @@
 PERSONLIST
 pName,pRegion,pID,pBirthDate,pPokeDollars
 	-----Mercader Information-----
-Name:			Stan
-Region:			Pasio
-ID:			TRD-Pasio-535
-Birth Date:		29/11/1967
-Age:			57
-PokeDollars:		36131
-Price Multiplier:	0.7
+Name:			Orville
+Region:			Hisui
+ID:			TRD-Hisui-563
+Birth Date:		31/01/1973
+Age:			52
+PokeDollars:		8003
+Price Multiplier:	0.5
 	-Inventory-
 No Items in Stock Yet...
 	-----Nurse Joy Information-----
 
 Name:			Joy
 Region:			Kanto
-ID:			NJ-Kanto-007
-Birth Date:		05/07/1999
-Age:			26
-PokeDollars:		11214
-Year of Admission:	2023/03/29
-Years of Experience:	2
+ID:			NJ-Kanto-318
+Birth Date:		11/11/1997
+Age:			28
+PokeDollars:		2495
+Year of Admission:	2022/06/02
+Years of Experience:	3
 
 	-----Chansey-----
-Nick Name:		Omega
+Nick Name:		Odin
 Type:		Normal
-Level:			22
-Potential:		Solid
-Training:		Rookie
-Health Points		145
-Attack:			11
-Special Attack:		24
-Defense:		11
-Special Defense:	55
-Speed:			30	-Movement Set-
-Omega hasn’t learned any moves
+Level:			57
+Potential:		Common
+Training:		Veteran
+Health Points		363
+Attack:			22
+Special Attack:		56
+Defense:		22
+Special Defense:	136
+Speed:			73	-Movement Set-
+Odin hasn’t learned any moves
 
 Availability:		true
 	-Pokemons to Attend-
