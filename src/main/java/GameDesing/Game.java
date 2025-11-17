@@ -1,5 +1,6 @@
 package GameDesing;
 
+import Items.Item;
 import Persons.Trainer;
 import Persons.Trader;
 import Persons.NurseJoy;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import Utility.PokeWriting;
+import java.time.LocalDate;
 
 public class Game {
     private Trainer gTrainer1;
@@ -30,10 +32,14 @@ public class Game {
     private NurseJoy gNurseJoy;
     private ArrayList<Pokemon> gPokemonList;
     private ArrayList<Person> gPersonList;
+    private ArrayList<Trainer> gTrainerList;    
     
     public Game(){
+        this.gTrainerList = new ArrayList<>();
         this.gTrainer1 = new Trainer();
+        this.gTrainerList.add(gTrainer1);
         this.gTrainer2 = new Trainer();
+        this.gTrainerList.add(gTrainer2);
         this.gTrader = new Trader();
         this.gNurseJoy = new NurseJoy();
         this.gPokemonList = new ArrayList<>();
@@ -51,6 +57,13 @@ public class Game {
         this.gPokemonList.add(new Squirtle(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         this.gPokemonList.add(new Dugtrio(ThreadLocalRandom.current().nextInt(gRndmTempMinLevel, gRndmTempMinLevel + 11)));
         
+        System.out.println("TRAINERLIST");
+        System.out.println("PRINTING THE LIST CREATED");
+        for(Trainer t: this.gTrainerList){
+            System.out.println(t.toString());
+        }
+        Utility.PokeWriting.tWriting("./TrainerList.txt", this.gTrainerList);
+        
         System.out.println("POKELIST");
         System.out.println("PRINTING THE LIST CREATED");
         for(Pokemon p: this.gPokemonList){
@@ -67,11 +80,11 @@ public class Game {
         Utility.PokeWriting.pWriting("./infoPersonList.txt", persons);
     }
     
-    public String testPokemon(){
+    /*public String testPokemon(){
         String str = "";
         for(Pokemon tryPokemon: this.gPokemonList){
             str += tryPokemon.toString();
         }
         return str + "\n\n" + this.gTrader.toString() + "\n\n" + this.gNurseJoy.toString();
-    }
+    }*/
 }

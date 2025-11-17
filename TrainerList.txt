@@ -1,0 +1,27 @@
+TRAINERLIST
+-----Trainer Information-----
+
+Name:			
+Region:			
+ID:			
+Birth Date:		Fecha no disponible
+Age:			0
+PokeDollars:		0
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
+-----Trainer Information-----
+
+Name:			
+Region:			
+ID:			
+Birth Date:		Fecha no disponible
+Age:			0
+PokeDollars:		0
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!

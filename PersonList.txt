@@ -1,2 +1,3 @@
 pName,pRegion,pID,pBirthDate,pPokeDollars
-
+Lalo,Kanto,1234,01/01/2000,1000
+Lola,Kalto,5678,02/12/2000,1000

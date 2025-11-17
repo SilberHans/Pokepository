@@ -14,10 +14,10 @@ public class Trainer extends PokemonHandler{
         this.tMedals = 0;
         this.tItemsList = new ArrayList<>();
     }
-    public Trainer(int tMedals, ArrayList<Item> tConsuList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+    public Trainer(String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);
-        this.tMedals = tMedals;
-        this.tItemsList = tConsuList;
+        this.tMedals = 0;
+        this.tItemsList = new ArrayList<>();
     }
 
     public void settMedals(int tMedals){

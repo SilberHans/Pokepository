@@ -1,39 +1,65 @@
 PERSONLIST
 pName,pRegion,pID,pBirthDate,pPokeDollars
+-----Trainer Information-----
+
+Name:			Lalo
+Region:			Kanto
+ID:			1234
+Birth Date:		01/01/2000
+Age:			25
+PokeDollars:		1000
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
+-----Trainer Information-----
+
+Name:			Lola
+Region:			Kalto
+ID:			5678
+Birth Date:		02/12/2000
+Age:			24
+PokeDollars:		1000
+Medals:	0
+	-Pokemons-
+No Pokémon have been assigned to this Trainer.
+	-Items-
+No items to use!
 	-----Mercader Information-----
-Name:			Orville
-Region:			Hisui
-ID:			TRD-Hisui-563
-Birth Date:		31/01/1973
-Age:			52
-PokeDollars:		8003
-Price Multiplier:	0.5
+Name:			Cyrus
+Region:			Hoenn
+ID:			TRD-Hoenn-209
+Birth Date:		31/10/1970
+Age:			55
+PokeDollars:		6218
+Price Multiplier:	0.7
 	-Inventory-
 No Items in Stock Yet...
 	-----Nurse Joy Information-----
 
 Name:			Joy
-Region:			Kanto
-ID:			NJ-Kanto-318
-Birth Date:		11/11/1997
-Age:			28
-PokeDollars:		2495
-Year of Admission:	2022/06/02
+Region:			Almia
+ID:			NJ-Almia-959
+Birth Date:		05/03/2001
+Age:			24
+PokeDollars:		9014
+Year of Admission:	2021/11/23
 Years of Experience:	3
 
 	-----Chansey-----
-Nick Name:		Odin
+Nick Name:		Hydro
 Type:		Normal
-Level:			57
-Potential:		Common
-Training:		Veteran
-Health Points		363
-Attack:			22
-Special Attack:		56
-Defense:		22
-Special Defense:	136
-Speed:			73	-Movement Set-
-Odin hasn’t learned any moves
+Level:			100
+Potential:		Solid
+Training:		Hardened
+Health Points		635
+Attack:			40
+Special Attack:		100
+Defense:		40
+Special Defense:	240
+Speed:			130	-Movement Set-
+Hydro hasn’t learned any moves
 
 Availability:		true
 	-Pokemons to Attend-
