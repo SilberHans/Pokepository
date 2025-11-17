@@ -400,7 +400,7 @@ public class UI{
     }
 
    
-    public void drawBattleOptions(Graphics2D g2, String[] options, int selectedOption) {
+    public void drawBattleOptions(Graphics2D g2, String[] options, int selectedOption,boolean isPlayerOne) {
         if (options == null) return; // No dibujar si no hay opciones
 
         int x = optX + 20; // Coordenada X (ya calculada)
@@ -416,12 +416,13 @@ public class UI{
             
             if (i == selectedOption) {
                 // Dibujar cursor (flecha roja)
-                g2.setColor(Color.RED);
+                Color c=(isPlayerOne)? (Color.RED): (Color.BLUE);
+                g2.setColor(c);
                 int[] xPoints = {x - 25, x - 10, x - 25};
                 int[] yPoints = {currentY - 18, currentY - 8, currentY + 2};
                 g2.fillPolygon(xPoints, yPoints, 3);
                 
-                g2.setColor(new Color(194, 54, 22)); // Color de texto seleccionado
+                g2.setColor(c); // Color de texto seleccionado
                 g2.drawString(options[i], x, currentY);
             } else {
                 g2.setColor(windowTextColor2); // Color de texto normal
@@ -429,6 +430,15 @@ public class UI{
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     // --- MÉTODOS DE DIBUJO PARA NURSEJOYPANEL ---
     
@@ -464,7 +474,7 @@ public class UI{
     /**
      * Dibuja el panel de un entrenador individual para la curación.
      */
-    public void drawTrainerHealBox(Graphics2D g2, Trainer trainer, int x, int y, int width, int height, boolean isActive, int selectedPokemon) {
+    public void drawTrainerHealBox(Graphics2D g2, Trainer trainer, BufferedImage trainerImage, int x, int y, int width, int height, boolean isActive, int selectedPokemon) {
         
         // Color de borde activo/inactivo
         if (isActive) {
@@ -494,13 +504,28 @@ public class UI{
         g2.setFont(mainFont.deriveFont(18f));
         g2.setColor(windowTextColor);
         g2.drawString(trainer.getpName(), x + padding, currentY + 18);
-        currentY += 30;
+        
+        // --- NUEVO: Dibujar Imagen del Entrenador ---
+        int imgSize = 64; // Tamaño del avatar
+        int imgX = x + width - padding - imgSize;
+        int imgY = y + padding; // Alineado arriba
+        
+        if (trainerImage != null) {
+            g2.drawImage(trainerImage, imgX, imgY, imgSize, imgSize, null);
+        } else {
+            // Placeholder si no hay imagen
+            g2.setColor(Color.DARK_GRAY);
+            g2.fillRect(imgX, imgY, imgSize, imgSize);
+        }
+        // --- FIN NUEVO ---
+
+        currentY += 30; // Espacio después del nombre
 
         // 2. Dinero del Entrenador
         g2.setFont(smallFont.deriveFont(14f));
         g2.setColor(new Color(10, 100, 30)); // Verde oscuro
         g2.drawString(trainer.getpPokeDollars() + "$", x + padding, currentY + 18);
-        currentY += 35;
+        currentY += 35; // Espacio después del dinero
         
         // 3. Lista de Pokémon
         g2.setFont(mainFont.deriveFont(16f));
@@ -508,18 +533,20 @@ public class UI{
 
         for (int i = 0; i < 6; i++) {
             Pokemon pk = trainer.getPhPokemon(i);
-            if (pk == null) continue; // Si no hay Pokémon en este slot
-
-            String name = pk.getPkNickName();
-            String hp = pk.getPkHp() + " / " + pk.getPkMaxHp();
-            int lineY = currentY + (i * lineHeight) + 16;
+            // Mover lineY aquí para que se calcule incluso si pk es null (para el cursor)
+            int lineY = currentY + (i * lineHeight) + 16; 
             
-            // Cursor
+            // Cursor (dibujar siempre, incluso si no hay Pokémon)
             if (isActive && i == selectedPokemon) {
                 g2.setColor(Color.RED);
                 g2.drawString(">", x + padding - 10, lineY);
             }
+            
+            if (pk == null) continue; // Si no hay Pokémon en este slot, saltar el resto
 
+            String name = pk.getPkNickName();
+            String hp = pk.getPkHp() + " / " + pk.getPkMaxHp();
+            
             // Color de HP (verde, amarillo, rojo)
             double hpPercent = (double) pk.getPkHp() / pk.getPkMaxHp();
             if (hpPercent > 0.5) {

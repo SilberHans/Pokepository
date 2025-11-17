@@ -17,28 +17,28 @@ import javax.swing.JPanel;
 
 public class NurseJoyPanel extends JPanel implements Runnable {
 
-    // --- CONFIGURACIÓN DE PANTALLA ---
+    //SCREEN CONFIG
     final int originalTileSize = 32;
     final int scale = 2;
-    public final int tileSize = originalTileSize * scale; // 64
-    final int maxScreenCol = 12; // 768 pixels
-    final int maxScreenRow = 9;  // 576 pixels
+    public final int tileSize = originalTileSize * scale; 
+    final int maxScreenCol = 12; 
+    final int maxScreenRow = 9;  
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
-    // --- SISTEMA ---
+    // SYSTEM
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     UI ui = new UI(this);
     int FPS = 60;
     
-    // --- DATOS DEL JUEGO ---
+    // DATA GAME
     Game game;
     Trainer trainer1;
     Trainer trainer2;
     NurseJoy nurseJoy;
     
-    // --- ESTADO DEL PANEL ---
+    //PANEL STATE
     public final int t1Turn = 1;
     public final int t2Turn = 2;
     public int panelState = t1Turn; // Inicia el Trainer 1
@@ -52,6 +52,8 @@ public class NurseJoyPanel extends JPanel implements Runnable {
     // --- RECURSOS GRÁFICOS ---
     BufferedImage background;
     BufferedImage nurseJoySprite;
+    BufferedImage t1img;
+    BufferedImage t2img;
 
     public NurseJoyPanel(Game game) {
         this.game = game;
@@ -75,11 +77,23 @@ public class NurseJoyPanel extends JPanel implements Runnable {
     private void loadResources() {
         try {
             // Cargar el fondo que generamos
-            InputStream bgStream = getClass().getResourceAsStream("/images/poke_center_bg.png");
+            InputStream bgStream = getClass().getResourceAsStream("/images/joy.png");
             background = ImageIO.read(bgStream);
             
             // Obtener el sprite de la Enfermera Joy (ya cargado en su constructor)
             nurseJoySprite = nurseJoy.getSprite();
+            String t1Index = trainer1.num;
+            String t2Index = trainer2.num;
+
+            
+            if (t1Index != null) {
+                InputStream t1Stream = getClass().getResourceAsStream("/util/" + t1Index + ".png");
+                if (t1Stream != null) t1img = ImageIO.read(t1Stream);
+            }
+            if (t2Index != null) {
+                InputStream t2Stream = getClass().getResourceAsStream("/util/" + t2Index + ".png");
+                if (t2Stream != null) t2img = ImageIO.read(t2Stream);
+            }
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -210,10 +224,10 @@ public class NurseJoyPanel extends JPanel implements Runnable {
         // 2. Dibujar Enfermera Joy (Mitad izquierda)
         if (nurseJoySprite != null) {
             // Ajustar tamaño y posición
-            int spriteWidth = nurseJoySprite.getWidth() * 2;
-            int spriteHeight = nurseJoySprite.getHeight() * 2;
+            int spriteWidth = nurseJoySprite.getWidth()-40;
+            int spriteHeight = nurseJoySprite.getHeight()-40;
             int x = (screenWidth / 2 - spriteWidth) / 2;
-            int y = (screenHeight - spriteHeight) / 2 - 50; // Un poco más arriba
+            int y = (screenHeight - spriteHeight) / 2; 
             g2.drawImage(nurseJoySprite, x, y, spriteWidth, spriteHeight, null);
         } else {
             g2.setColor(Color.WHITE);
@@ -222,13 +236,13 @@ public class NurseJoyPanel extends JPanel implements Runnable {
         
         // 3. Dibujar Paneles de Entrenador (Mitad derecha)
         int boxWidth = 350;
-        int boxHeight = (screenHeight / 2) - 30;
+        int boxHeight = (screenHeight / 2) - 70;
         int boxX = screenWidth / 2 + 10;
-        int boxY1 = 20;
-        int boxY2 = boxY1 + boxHeight + 20;
+        int boxY1 = 15;
+        int boxY2 = boxY1 + boxHeight + 10;
         
-        ui.drawTrainerHealBox(g2, trainer1, boxX, boxY1, boxWidth, boxHeight, (panelState == t1Turn), t1CursorPos);
-        ui.drawTrainerHealBox(g2, trainer2, boxX, boxY2, boxWidth, boxHeight, (panelState == t2Turn), t2CursorPos);
+        ui.drawTrainerHealBox(g2, trainer1,t1img, boxX, boxY1, boxWidth, boxHeight, (panelState == t1Turn), t1CursorPos);
+        ui.drawTrainerHealBox(g2, trainer2, t2img, boxX, boxY2, boxWidth, boxHeight, (panelState == t2Turn), t2CursorPos);
 
         // 4. Dibujar Cuadro de Diálogo
         ui.drawNurseDialog(g2, dialogMessage);

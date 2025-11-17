@@ -261,10 +261,8 @@ public class Trainer extends PokemonHandler {
     private BufferedImage[] sprites = new BufferedImage[5]; // a1, a2, a3, a4, a5
     private boolean spritesLoaded = false;
     private int battleSpriteSize;
-    private int targetX; 
-    private int targetY; 
+    private int targetX;  
     private int initialX;
-    private int initialY;
     private boolean isExiting = false;
     private float exitProgress = 0f; 
     
@@ -277,14 +275,13 @@ public class Trainer extends PokemonHandler {
         
         // Guardar posición inicial
         initialX = this.x;
-        initialY = this.y;
         
         if (isPlayerOne) {
             targetX = -200;
-            targetY = this.y - 100;
+            //targetY = this.y - 100;
         } else {
             targetX = bp.getWidth() + 200;
-            targetY = this.y - 100;
+            //targetY = this.y - 100;
         }
     }
     
@@ -312,7 +309,7 @@ public class Trainer extends PokemonHandler {
             
             // Interpolación suave entre posición inicial y final
             this.x = (int) (initialX + (targetX - initialX) * exitProgress);
-            this.y = (int) (initialY + (targetY - initialY) * exitProgress);
+            //this.y = (int) (initialY + (targetY - initialY) * exitProgress);
             
             if (exitProgress >= 1.0f) {
                 trainerState = STATE_THROW_COMPLETE;
@@ -374,20 +371,13 @@ public class Trainer extends PokemonHandler {
         return new Point(ballX, ballY);
     }
 
-    /**
-     * Obtiene el tamaño de la pokeball (se hace más pequeña al alejarse)
-     */
+    //animacion pokeball
     public int getBallSize() {
         return 42 - (throwProgress / 4); // De 32 a ~7 pixels
     }
 
-    // ========== MÉTODOS DE CARGA DE SPRITES ==========
 
-    /**
-     * Carga los sprites de movimiento del trainer
-     * @param num Número del trainer (para la ruta del archivo)
-     * @param isPlayerOne Si es true, carga sprites normales; si es false, los voltea
-     */
+    
     public void loadMoveSpritesSafe(String num, boolean isPlayerOne) {
         try {
             for (int i = 0; i < 5; i++) {
@@ -411,11 +401,8 @@ public class Trainer extends PokemonHandler {
             System.out.println("Error cargando sprites para trainer " + num);
         }
     }
-    // ========== MÉTODO DRAW ACTUALIZADO ==========
 
-    /**
-     * Dibuja el trainer con el sprite actual
-     */
+    
     public void draw(Graphics2D g2) {
         if (!spritesLoaded || spriteNum < 1 || spriteNum > 5) return;
         
@@ -425,11 +412,7 @@ public class Trainer extends PokemonHandler {
     }
 
     
-    // ========== MÉTODOS AUXILIARES ==========
-
-    /**
-     * Obtiene el estado actual del trainer (para debug)
-     */
+    //DEBUG
     public String getStateString() {
         switch (trainerState) {
             case STATE_IDLE: return "IDLE";
@@ -439,9 +422,6 @@ public class Trainer extends PokemonHandler {
         }
     }
 
-    /**
-     * Obtiene el progreso del lanzamiento (para debug)
-     */
     public int getThrowProgress() {
         return throwProgress;
     }
@@ -454,7 +434,7 @@ public class Trainer extends PokemonHandler {
     // setDefault según turno (Batalla)
     public void setDefaultValues(boolean turn) {
         if (turn) {
-            x = 90; y = 159 ; direction = "left";
+            x = 90; y = 158 ; direction = "left";
         } else {
             x = 500; y = 60; direction = "right";
         }

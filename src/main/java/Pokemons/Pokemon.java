@@ -8,6 +8,7 @@ import Pokemons.Logic.PkTypeEnum;
 import Pokemons.Movements.Move;
 import Pokemons.Movements.PkEffectsEnum;
 import Utility.PokemonValidations;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Set;
@@ -61,6 +62,7 @@ public abstract class Pokemon {
         for(PkStatsEnum tryStat: PkStatsEnum.values()){
             this.pkStatsStages.put(tryStat, 0);
         }
+        this.loadSprites();
     }
 
     public void setPkNickName(String pkNickName){
@@ -287,4 +289,121 @@ public abstract class Pokemon {
     }
     
     public abstract String pkNoise();
+    
+    ////GRAFICOS DEL POKEMONNN
+
+    public int x, y; // posicion 
+    public int defaultX, defaultY; // posicion default
+    public boolean isVisible = true; // parpadeo
+    public final int BATTLE_SPRITE_SIZE = 200; // tamaño
+    
+    private boolean isAnimating = false;
+    private String animationType = "none";
+    private int animationCounter = 0;
+    private int animationState = 0; // Para animaciones multiples
+    
+    
+    public void setDefaultBattlePosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.defaultX = x;
+        this.defaultY = y;
+    }
+    
+    public boolean isAnimating() {
+        return this.isAnimating;
+    }
+    
+    //INICIA ANIMACION YA SEA ATAQUE O DAÑO
+    public void startAnimation(String type) {
+        if (isAnimating) return; // No empezar si ya hay
+        this.animationType = type;
+        this.isAnimating = true;
+        this.animationCounter = 0;
+        this.animationState = 0;
+        this.isVisible = true;
+    }
+
+    //DIBUJA SEGUN SI ES EL 1 O ES EL 2
+    public void draw(Graphics2D g2, boolean isPlayerOne) {
+        if (!isVisible) return; // No dibujar si esta parpadeando
+        
+        BufferedImage image = isPlayerOne ? aback : afront;
+        
+        if (image != null) {
+            g2.drawImage(image, x, y, BATTLE_SPRITE_SIZE, BATTLE_SPRITE_SIZE, null);
+        }
+    }
+    
+    //actualiza animacion 60fps
+    public void updateAnimation() {
+        if (!isAnimating) return;
+        
+        animationCounter++;
+        
+        switch (animationType) {
+            case "damage":
+                if (animationCounter % 10 < 5) {
+                    isVisible = false;
+                } else {
+                    isVisible = true;
+                }
+                
+                // Duración total de 60 frames (1 segundo)
+                if (animationCounter > 60) {
+                    isVisible = true;
+                    isAnimating = false;
+                    animationType = "none";
+                }
+                break;
+                
+            case "attack":
+                // Animación de movimiento (va y vuelve, dos veces)
+                int speed = 5; // Píxeles por frame
+                int distance = 30; // Distancia a moverse
+                
+                // Determina la dirección del ataque (T1 ataca a la derecha, T2 a la izquierda)
+                // Asumimos que T2 (oponente) siempre tendrá un defaultX > 400
+                int direction = (defaultX > 400) ? -1 : 1; 
+
+                switch (animationState) {
+                    case 0: // "Va" 1
+                        x += speed * direction;
+                        if (Math.abs(x - defaultX) >= distance) {
+                            x = defaultX + (distance * direction);
+                            animationState = 1;
+                        }
+                        break;
+                    case 1: // "Vuelve" 1
+                        x -= speed * direction;
+                        if ((direction == 1 && x <= defaultX) || (direction == -1 && x >= defaultX)) {
+                            x = defaultX;
+                            animationState = 2;
+                        }
+                        break;
+                    case 2: // "Va" 2
+                        x += speed * direction;
+                        if (Math.abs(x - defaultX) >= distance) {
+                            x = defaultX + (distance * direction);
+                            animationState = 3;
+                        }
+                        break;
+                    case 3: // "Vuelve" 2
+                        x -= speed * direction;
+                        if ((direction == 1 && x <= defaultX) || (direction == -1 && x >= defaultX)) {
+                            x = defaultX;
+                            animationState = 4; // Terminado
+                        }
+                        break;
+                    case 4: // Fin
+                        isAnimating = false;
+                        animationType = "none";
+                        break;
+                }
+                break;
+        }
+    }  
 }
+
+
+

@@ -55,7 +55,7 @@ public class NurseJoy extends PokemonHandler{
     public void loadSprite() {
         try {
             // Asegúrate de tener una imagen en esta ruta: src/main/resources/persons/nurse_joy_sprite.png
-            this.sprite = ImageIO.read(getClass().getResourceAsStream("/persons/nurse_joy_sprite.png"));
+            this.sprite = ImageIO.read(getClass().getResourceAsStream("/images/joy_sprite.png"));
         } catch (IOException | IllegalArgumentException e) {
             System.out.println("Error cargando sprite de NurseJoy: " + e.getMessage());
             this.sprite = null; // Dejar el sprite como null si no se encuentra

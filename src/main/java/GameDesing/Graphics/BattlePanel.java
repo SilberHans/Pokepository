@@ -43,21 +43,22 @@ public class BattlePanel extends JPanel implements Runnable {
 
     // --- BATTLE STATE MACHINE ---
     public int battleState;
-    public final int STATE_START = 0;
-    public final int STATE_P1_SELECT_POKEMON = 1;
-    public final int STATE_P2_SELECT_POKEMON = 2;
-    public final int STATE_P1_SEND_ANIM = 3;
-    public final int STATE_P2_SEND_ANIM = 4;
-    public final int STATE_P1_TURN = 5;
-    public final int STATE_P1_MENU = 6;
-    public final int STATE_P1_MOVE = 7;
-    public final int STATE_P2_TURN = 8;
-    public final int STATE_P2_MENU = 9;
-    public final int STATE_P2_MOVE = 10;
-    public final int STATE_PERFORM_MOVE = 11;
-    public final int STATE_ANNOUNCE = 12;
-    public final int STATE_FAINTED = 13;
-    public final int STATE_END = 14;
+    public final int STATE_START=0;
+    public final int STATE_P1_SELECT_POKEMON=1;
+    public final int STATE_P2_SELECT_POKEMON=2;
+    public final int STATE_P1_SEND_ANIM=3;
+    public final int STATE_P2_SEND_ANIM=4;
+    public final int STATE_P1_TURN=5;
+    public final int STATE_P1_MENU=6;
+    public final int STATE_P1_MOVE=7;
+    public final int STATE_P2_TURN=8;
+    public final int STATE_P2_MENU=9;
+    public final int STATE_P2_MOVE=10;
+    public final int STATE_PERFORM_MOVE=11;
+    public final int STATE_ANNOUNCE=12;
+    public final int STATE_FAINTED=13;
+    public final int STATE_END=14;
+    public final int STATE_ANIMATION=15;
 
     // --- LÓGICA DE MENÚS ---
     public String currentMessage = "";
@@ -89,20 +90,20 @@ public class BattlePanel extends JPanel implements Runnable {
         this.currentMenuSize = 0;
         System.out.println("RECURSOS CARGADOS");
 
-        // 4. Inicializar trainers con sus sprites
+        //inicializa trainer
         initTrainers();
     }
 
     private void initTrainers() {
-        // Inicializar gráficos con sprites apropiados
+        // inicializar graficos con sprites
         this.trainer1.initGraphics(this, keyH, trainer1.num, true); 
         this.trainer2.initGraphics(this, keyH, trainer2.num, false); 
 
-        // Posiciones iniciales
+        // posiciones iniciales
         trainer1.setDefaultValues(true);
         trainer2.setDefaultValues(false);
         
-        // Cargar sprites (trainer1 normal, trainer2 volteado)
+        // cargar sprites
         trainer1.loadMoveSpritesSafe(trainer1.num, true);
         trainer2.loadMoveSpritesSafe(trainer2.num, false);
     }
@@ -112,7 +113,7 @@ public class BattlePanel extends JPanel implements Runnable {
             pokeballSprite = ImageIO.read(getClass().getResourceAsStream("/util/pokeball.png"));
         } catch (IOException e) {
             System.out.println("Error cargando sprite de pokeball");
-            // Crear placeholder
+            // por si las moscas
             pokeballSprite = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         }
     }
@@ -140,7 +141,6 @@ public class BattlePanel extends JPanel implements Runnable {
                 delta--;
             }
             
-            // Pequeña pausa para no consumir 100% CPU
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -151,14 +151,24 @@ public class BattlePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        // Actualizar trainers en todos los estados (para animaciones)
+        // actualizar trainers en todos los estados (para animaciones)
         trainer1.update();
         trainer2.update();
         
+        // ACTUALIZA POKEMONESSs
+        if (trainer1ActivePokemon != null) {
+            trainer1ActivePokemon.updateAnimation();
+        }
+        if (trainer2ActivePokemon != null) {
+            trainer2ActivePokemon.updateAnimation();
+        }
+        
+        
+        
         if (keyH.escPressed) {
-            stopBattle(); // Llama al método para detener y cambiar de panel
-            keyH.escPressed = false; // Resetea la tecla
-            return; // Salta el resto del update de batalla
+            stopBattle(); // Llama al método para detener y cambiar de panel//TEMPORALLLL
+            keyH.escPressed = false; 
+            return; 
         }
         
         // Lógica de la batalla
@@ -201,6 +211,7 @@ public class BattlePanel extends JPanel implements Runnable {
             // ANIMACIONES DE LANZAMIENTO
             case STATE_P1_SEND_ANIM:
                 if (trainer1.isThrowComplete()) {
+                    trainer1ActivePokemon.setDefaultBattlePosition(90, 158);//POKEMON1
                     battleState = STATE_P2_SEND_ANIM;
                     currentMessage = "¡Trainer 2 lanza su Pokémon!";
                     trainer2.startThrowAnimation(false);
@@ -209,6 +220,7 @@ public class BattlePanel extends JPanel implements Runnable {
                 
             case STATE_P2_SEND_ANIM:
                 if (trainer2.isThrowComplete()) {
+                    trainer2ActivePokemon.setDefaultBattlePosition(475, 28);//POKEMON2
                     battleState = STATE_P1_TURN;
                     currentMessage = "¿Qué hará " + trainer1ActivePokemon.getPkNickName() + "?";
                     menuCursorPos = 0;
@@ -261,21 +273,42 @@ public class BattlePanel extends JPanel implements Runnable {
                 handleMenuNavigation();
                 if (keyH.enterPressed) {
                     String moveName = "ATAQUE " + (menuCursorPos + 1);
+                    
+                    attacker = trainer1ActivePokemon;
+                    defender = trainer2ActivePokemon;
                     battleState = STATE_PERFORM_MOVE;
-                    currentMessage = "¡" + trainer1ActivePokemon.getPkNickName() + " usó " + moveName + "!";
+                    currentMessage = "¡" + attacker.getPkNickName() + " usó " + moveName + "!";
+                    attacker.startAnimation("attack");
+                    
                     keyH.enterPressed = false;
                 }
                 break;
                 
             case STATE_PERFORM_MOVE:
-                if (keyH.enterPressed) {
+                // Espera a que la animación de ATAQUE termine
+                if (attacker != null && !attacker.isAnimating()) {
+                    // Lógica de daño iría aquí (ej. defender.pkTakeDamage(10);)
+                    
+                    defender.startAnimation("damage"); // Iniciar animación de daño
+                    battleState = STATE_ANIMATION; // Ir al nuevo estado de espera
+                }
+                break;
+                
+            case STATE_ANIMATION:
+                // Espera a que la animación de DAÑO termine
+                if (defender != null && !defender.isAnimating()) {
                     if (checkFaintedPokemon()) {
-                        // Manejar Pokémon debilitado
+                        // Manejar Pokémon debilitado (ya lo hace checkFaintedPokemon)
                     } else {
-                        battleState = STATE_P2_TURN;
-                        currentMessage = "¿Qué hará " + trainer2ActivePokemon.getPkNickName() + "?";
+                        // Cambiar al turno del siguiente jugador
+                        if (attacker == trainer1ActivePokemon) {
+                            battleState = STATE_P2_TURN;
+                            currentMessage = "¿Qué hará " + trainer2ActivePokemon.getPkNickName() + "?";
+                        } else {
+                            battleState = STATE_P1_TURN;
+                            currentMessage = "¿Qué hará " + trainer1ActivePokemon.getPkNickName() + "?";
+                        }
                     }
-                    keyH.enterPressed = false;
                 }
                 break;
                 
@@ -319,16 +352,26 @@ public class BattlePanel extends JPanel implements Runnable {
                 handleMenuNavigation();
                 if (keyH.enterPressed) {
                     String moveName = "ATAQUE " + (menuCursorPos + 1);
+                    
+                    attacker = trainer2ActivePokemon;
+                    defender = trainer1ActivePokemon;
                     battleState = STATE_PERFORM_MOVE;
-                    currentMessage = "¡" + trainer2ActivePokemon.getPkNickName() + " usó " + moveName + "!";
+                    currentMessage = "¡" + attacker.getPkNickName() + " usó " + moveName + "!";
+                    attacker.startAnimation("attack");
+                    
                     keyH.enterPressed = false;
                 }
                 break;
                 
             case STATE_ANNOUNCE:
                 if (keyH.enterPressed) {
-                    // Volver al turno correspondiente
-                    battleState = (battleState == STATE_P1_MENU) ? STATE_P1_TURN : STATE_P2_TURN;
+                    // Volver al turno correspondiente (lógica simple, puede fallar si T2 usa item)
+                    // (Corregido para comprobar quién es el atacante)
+                    if (attacker == trainer1ActivePokemon) {
+                        battleState = STATE_P1_TURN;
+                    } else {
+                        battleState = STATE_P2_TURN;
+                    }
                     keyH.enterPressed = false;
                 }
                 break;
@@ -421,10 +464,8 @@ public class BattlePanel extends JPanel implements Runnable {
         // --- DIBUJAR TODO ---
         ui.drawBattleLayout(g2, screenWidth, screenHeight, background);
         ui.drawMessage(g2, message);
-        ui.drawBattleOptions(g2, options, cursor);
+        ui.drawBattleOptions(g2, options, cursor,isPlayer1Turn);
 
-        // Dibujar indicador de turno
-        drawTurnIndicator(g2, isPlayer1Turn, isPlayer2Turn);
 
         /// Dibujar trainers SOLO si no han salido completamente
         if (!trainer1.isFullyExited(true)) {
@@ -439,7 +480,8 @@ public class BattlePanel extends JPanel implements Runnable {
             drawThrowAnimation(g2);
         }
 
-        // Dibujar Pokémon activos (aparecen cuando trainers salen)
+        // Dibujar Pokémon activos
+        // --- MODIFICADO: Llamar a drawPokemon ---
         if (battleState >= STATE_P1_TURN) {
             drawPokemon(g2);
         }
@@ -478,27 +520,15 @@ public class BattlePanel extends JPanel implements Runnable {
     }
     
     private void drawPokemon(Graphics2D g2) {
-        // TODO: Implementar dibujo de sprites de Pokémon
+        // Ahora llamamos a los métodos de dibujo de los propios Pokémon
         if (trainer1ActivePokemon != null) {
-            // g2.drawImage(trainer1ActivePokemon.getSprite(), 150, 250, 128, 128, null);
+             trainer1ActivePokemon.draw(g2, true); // true = es T1 (usa aback)
         }
         if (trainer2ActivePokemon != null) {
-            // g2.drawImage(trainer2ActivePokemon.getSprite(), 500, 150, 128, 128, null);
+            trainer2ActivePokemon.draw(g2, false); // false = es T2 (usa afront)
         }
     }
     
-    private void drawTurnIndicator(Graphics2D g2, boolean isPlayer1Turn, boolean isPlayer2Turn) {
-        if (isPlayer1Turn) {
-            // Flecha ROJA para P1 (izquierda)
-            g2.setColor(Color.RED);
-            g2.fillPolygon(new int[]{50, 70, 50}, new int[]{400, 410, 420}, 3);
-        } else if (isPlayer2Turn) {
-            // Flecha AZUL para P2 (derecha)
-            g2.setColor(Color.BLUE);
-            g2.fillPolygon(new int[]{screenWidth - 50, screenWidth - 70, screenWidth - 50}, 
-                          new int[]{400, 410, 420}, 3);
-        }
-    }
 
     private BufferedImage selectBattleBackground() {
         int x = random.nextInt(9) + 1;
@@ -510,11 +540,8 @@ public class BattlePanel extends JPanel implements Runnable {
             return null;
         }
     }
-    
-    /**
-     * Método para limpiar recursos y detener el panel
-     */
-    public void stopBattle() {
+
+    public void stopBattle() { //TEMPORALLLLLL MODIFICAR 
         if (gameThread != null) {
             gameThread.interrupt();
             gameThread = null;
@@ -524,6 +551,9 @@ public class BattlePanel extends JPanel implements Runnable {
 
         // Cambiar al panel de la Enfermera Joy
         GraphicPart.cambiarPanel(GraphicPart.STATE_NURSE_JOY);
-        // --- FIN DE MODIFICACIÓN ---
     }
+    
+    //METODOS ANIMACIONES POKEMONESSS
+    
+    private Pokemon attacker, defender;
 }
