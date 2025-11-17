@@ -1,15 +1,15 @@
 package Persons;
 
 import Pokemons.Logic.Items.PkItem;
-import Utility.MedalsEnum;
+import Utility.Constants.TMedalsEnum;
 import Pokemons.Pokemon;
-import Utility.PersonValidations;
+import Utility.Validations.PersonValidations;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Trainer extends PokemonHandler{
-    private ArrayList<MedalsEnum> tMedalsList;
+    private ArrayList<TMedalsEnum> tMedalsList;
     private ArrayList<PkItem> tItemsList;
     
     public Trainer(){
@@ -22,16 +22,16 @@ public class Trainer extends PokemonHandler{
         this.tMedalsList = new ArrayList<>();
         this.tItemsList = new ArrayList<>();
     }    
-    public Trainer(ArrayList<MedalsEnum> tMedalsList, ArrayList<PkItem> tItemsList, ArrayList<Pokemon> phPokeList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars) {
+    public Trainer(ArrayList<TMedalsEnum> tMedalsList, ArrayList<PkItem> tItemsList, ArrayList<Pokemon> phPokeList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars) {
         super(phPokeList, pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.tMedalsList = tMedalsList;
         this.tItemsList = tItemsList;
     }
 
-    public void settMedalsList(ArrayList<MedalsEnum> tMedalsList){
+    public void settMedalsList(ArrayList<TMedalsEnum> tMedalsList){
         this.tMedalsList = tMedalsList;
     }
-    public void addtMedal(MedalsEnum tMedal){
+    public void addtMedal(TMedalsEnum tMedal){
         this.tMedalsList.add(tMedal);
     }
     public void settItemList(ArrayList<PkItem> tItemList){
@@ -41,10 +41,10 @@ public class Trainer extends PokemonHandler{
         this.tItemsList.add(tItem);
     }
 
-    public ArrayList<MedalsEnum> gettMedalsList(){
+    public ArrayList<TMedalsEnum> gettMedalsList(){
         return this.tMedalsList;
     }
-    public MedalsEnum gettMedal(int tMedalPst){
+    public TMedalsEnum gettMedal(int tMedalPst){
         try{
             return this.tMedalsList.get(tMedalPst);
         }catch(ArrayIndexOutOfBoundsException e){
@@ -56,7 +56,7 @@ public class Trainer extends PokemonHandler{
             return "No medals yet...";
         }
         String str = "";
-        for(MedalsEnum tryMedal: this.tMedalsList){
+        for(TMedalsEnum tryMedal: this.tMedalsList){
             str += tryMedal + ", ";
         }
         return str;
