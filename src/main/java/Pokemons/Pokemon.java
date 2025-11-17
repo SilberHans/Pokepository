@@ -1,12 +1,10 @@
 package Pokemons;
 
+import Pokemons.Logic.Movements.PkMovementsDataBase;
+import Pokemons.Logic.Movements.PkMove;
+import Pokemons.Logic.PkEffectsEnum;
 import GameDesing.GenericDataBase;
-import Pokemons.Logic.PkStatsEnum;
-import Pokemons.Logic.PkStatus;
-import Pokemons.Logic.PkStatusEnum;
-import Pokemons.Logic.PkTypeEnum;
-import Pokemons.Movements.Move;
-import Pokemons.Movements.PkEffectsEnum;
+import Pokemons.Logic.*;
 import Utility.PokemonValidations;
 import java.util.ArrayList;
 import java.util.Set;
@@ -29,7 +27,7 @@ public abstract class Pokemon {
     protected final int pkSpeed;
     protected final PkTypeEnum pkType1;
     protected final PkTypeEnum pkType2;
-    protected ArrayList<Move> pkMoveSet;
+    protected ArrayList<PkMove> pkMoveSet;
     protected PkStatus pkStatus;
     protected Map<PkEffectsEnum, Integer> pkEffects;
     protected Map<PkStatsEnum, Integer> pkStatsStages;   
@@ -48,7 +46,7 @@ public abstract class Pokemon {
         this.pkDefense = (int) (((2*pkBaseDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpecialDefense = (int) (((2*pkBaseSpecialDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpeed = (int) (((2*pkBaseSpeed + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
-        this.pkMoveSet = new ArrayList<>(4);
+        this.pkMoveSet = PkMovementsDataBase.pkMovemntsSelection(pkType1, pkType2);
         this.pkStatus = null;
         this.pkEffects = new HashMap<>();
         this.pkStatsStages = new HashMap<>();
@@ -66,10 +64,10 @@ public abstract class Pokemon {
     public void setPkHp(int pkHp) {
         this.pkHp = pkHp;
     }
-    public void setPkMoveSet(ArrayList<Move> pkMoveSet) {
+    public void setPkMoveSet(ArrayList<PkMove> pkMoveSet) {
         this.pkMoveSet = pkMoveSet;
     }
-    public void addPkMove(Move pkMove){
+    public void addPkMove(PkMove pkMove){
         this.pkMoveSet.add(pkMove);
     }
     public void setPkStatus(PkStatusEnum pkStatus, int pkStatusTurnsLeft){
@@ -172,7 +170,7 @@ public abstract class Pokemon {
     public ArrayList getPkMoveSet(){
         return this.pkMoveSet;
     }
-    public Move getPkMove(int pkMovePst){
+    public PkMove getPkMove(int pkMovePst){
         try{
             return this.pkMoveSet.get(pkMovePst);
         }catch(ArrayIndexOutOfBoundsException e){
@@ -184,7 +182,7 @@ public abstract class Pokemon {
             return this.getPkNickName() + " hasn’t learned any moves";
         }
         String str = "";
-        for(Move tryMove: this.pkMoveSet){
+        for(PkMove tryMove: this.pkMoveSet){
             str += tryMove.toString();
         }
         return str;

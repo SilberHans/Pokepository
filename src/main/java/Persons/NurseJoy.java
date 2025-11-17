@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class NurseJoy extends PokemonHandler{
     private Pokemon njPokeAssistant;
-    private LocalDate njAdmissionDate;
+    private final LocalDate njAdmissionDate;
     private int njExpYears;
     private boolean njAvailability;
     
@@ -40,9 +40,6 @@ public class NurseJoy extends PokemonHandler{
 
     public void setNjPokeAssistant(Pokemon njPokeAssistant){
         this.njPokeAssistant = njPokeAssistant;
-    }
-    public void setNjAdmissionDate(LocalDate njAdmissionDate){
-        this.njAdmissionDate = njAdmissionDate;
     }
     public void setNjExpYears(LocalDate njAdmissionDate){
         this.njExpYears = Period.between(njAdmissionDate, LocalDate.now()).getYears();
@@ -93,8 +90,15 @@ public class NurseJoy extends PokemonHandler{
         return str;
     }
     @Override
-    public void genericDialogue(){
-    
+    public String genericDialogue(){
+        switch(ThreadLocalRandom.current().nextInt(5)){
+        case 0 -> {return "Welcome to the Pokémon Center. Would you like me to heal your Pokémon?";}
+            case 1 -> {return "Don't worry, your Pokémon will be good as new in just a moment.";}
+            case 2 -> {return "Okay, I'll take your Pokémon. We'll begin the treatment.";}
+            case 3 -> {return "Oh, you poor things, they look exhausted. We'll take good care of them.";}
+            case 4 -> {return "We hope to see you again soon!";}
+            default -> {return "Uhh...";}
+        }
     }  
     
     public void njHealPokemons(){

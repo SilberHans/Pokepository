@@ -1,28 +1,28 @@
 package Persons;
 
 import GameDesing.GenericDataBase;
-import Items.Item;
+import Pokemons.Logic.Items.PkItem;
+import Pokemons.Logic.Items.PkItemsDataBase;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Trader extends Person{
     private double mPriceMultiplier;
-    private ArrayList<Item> mInventory;
+    private HashMap<PkItem, Integer> mInventory;
     
     public Trader(){
         String mRndmTempRegion = GenericDataBase.getRndmPersonRegion();
         super(GenericDataBase.getRndmTraderName(),mRndmTempRegion, GenericDataBase.genRndmPersonID(2, mRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(50, 80), ThreadLocalRandom.current().nextInt(2500, 50001));
         this.mPriceMultiplier = (ThreadLocalRandom.current().nextInt(5, 21)) / 10.0;
-        this.mInventory = new ArrayList<>();
+        this.mInventory = PkItemsDataBase.mInventoryGenerator();
     }
     public Trader(double mPriceMultiplier, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
         super(pName, pID, pRegion, pBirthDate, pPokeDollars);
         this.mPriceMultiplier = mPriceMultiplier;
-        this.mInventory = new ArrayList<>();
+        this.mInventory = PkItemsDataBase.mInventoryGenerator();
     }
-    public Trader(double mPriceMultiplier, ArrayList<Item> mInventory, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+    public Trader(double mPriceMultiplier, HashMap<PkItem, Integer> mInventory, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.mPriceMultiplier = mPriceMultiplier;
         this.mInventory = mInventory;
@@ -31,31 +31,31 @@ public class Trader extends Person{
     public void setmPriceMultiplier(double mPriceMultiplier) {
         this.mPriceMultiplier = mPriceMultiplier;
     }
-    public void setmInventory(ArrayList<Item> mInventory) {
+    public void setmInventory(HashMap<PkItem, Integer> mInventory) {
         this.mInventory = mInventory;
     }
-    public void addmItem(Item mItem){
-        this.mInventory.add(mItem);
+    public void addmItem(PkItem mItem, int mStock){
+        this.mInventory.put(mItem, mStock);
     }
 
     public double getmPriceMultiplier() {
         return this.mPriceMultiplier;
     }
-    public ArrayList<Item> getmInventory() {
+    public HashMap<PkItem, Integer> getmInventory() {
         return this.mInventory;
     }
-    public Item getmItem(int mItemPst){
-        return this.mInventory.get(mItemPst);
+    public int getmItem(PkItem mItemKey){
+        return this.mInventory.get(mItemKey);
     }
     public String getmInventoryStr(){
-        String str = "";
-        for(Item tryItem: this.mInventory){
-            str += tryItem.toString();
-        } 
-        if(!str.equals("")){
-           return str; 
+        if(this.mInventory.isEmpty()){
+            return "No Items in Stock Yet...";
         }
-        return "No Items in Stock Yet...";
+        StringBuilder strBld = new StringBuilder();
+        for(HashMap.Entry<PkItem, Integer> entryItem: this.mInventory.entrySet()){
+            strBld.append("\n" + entryItem.getKey().toString() + "\nStock:\t" + entryItem.getValue());
+        } 
+        return strBld.toString();
     }
     
     @Override
@@ -64,35 +64,53 @@ public class Trader extends Person{
     } 
     
     @Override
-    public void genericDialogue() {
-    
-    }
-    
-    public String sellItem(Trainer mTrainer, int mItemPst){
-        try{
-            Item tempItem = this.getmItem(mItemPst);
-            Random rndmDialog = new Random();
-            if(tempItem.getiStock() >0){
-                mTrainer.addtItem(tempItem);
-                switch(rndmDialog.nextInt(3)){
-                    case 0 -> {return "Thanks for your purchase!";}
-                    case 1 -> {return "Much appreciated!";}
-                    case 2 -> {return "Thank you, come again!";}
-                    default -> {return "Uhh...";}
-                }
-            }
-            switch(rndmDialog.nextInt(3)){
-                case 0 -> {return "That item’s sold out.";}
-                case 1 -> {return "Out of stock...";}
-                case 2 -> {return "All sold out for now.";}
-                default -> {return "Uhh...";}
-            }
-        }catch(ArrayIndexOutOfBoundsException e){
-            return "Uhh... Sorry, I don’t carry that item";
+    public String genericDialogue() {
+        switch(ThreadLocalRandom.current().nextInt(4)){
+            case 0 -> {return "Welcome! How can I help you today?";}
+            case 1 -> {return "I've got just what you need! Take a look.";}
+            case 2 -> {return "If you have the money, I have the goods.";}
+            case 3 -> {return "Potions! Antidotes! You name it!";}
+            default -> {return "Uhh...";}
+            
         }
     }
     
-    public void genInventory(){
-        
+    public String sellItem(Trainer mTrainer, String itemName){
+        PkItem itemToSell = null;
+        for (PkItem itemInStock : this.mInventory.keySet()){
+            if (itemInStock.getItName().equals(itemName)){
+                itemToSell = itemInStock;
+                break;
+            }
+        }
+        if (itemToSell == null) {
+            return "Uhh... Sorry, I don’t carry that item";
+        }
+        int currentStock = this.mInventory.get(itemToSell);
+        if (currentStock > 0){
+            int price = (int)(itemToSell.getItPrice() * this.mPriceMultiplier);
+            try {
+                mTrainer.loseMoney(price);
+                this.earnMoney(price);
+                mTrainer.addtItem(itemToSell);
+                this.mInventory.put(itemToSell, currentStock - 1);
+
+                switch(ThreadLocalRandom.current().nextInt(3)){
+                    case 0: return "Thanks for your purchase!";
+                    case 1: return "Much appreciated!";
+                    case 2: return "Thank you, come again!";
+                    default: return "Uhh...";
+                }
+            }catch(IllegalArgumentException e){
+                return e.getMessage();
+            }
+        }else{
+            switch(ThreadLocalRandom.current().nextInt(3)){
+                case 0: return "That item’s sold out.";
+                case 1: return "Out of stock...";
+                case 2: return "All sold out for now.";
+                default: return "Uhh...";
+            }
+        }
     }
 }
