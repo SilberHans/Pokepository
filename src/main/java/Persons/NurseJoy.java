@@ -1,6 +1,6 @@
 package Persons;
 
-import GameDesing.GenericDataBase;
+import Utility.DataBase.GenericDataBase;
 import Pokemons.Chansey;
 import Pokemons.Pokemon;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package Pokemons.Logic.Movements;
+package Utility.Constants;
 
 public enum PkLogicEffectsEnum {
    // Standard Logic: Damage + 1 simple effect

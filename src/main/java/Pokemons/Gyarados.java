@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Gyarados extends Pokemon{
@@ -11,7 +11,7 @@ public class Gyarados extends Pokemon{
     
     @Override
     public String toString(){
-        return "\t-----Geodude-----" + super.toString();
+        return "\t-----Gyarados-----" + super.toString();
     }
     
     @Override

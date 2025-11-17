@@ -1,4 +1,4 @@
-package Pokemons.Logic;
+package Utility.Constants;
 
 public enum PkEffectsEnum{
     // Null Effect
@@ -79,6 +79,4 @@ public enum PkEffectsEnum{
     CureSleep,
     CureFreeze,
     CureAllStatus,
-    ReviveHalfHp,
-    ReviveFullHp
 }

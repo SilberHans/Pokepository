@@ -1,4 +1,4 @@
-package Utility;
+package Utility.Lecture;
 
 import Pokemons.Pokemon;
 import Persons.Person;

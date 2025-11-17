@@ -1,11 +1,13 @@
 package Pokemons;
 
-import Pokemons.Logic.Movements.PkMovementsDataBase;
-import Pokemons.Logic.Movements.PkMove;
-import Pokemons.Logic.PkEffectsEnum;
-import GameDesing.GenericDataBase;
+import Utility.Constants.PkStatsEnum;
+import Utility.Constants.PkTypeEnum;
+import Utility.Constants.PkStatusEnum;
+import Pokemons.Logic.Movements.Move;
+import Utility.Constants.PkEffectsEnum;
+import Utility.DataBase.GenericDataBase;
 import Pokemons.Logic.*;
-import Utility.PokemonValidations;
+import Utility.Validations.PokemonValidations;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Map;
@@ -27,8 +29,8 @@ public abstract class Pokemon {
     protected final int pkSpeed;
     protected final PkTypeEnum pkType1;
     protected final PkTypeEnum pkType2;
-    protected ArrayList<PkMove> pkMoveSet;
-    protected PkStatus pkStatus;
+    protected ArrayList<Move> pkMoveSet;
+    protected Status pkStatus;
     protected Map<PkEffectsEnum, Integer> pkEffects;
     protected Map<PkStatsEnum, Integer> pkStatsStages;   
             
@@ -46,7 +48,7 @@ public abstract class Pokemon {
         this.pkDefense = (int) (((2*pkBaseDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpecialDefense = (int) (((2*pkBaseSpecialDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpeed = (int) (((2*pkBaseSpeed + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
-        this.pkMoveSet = PkMovementsDataBase.pkMovemntsSelection(pkType1, pkType2);
+        this.pkMoveSet = PokemonValidations.pkMovemntsSelection(pkType1, pkType2);
         this.pkStatus = null;
         this.pkEffects = new HashMap<>();
         this.pkStatsStages = new HashMap<>();
@@ -64,10 +66,10 @@ public abstract class Pokemon {
     public void setPkHp(int pkHp) {
         this.pkHp = pkHp;
     }
-    public void setPkMoveSet(ArrayList<PkMove> pkMoveSet) {
+    public void setPkMoveSet(ArrayList<Move> pkMoveSet) {
         this.pkMoveSet = pkMoveSet;
     }
-    public void addPkMove(PkMove pkMove){
+    public void addPkMove(Move pkMove){
         this.pkMoveSet.add(pkMove);
     }
     public void setPkStatus(PkStatusEnum pkStatus, int pkStatusTurnsLeft){
@@ -76,7 +78,7 @@ public abstract class Pokemon {
             if((pkStatus == PkStatusEnum.Poisoned || pkStatus == PkStatusEnum.BadlyPoisoned) && (this.hasPkType(PkTypeEnum.Poison) || this.hasPkType(PkTypeEnum.Steel))){return;}
             if(pkStatus == PkStatusEnum.Paralyzed && this.hasPkType(PkTypeEnum.Electric)){return;}
             if(pkStatus == PkStatusEnum.Frozen && this.hasPkType(PkTypeEnum.Ice)){return;}
-            this.pkStatus = new PkStatus(pkStatus, pkStatusTurnsLeft);
+            this.pkStatus = new Status(pkStatus, pkStatusTurnsLeft);
         }
     }
     public void setPkEffect(PkEffectsEnum pkEffect, int pkEffectTurnsLeft){
@@ -170,7 +172,7 @@ public abstract class Pokemon {
     public ArrayList getPkMoveSet(){
         return this.pkMoveSet;
     }
-    public PkMove getPkMove(int pkMovePst){
+    public Move getPkMove(int pkMovePst){
         try{
             return this.pkMoveSet.get(pkMovePst);
         }catch(ArrayIndexOutOfBoundsException e){
@@ -182,12 +184,12 @@ public abstract class Pokemon {
             return this.getPkNickName() + " hasn’t learned any moves";
         }
         String str = "";
-        for(PkMove tryMove: this.pkMoveSet){
+        for(Move tryMove: this.pkMoveSet){
             str += tryMove.toString();
         }
         return str;
     }
-    public PkStatus getPkStatus(){
+    public Status getPkStatus(){
         if (this.pkStatus == null){
             return null;
         }
@@ -226,6 +228,29 @@ public abstract class Pokemon {
             default -> {return 1.0;}
         }
     }
+    public int getEffectivePkSpeed() {
+        int pkEffectiveSpeed = (int) (this.getPkSpeed() * getPkStatStageMultiplier(PkStatsEnum.Speed));
+        if (this.pkStatus != null && this.pkStatus.getStatus() == PkStatusEnum.Paralyzed) {
+            pkEffectiveSpeed *= 0.5;
+    }
+    return pkEffectiveSpeed;
+    }
+    public int getEffectivePkAttack() {
+        int pkEffectiveAttack = (int) (this.getPkAttack() * getPkStatStageMultiplier(PkStatsEnum.Attack));
+        return pkEffectiveAttack;
+    }
+    public int getEffectivePkDefense() {
+        int pkEffectiveDefense = (int) (this.getPkDefense() * getPkStatStageMultiplier(PkStatsEnum.Defense));
+        return pkEffectiveDefense;
+    }
+    public int getEffectivePkSpecialAttack() {
+        int pkEffectiveSpAttack = (int) (this.getPkSpecialAttack() * getPkStatStageMultiplier(PkStatsEnum.SpecialAttack));
+        return pkEffectiveSpAttack;
+    }
+    public int getEffectivePkSpecialDefense() {
+        int pkEffectiveSpDefense = (int) (this.getPkSpecialDefense() * getPkStatStageMultiplier(PkStatsEnum.SpecialDefense));
+        return pkEffectiveSpDefense;
+    }
             
     @Override
     public String toString(){
@@ -249,9 +274,11 @@ public abstract class Pokemon {
     
     public void pkUpdateStatus(){
         if(this.pkStatus == null){return;}
-        this.pkStatus.decreasePkStatusTurnsLeft();
-        if(this.pkStatus.getPkStatusTurnsLeft() == 0){
-            this.pkStatus = null;
+        this.pkStatus.updateStatusCounter();
+        if (this.pkStatus.getStatus() == PkStatusEnum.Asleep || this.pkStatus.getStatus() == PkStatusEnum.Frozen){
+            if(this.pkStatus.getStatusCounter() == 0){
+                this.pkStatus = null;
+            }
         }
     }
     

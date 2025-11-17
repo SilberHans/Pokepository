@@ -1,22 +1,81 @@
-package Pokemons.Logic.Items;
+package Utility.Validations;
 
-import Pokemons.Logic.PkEffectsEnum;
+import Pokemons.Logic.Items.Item;
+import Pokemons.Pokemon;
+import Utility.Constants.PkEffectsEnum;
+import Utility.Constants.TMedalsEnum;
+import Utility.DataBase.ItemsDataBase;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public final class PkItemsDataBase {
-    private PkItemsDataBase(){}
+public final class PersonValidations {
+    private PersonValidations(){}
     
-    private final static List<PkItem> pkItemsList = List.of();
+    public static String valpName(String pName){
+        if(pName == null){
+            throw new IllegalArgumentException("Name cannot be empty...");
+        }
+        if(pName.isBlank()){
+            throw new IllegalArgumentException("Name cannot be empty...");
+        }
+        if(!pName.matches("[A-Z a-z]+")){
+            throw new IllegalArgumentException("Name can only contain letters...");
+        }
+        if(pName.length() > 20){
+            throw new IllegalArgumentException("Please choose a shorter Name...");
+        }
+        return pName;
+    }
     
-    public static HashMap<PkItem, Integer> mInventoryGenerator(){
-        ArrayList<PkItem> pkItems = new ArrayList<>();
-        ArrayList<PkItem> pkHealingItems = new ArrayList<>();
-        ArrayList<PkItem> pkStatusItems = new ArrayList<>();
-        ArrayList<PkItem> pkBattleItems = new ArrayList<>();
-        for(PkItem tryItem: pkItemsList){
+    public static LocalDate valpBirthDate(LocalDate pBirthDate){
+        if(pBirthDate == null){
+            throw new IllegalArgumentException("BirthDate cannot be empty...");
+        }
+        return pBirthDate;
+    }
+    
+    public static LocalDate valpBirthDateStr(String pBirthDateStr){
+        if(pBirthDateStr == null){
+            throw new IllegalArgumentException("BirthDate cannot be empty...");
+        }
+        if(pBirthDateStr.equals("")){
+            throw new IllegalArgumentException("Birth Date cannot be empty...");
+        }
+        try{
+            LocalDate pBirthDate = LocalDate.parse(pBirthDateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            if(pBirthDate.isAfter(LocalDate.now())){
+                throw new IllegalArgumentException("Birth Date cannot be after today's date...");    
+            }
+            return pBirthDate;
+        }catch(DateTimeParseException e){
+            throw new IllegalArgumentException("Invalid date format...");    
+        }
+    }
+    
+    public static int valMoney(int pMoney){
+        if(pMoney < 0){
+            throw new IllegalArgumentException("You dont have ebough Money for that...");
+        }
+        return pMoney;
+    }
+    
+    public static ArrayList<TMedalsEnum> gentMedalsList(){
+        ArrayList<TMedalsEnum> tMedalsList = new ArrayList<>();
+        tMedalsList.addAll(Arrays.asList(TMedalsEnum.values()));
+        return tMedalsList;
+    }
+    
+    public static HashMap<Item, Integer> mInventoryGenerator(){
+        ArrayList<Item> pkItems = new ArrayList<>();
+        ArrayList<Item> pkHealingItems = new ArrayList<>();
+        ArrayList<Item> pkStatusItems = new ArrayList<>();
+        ArrayList<Item> pkBattleItems = new ArrayList<>();
+        for(Item tryItem: ItemsDataBase.pkItemsList){
             if(tryItem.getItEffect() == PkEffectsEnum.HealFixedAmount || tryItem.getItEffect() == PkEffectsEnum.HealPercentage){
                 pkHealingItems.add(tryItem);
             }
@@ -120,34 +179,10 @@ public final class PkItemsDataBase {
             }
             default -> {return null;}
         }
-        HashMap<PkItem, Integer> pkItemsMap = new HashMap<>();
-        for(PkItem tryItem: pkItems){
+        HashMap<Item, Integer> pkItemsMap = new HashMap<>();
+        for(Item tryItem: pkItems){
             pkItemsMap.put(tryItem, (Integer) ThreadLocalRandom.current().nextInt(1, 5));
         }
         return pkItemsMap;
-    }
-    
-    static {
-        // --- HP Healing Items ---
-        pkItemsList.add(new PkItem("Potion", 300, PkEffectsEnum.HealFixedAmount, 20));
-        pkItemsList.add(new PkItem("Super Potion", 700, PkEffectsEnum.HealFixedAmount, 60));
-        pkItemsList.add(new PkItem("Hyper Potion", 1200, PkEffectsEnum.HealFixedAmount, 120));
-        pkItemsList.add(new PkItem("Max Potion", 2500, PkEffectsEnum.HealPercentage, 100));
-        
-        // --- Status (PkStatus) Healing Items ---
-        pkItemsList.add(new PkItem("Antidote", 100, PkEffectsEnum.CurePoison, 0));
-        pkItemsList.add(new PkItem("Paralyze Heal", 200, PkEffectsEnum.CureParalysis, 0));
-        pkItemsList.add(new PkItem("Awakening", 250, PkEffectsEnum.CureSleep, 0));
-        pkItemsList.add(new PkItem("Burn Heal", 250, PkEffectsEnum.CureBurn, 0));
-        pkItemsList.add(new PkItem("Ice Heal", 250, PkEffectsEnum.CureFreeze, 0));
-        pkItemsList.add(new PkItem("Full Heal", 600, PkEffectsEnum.CureAllStatus, 0));
-
-        // --- Battle (Buff) Items ---
-        pkItemsList.add(new PkItem("X Attack", 500, PkEffectsEnum.AttackUp2, 0));
-        pkItemsList.add(new PkItem("X Defense", 550, PkEffectsEnum.DefenseUp2, 0));
-        pkItemsList.add(new PkItem("X Speed", 350, PkEffectsEnum.SpeedUp2, 0));
-        pkItemsList.add(new PkItem("X Sp. Atk", 350, PkEffectsEnum.SpecialAttackUp2, 0));
-        pkItemsList.add(new PkItem("X Sp. Def", 350, PkEffectsEnum.SpecialDefenseUp2, 0));
-        pkItemsList.add(new PkItem("X Accuracy", 950, PkEffectsEnum.AccuracyUp1, 0));
     }
 }

@@ -1,5 +1,5 @@
-package Utility;
+package Utility.Constants;
 
-public enum MedalsEnum {
+public enum TMedalsEnum {
     BugBadge, GrassBadge, ElectricBadge, WaterBadge, NormalBadge, GhostBadge, PsychicBadge, IceBadge
 }

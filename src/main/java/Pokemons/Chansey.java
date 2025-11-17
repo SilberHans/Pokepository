@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Chansey extends Pokemon{

@@ -1,14 +1,14 @@
 package Pokemons.Logic.Items;
 
-import Pokemons.Logic.PkEffectsEnum;
+import Utility.Constants.PkEffectsEnum;
 
-public class PkItem {
+public class Item {
     private final String itName;
     private final int itPrice;
     private final PkEffectsEnum itEffect;
     private final int itEffectValue;
 
-    public PkItem(String itName, int itPrice, PkEffectsEnum itEffect, int itEffectValue){
+    public Item(String itName, int itPrice, PkEffectsEnum itEffect, int itEffectValue){
         this.itName = itName;
         this.itPrice = itPrice;
         this.itEffect = itEffect;

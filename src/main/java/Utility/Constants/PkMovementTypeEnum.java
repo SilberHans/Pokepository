@@ -1,4 +1,4 @@
-package Pokemons.Logic.Movements;
+package Utility.Constants;
 
 public enum PkMovementTypeEnum{
     Physical, Special, Status

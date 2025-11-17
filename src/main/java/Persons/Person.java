@@ -1,7 +1,7 @@
 package Persons;
 
 import Iinterfaces.MoneyHandler;
-import Utility.PersonValidations;
+import Utility.Validations.PersonValidations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;

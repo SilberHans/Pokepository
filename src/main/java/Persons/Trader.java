@@ -1,28 +1,28 @@
 package Persons;
 
-import GameDesing.GenericDataBase;
-import Pokemons.Logic.Items.PkItem;
-import Pokemons.Logic.Items.PkItemsDataBase;
+import Utility.DataBase.GenericDataBase;
+import Pokemons.Logic.Items.Item;
+import Utility.Validations.PersonValidations;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Trader extends Person{
     private double mPriceMultiplier;
-    private HashMap<PkItem, Integer> mInventory;
+    private HashMap<Item, Integer> mInventory;
     
     public Trader(){
         String mRndmTempRegion = GenericDataBase.getRndmPersonRegion();
         super(GenericDataBase.getRndmTraderName(),mRndmTempRegion, GenericDataBase.genRndmPersonID(2, mRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(50, 80), ThreadLocalRandom.current().nextInt(2500, 50001));
         this.mPriceMultiplier = (ThreadLocalRandom.current().nextInt(5, 21)) / 10.0;
-        this.mInventory = PkItemsDataBase.mInventoryGenerator();
+        this.mInventory = PersonValidations.mInventoryGenerator();
     }
     public Trader(double mPriceMultiplier, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
         super(pName, pID, pRegion, pBirthDate, pPokeDollars);
         this.mPriceMultiplier = mPriceMultiplier;
-        this.mInventory = PkItemsDataBase.mInventoryGenerator();
+        this.mInventory = PersonValidations.mInventoryGenerator();
     }
-    public Trader(double mPriceMultiplier, HashMap<PkItem, Integer> mInventory, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
+    public Trader(double mPriceMultiplier, HashMap<Item, Integer> mInventory, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);
         this.mPriceMultiplier = mPriceMultiplier;
         this.mInventory = mInventory;
@@ -31,20 +31,20 @@ public class Trader extends Person{
     public void setmPriceMultiplier(double mPriceMultiplier) {
         this.mPriceMultiplier = mPriceMultiplier;
     }
-    public void setmInventory(HashMap<PkItem, Integer> mInventory) {
+    public void setmInventory(HashMap<Item, Integer> mInventory) {
         this.mInventory = mInventory;
     }
-    public void addmItem(PkItem mItem, int mStock){
+    public void addmItem(Item mItem, int mStock){
         this.mInventory.put(mItem, mStock);
     }
 
     public double getmPriceMultiplier() {
         return this.mPriceMultiplier;
     }
-    public HashMap<PkItem, Integer> getmInventory() {
+    public HashMap<Item, Integer> getmInventory() {
         return this.mInventory;
     }
-    public int getmItem(PkItem mItemKey){
+    public int getmItem(Item mItemKey){
         return this.mInventory.get(mItemKey);
     }
     public String getmInventoryStr(){
@@ -52,7 +52,7 @@ public class Trader extends Person{
             return "No Items in Stock Yet...";
         }
         StringBuilder strBld = new StringBuilder();
-        for(HashMap.Entry<PkItem, Integer> entryItem: this.mInventory.entrySet()){
+        for(HashMap.Entry<Item, Integer> entryItem: this.mInventory.entrySet()){
             strBld.append("\n" + entryItem.getKey().toString() + "\nStock:\t" + entryItem.getValue());
         } 
         return strBld.toString();
@@ -76,8 +76,8 @@ public class Trader extends Person{
     }
     
     public String sellItem(Trainer mTrainer, String itemName){
-        PkItem itemToSell = null;
-        for (PkItem itemInStock : this.mInventory.keySet()){
+        Item itemToSell = null;
+        for (Item itemInStock : this.mInventory.keySet()){
             if (itemInStock.getItName().equals(itemName)){
                 itemToSell = itemInStock;
                 break;

@@ -1,9 +1,11 @@
 package Pokemons.Logic.Movements;
 
-import Pokemons.Logic.PkEffectsEnum;
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkMovementTypeEnum;
+import Utility.Constants.PkLogicEffectsEnum;
+import Utility.Constants.PkEffectsEnum;
+import Utility.Constants.PkTypeEnum;
 
-public class PkMove{
+public class Move{
     private final String mvName;
     private final PkMovementTypeEnum mvType;
     private final PkTypeEnum mvPkType;
@@ -11,8 +13,9 @@ public class PkMove{
     private final PkEffectsEnum mvPkEffect;
     private final int mvPkEffectChance;
     private final PkLogicEffectsEnum mvPkLogicEffect;
+    private final int mvAccuracy;
 
-    public PkMove(String mvName, PkMovementTypeEnum mvType, PkTypeEnum mvPkType, int mvPower, PkEffectsEnum mvPkEffect, int mvPkEffectChance, PkLogicEffectsEnum mvPkLogicEffect) {
+    public Move(String mvName, PkMovementTypeEnum mvType, PkTypeEnum mvPkType, int mvPower, PkEffectsEnum mvPkEffect, int mvPkEffectChance, PkLogicEffectsEnum mvPkLogicEffect, int mvAccuracy) {
         this.mvName = mvName;
         this.mvType = mvType;
         this.mvPkType = mvPkType;
@@ -20,6 +23,7 @@ public class PkMove{
         this.mvPkEffect = mvPkEffect;
         this.mvPkEffectChance = mvPkEffectChance;
         this.mvPkLogicEffect = mvPkLogicEffect;
+        this.mvAccuracy = mvAccuracy;
     } 
 
     public String getMvName() {
@@ -43,9 +47,12 @@ public class PkMove{
     public PkLogicEffectsEnum getMvPkLogicEffect(){
         return this.mvPkLogicEffect;
     }
+    public int getMvAccuracy(){
+        return this.mvAccuracy;
+    }
 
     @Override
     public String toString() {
-        return "Name:\t\t" + this.getMvName() + "\nType:\t\t" + this.getMvType() + "\nPokemon Type:\t" + this.getMvPkType() + "\nPower:\t\t" + this.getMvPower() + "\nEffect:\t\t" + this.getMvPkEffect() + "\nEffect Chance:\t" + this.getMvPkEffectChance() + "\nLogic Effect:\t" + this.getMvPkLogicEffect();
+        return "Name:\t\t" + this.getMvName() + "\nType:\t\t" + this.getMvType() + "\nPokemon Type:\t" + this.getMvPkType() + "\nPower:\t\t" + this.getMvPower() + "\nEffect:\t\t" + this.getMvPkEffect() + "\nEffect Chance:\t" + this.getMvPkEffectChance() + "\nLogic Effect:\t" + this.getMvPkLogicEffect() + "\nAccuracy:\t" + this.getMvAccuracy();
     }
 }
