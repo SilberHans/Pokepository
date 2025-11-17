@@ -301,7 +301,8 @@ public abstract class Pokemon {
     private String animationType = "none";
     private int animationCounter = 0;
     private int animationState = 0; // Para animaciones multiples
-    
+    private int currentDrawSize = BATTLE_SPRITE_SIZE; // NUEVO: Tamaño actual para escalar
+    private final int MAX_GROWTH=40;
     
     public void setDefaultBattlePosition(int x, int y) {
         this.x = x;
@@ -322,6 +323,11 @@ public abstract class Pokemon {
         this.animationCounter = 0;
         this.animationState = 0;
         this.isVisible = true;
+        
+        
+        this.x = this.defaultX;
+        this.y = this.defaultY;
+        this.currentDrawSize = BATTLE_SPRITE_SIZE;
     }
 
     //DIBUJA SEGUN SI ES EL 1 O ES EL 2
@@ -401,6 +407,35 @@ public abstract class Pokemon {
                         break;
                 }
                 break;
+            case "item":
+                int animSpeed = 30; // 30 frames total (15 crecer, 15 encoger)
+                int growthAmount;
+
+                if (animationCounter <= 15) { // Creciendo (frames 0-15)
+                    // Progresión de 0.0 a 1.0
+                    double progress = (double) animationCounter / 15.0; 
+                    growthAmount = (int) (MAX_GROWTH * progress);
+                } else { // Encogiendo (frames 16-30)
+                    // Progresión de 1.0 a 0.0
+                    double progress = (double) (animationCounter - 15) / 15.0; 
+                    growthAmount = (int) (MAX_GROWTH * (1.0 - progress));
+                }
+
+                // Aplicar tamaño y posición
+                currentDrawSize = BATTLE_SPRITE_SIZE + growthAmount;
+                x = defaultX - (growthAmount / 2); // Ajustar X para centrar
+                y = defaultY - growthAmount;       // Ajustar Y para mantener el suelo
+                
+                // Fin de la animación
+                if (animationCounter > animSpeed) {
+                    isAnimating = false;
+                    animationType = "none";
+                    x = defaultX;
+                    y = defaultY;
+                    currentDrawSize = BATTLE_SPRITE_SIZE;
+                }
+                break;
+            // --- FIN DE NUEVO CÓDIGO ---
         }
     }  
 }
