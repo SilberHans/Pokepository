@@ -1,23 +1,19 @@
 package Persons;
 
 import Pokemons.Pokemon;
-import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.awt.image.BufferedImage;
 
 public abstract class PokemonHandler extends Person{
     ArrayList<Pokemon> phPokeList;
-
-
     
     public PokemonHandler(){
         super();
-        this.phPokeList = new ArrayList<>();
+        phPokeList = new ArrayList<>();
     }
     public PokemonHandler(String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars){
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);
-        this.phPokeList = new ArrayList<>();
+        phPokeList = new ArrayList<>();
     }
     public PokemonHandler(ArrayList<Pokemon> phPokeList, String pName, String pRegion, String pID, LocalDate pBirthDate, int pPokeDollars) {
         super(pName, pRegion, pID, pBirthDate, pPokeDollars);

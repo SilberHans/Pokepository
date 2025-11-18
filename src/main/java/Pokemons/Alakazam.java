@@ -1,10 +1,8 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Alakazam extends Pokemon{

@@ -1,9 +1,9 @@
 package GameDesing.Graphics;
 
 import GameDesing.Game;
-import Items.Item;
 import Persons.Trader;
 import Persons.Trainer;
+import Pokemons.Logic.Items.Item;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -131,31 +131,57 @@ public class TraderPanel extends JPanel implements Runnable {
         }
 
         // LOGICA DE ENTER
+        // En TraderPanel.java
+
         if (keyH.enterPressed) {
+            // 1. Obtenemos el NOMBRE del item seleccionado (esto está correcto)
             String selectedItemName = itemNames[selectedOption];
-            Item selectedItemNames = trader.getmInventory().get(selectedOption);
-            
+
+            // 2. ELIMINA esta línea rota:
+            // Item selectedItemNames = trader.getmInventory().get(selectedOption);
+
+            // 3. Llama al método de lógica del Trader y obtén la respuesta
+            String resultMessage = "";
+
             if (gameState == t1State) {
                 if (t1ItemIndex < trainer1Items.length) {
-                    trainer1Items[t1ItemIndex] = selectedItemName;
-                    trainer1.addtItem(selectedItemNames);
-                    t1ItemIndex++;
-                    traderDialog = "¡"+trainer1.getpName()+ " compró " + selectedItemName + "!";
-                    
-                    // Si T1 terminó, pasa a T2
+                    // Llama al método de lógica para que él haga la transacción
+                    resultMessage = trader.sellItem(trainer1, selectedItemName);
+                    traderDialog = resultMessage; // Muestra el resultado (¡Éxito! o ¡Sin dinero!)
+
+                    // Revisamos si la compra fue exitosa para actualizar el contador gráfico
+                    boolean purchaseSuccess = resultMessage.startsWith("Thanks") || 
+                                              resultMessage.startsWith("Much") || 
+                                              resultMessage.startsWith("Thank you");
+
+                    if (purchaseSuccess) {
+                        trainer1Items[t1ItemIndex] = selectedItemName; // Actualiza la lista gráfica
+                        t1ItemIndex++;
+                    }
+
+                    // Si T1 terminó de comprar, pasa a T2
                     if (t1ItemIndex == trainer1Items.length) {
                         gameState = t2State;
-                        traderDialog = "¡Turno de " + trainer2.getpName()+ "! ¿Tú qué quieres?";
+                        traderDialog = "¡Turno de " + trainer2.getpName() + "! ¿Tú qué quieres?";
                     }
                 }
             } 
             else if (gameState == t2State) {
                 if (t2ItemIndex < trainer2Items.length) {
-                    trainer2Items[t2ItemIndex] = selectedItemName;
-                    trainer2.addtItem(selectedItemNames);
-                    t2ItemIndex++;
-                    traderDialog ="¡"+trainer2.getpName()+ " compró " + selectedItemName + "!";
-                    
+                    // Llama al método de lógica para que él haga la transacción
+                    resultMessage = trader.sellItem(trainer2, selectedItemName);
+                    traderDialog = resultMessage; // Muestra el resultado
+
+                    // Revisamos si la compra fue exitosa
+                    boolean purchaseSuccess = resultMessage.startsWith("Thanks") || 
+                                              resultMessage.startsWith("Much") || 
+                                              resultMessage.startsWith("Thank you");
+
+                    if (purchaseSuccess) {
+                        trainer2Items[t2ItemIndex] = selectedItemName; // Actualiza la lista gráfica
+                        t2ItemIndex++;
+                    }
+
                     // Si T2 terminó, la compra finaliza
                     if (t2ItemIndex == trainer2Items.length) {
                         gameState = infoState; // Un estado "finalizado"
@@ -163,11 +189,15 @@ public class TraderPanel extends JPanel implements Runnable {
                         battleReady = true;
                         battleStartTime = System.currentTimeMillis();
                         System.out.println("¡Ambos equipos completos! Iniciando batalla en 3 segundos...");
-                        startBattleTransition();
+
+                        // (OJO: Tu código original llamaba a startBattleTransition() aquí, 
+                        // pero también en el 'update()'. Asegúrate de llamarlo solo una vez)
+
+                        // Llama a la transición aquí directamente si ya no lo haces en update()
+                        startBattleTransition(); 
                     }
                 }
             }
-            
             keyH.enterPressed = false;
         }
     }

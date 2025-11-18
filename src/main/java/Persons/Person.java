@@ -1,13 +1,12 @@
 package Persons;
 
-import Iinterfaces.MoneyHandler; // Importar la interfaz
-import Utility.PersonValidations;
+import Iinterfaces.MoneyHandler;
+import Utility.Validations.PersonValidations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-// Añadir 'implements MoneyHandler'
-public abstract class Person implements MoneyHandler {
+public abstract class Person implements MoneyHandler{
     private String pName;
     private final String pRegion;
     private final String pID;
@@ -41,8 +40,6 @@ public abstract class Person implements MoneyHandler {
     public void setpAge(LocalDate pBirthDate){
         this.pAge = Period.between(pBirthDate, LocalDate.now()).getYears();
     }
-    
-    // Implementación de setpPokeDollars (ya existía, pero ahora es parte de la interfaz)
     public void setpPokeDollars(int pPokeDollars){
         this.pPokeDollars = pPokeDollars;
     }
@@ -65,8 +62,6 @@ public abstract class Person implements MoneyHandler {
     public int getpAge(){
         return this.pAge;
     }
-    
-    // Implementación de getpPokeDollars (ya existía, pero ahora es parte de la interfaz)
     public int getpPokeDollars(){
         return this.pPokeDollars;
     }
@@ -76,51 +71,14 @@ public abstract class Person implements MoneyHandler {
         return "\nName:\t\t\t" + this.getpName() + "\nRegion:\t\t\t" + this.getpRegion() + "\nID:\t\t\t" + this.getpID() + "\nBirth Date:\t\t" + this.getpBirthDateStr() + "\nAge:\t\t\t" + this.getpAge() + "\nPokeDollars:\t\t" + this.getpPokeDollars();
     }
     
-    public abstract void genericDialogue();
-
-    // --- MÉTODOS DE MONEYHANDLER IMPLEMENTADOS ---
+    public abstract String genericDialogue();
     
-    /**
-     * Añade dinero al total del entrenador.
-     * @param amount La cantidad a ganar.
-     */
     @Override
-    public void earnMoney(int amount) {
-        if (amount > 0) {
-            this.pPokeDollars += amount;
-        }
+    public void earnMoney(int earnedMoney){
+        this.setpPokeDollars(this.getpPokeDollars() + earnedMoney);
     }
-
-    /**
-     * Resta dinero del total del entrenador. No permite que baje de 0.
-     * @param amount La cantidad a perder.
-     */
     @Override
-    public void loseMoney(int amount) {
-        if (amount > 0) {
-            this.pPokeDollars -= amount;
-            if (this.pPokeDollars < 0) {
-                this.pPokeDollars = 0;
-            }
-        }
-    }
-    
-    /**
-     * (Implementado por compatibilidad de interfaz)
-     * Reemplazado por setpPokeDollars(int amount)
-     */
-    @Override
-    public void setMoney(int amount) {
-        this.setpPokeDollars(amount);
-    }
-
-    /**
-     * (Implementado por compatibilidad de interfaz)
-     * Reemplazado por getpPokeDollars()
-     */
-    @Override
-    public void getMoney(int amount) {
-        // Este método en la interfaz parece estar mal definido (debería ser getMoney() y retornar int)
-        // Lo implementamos vacío y usamos getpPokeDollars() en su lugar.
+    public void loseMoney(int loosedMoney){
+        this.setpPokeDollars(PersonValidations.valMoney(this.getpPokeDollars() - loosedMoney));
     }
 }

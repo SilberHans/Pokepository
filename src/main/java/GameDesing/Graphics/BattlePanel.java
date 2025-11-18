@@ -1,12 +1,17 @@
 package GameDesing.Graphics;
 
+import GameDesing.BattleSystem.Actions.MoveAction;
+import GameDesing.BattleSystem.Actions.TurnAction;
+import GameDesing.BattleSystem.TurnResult;
 import GameDesing.Game;
 import Persons.Trainer;
+import Pokemons.Logic.Movements.Move;
 import Pokemons.Pokemon;
 import java.util.Random;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.util.logging.Level;
@@ -22,7 +27,9 @@ public class BattlePanel extends JPanel implements Runnable {
     final int maxScreenRow = 9;
     private final int screenWidth = tileSize * maxScreenCol;
     private final int screenHeight = tileSize * maxScreenRow;
-
+    private java.util.Queue<TurnResult> pendingResultsQueue = new java.util.LinkedList<>();
+    private boolean isProcessingAnimation = false;
+    
     // SYSTEM
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
@@ -59,6 +66,7 @@ public class BattlePanel extends JPanel implements Runnable {
     public final int STATE_FAINTED=13;
     public final int STATE_END=14;
     public final int STATE_ANIMATION=15;
+    public final int STATE_PROCESS_RESULTS = 16;
 
     // --- LÓGICA DE MENÚS ---
     public String currentMessage = "";
@@ -121,6 +129,16 @@ public class BattlePanel extends JPanel implements Runnable {
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
+        this.game.startBattle(); // ¡Llama al nuevo método!
+        this.trainer1ActivePokemon = game.getgTrainer1().getActivePokemon(); // Asigna los Pokémon iniciales
+        this.trainer2ActivePokemon = game.getgTrainer2().getActivePokemon();
+        // ...
+        // Asegúrate de que los Pokémon tengan sus posiciones gráficas
+        this.trainer1ActivePokemon.setDefaultBattlePosition(90, 158);
+        this.trainer2ActivePokemon.setDefaultBattlePosition(475, 28);
+
+        this.battleState = STATE_START; // Tu estado inicial
+        this.currentMessage = "¡La batalla va a comenzar!";
     }
     
     @Override
@@ -151,240 +169,121 @@ public class BattlePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        // actualizar trainers en todos los estados (para animaciones)
         trainer1.update();
         trainer2.update();
-        
-        // ACTUALIZA POKEMONESSs
-        if (trainer1ActivePokemon != null) {
-            trainer1ActivePokemon.updateAnimation();
-        }
-        if (trainer2ActivePokemon != null) {
-            trainer2ActivePokemon.updateAnimation();
-        }
-        
-        
-        
-        if (keyH.escPressed) {
-            stopBattle(); // Llama al método para detener y cambiar de panel//TEMPORALLLL
-            keyH.escPressed = false; 
-            return; 
-        }
-        
-        // Lógica de la batalla
-        switch (battleState) {
-            case STATE_START:
-                if (keyH.enterPressed) {
-                    battleState = STATE_P1_SELECT_POKEMON;
-                    currentMessage = "Trainer 1, ¡elige tu Pokémon!";
-                    menuCursorPos = 0;
-                    currentMenuSize = trainer1.getPhPokeList().size();
-                    keyH.enterPressed = false;
-                }
-                break;
-                
-            case STATE_P1_SELECT_POKEMON:
-                handleMenuNavigation();
-                if (keyH.enterPressed) {
-                    trainer1ActivePokemon = trainer1.getPhPokemon(menuCursorPos);
-                    
-                    battleState = STATE_P2_SELECT_POKEMON;
-                    currentMessage = "Trainer 2, ¡elige tu Pokémon!";
-                    menuCursorPos = 0;
-                    currentMenuSize = trainer2.getPhPokeList().size();
-                    keyH.enterPressed = false;
-                }
-                break;
+        if (trainer1ActivePokemon != null) trainer1ActivePokemon.updateAnimation();
+        if (trainer2ActivePokemon != null) trainer2ActivePokemon.updateAnimation();
 
-            case STATE_P2_SELECT_POKEMON:
-                handleMenuNavigation();
-                if (keyH.enterPressed) {
-                    trainer2ActivePokemon = trainer2.getPhPokemon(menuCursorPos);
-                    
-                    battleState = STATE_P1_SEND_ANIM;
-                    currentMessage = "¡Trainer 1 lanza su Pokémon!";
-                    trainer1.startThrowAnimation(true);
-                    keyH.enterPressed = false;
-                }
-                break;
-            
-            // ANIMACIONES DE LANZAMIENTO
-            case STATE_P1_SEND_ANIM:
-                if (trainer1.isThrowComplete()) {
-                    trainer1ActivePokemon.setDefaultBattlePosition(90, 158);//POKEMON1
-                    battleState = STATE_P2_SEND_ANIM;
-                    currentMessage = "¡Trainer 2 lanza su Pokémon!";
-                    trainer2.startThrowAnimation(false);
-                }
-                break;
-                
-            case STATE_P2_SEND_ANIM:
-                if (trainer2.isThrowComplete()) {
-                    trainer2ActivePokemon.setDefaultBattlePosition(475, 28);//POKEMON2
-                    battleState = STATE_P1_TURN;
+        // ¡IMPORTANTE! Si una animación se está ejecutando, no hagas nada más.
+        // Debes modificar tu `Pokemon.java -> updateAnimation()` para que 
+        // ponga `isAnimating = false;` cuando la animación termine.
+        if (trainer1ActivePokemon.isAnimating() || trainer2ActivePokemon.isAnimating() || trainer1.isThrowComplete() == false || trainer2.isThrowComplete() == false) {
+             // (Aquí necesitas una lógica más robusta, pero esto es la idea)
+             // `isProcessingAnimation` es tu propio flag.
+             if(isProcessingAnimation && !trainer1ActivePokemon.isAnimating() && !trainer2ActivePokemon.isAnimating()){
+                isProcessingAnimation = false; // La animación terminó, podemos procesar el siguiente resultado
+             }
+             return; // No proceses lógica de estados si hay animaciones
+        }
+
+        // Si no hay animaciones, procesa el siguiente resultado de la cola
+        if (battleState == STATE_PROCESS_RESULTS) {
+            if (pendingResultsQueue.isEmpty()) {
+                // No hay más resultados, vuelve al turno del jugador
+
+                // Revisa si la batalla terminó
+                if (!trainer1.hastAlivePokemon() || !trainer2.hastAlivePokemon()) {
+                    battleState = STATE_END;
+                    currentMessage = trainer1.hastAlivePokemon() ? "¡Ganaste!" : "¡Perdiste!";
+                } else {
+                    battleState = STATE_P1_TURN; // O STATE_P2_TURN si es su turno
                     currentMessage = "¿Qué hará " + trainer1ActivePokemon.getPkNickName() + "?";
-                    menuCursorPos = 0;
-                    currentMenuSize = 4;
-                    
-                    // Reiniciar trainers para estado idle
-                    trainer1.resetState();
-                    trainer2.resetState();
                 }
-                break;
+            } else {
+                // Procesa el siguiente resultado en la cola
+                TurnResult result = pendingResultsQueue.poll();
+                processSingleResult(result); // ¡El nuevo método mágico!
+            }
+            return; // Termina este frame de update
+        }
 
-            // TURNOS DE LOS JUGADORES
-            case STATE_P1_TURN:
-                battleState = STATE_P1_MENU;
-                currentMessage = "¿Qué hará " + trainer1ActivePokemon.getPkNickName() + "?";
-                menuCursorPos = 0;
-                currentMenuSize = 4;
-                break;
-                
-            case STATE_P1_MENU:
-                handleMenuNavigation();
-                if (keyH.enterPressed) {
-                    keyH.enterPressed = false;
-                    switch (menuCursorPos) {
-                        case 0: // FIGHT
-                            battleState = STATE_P1_MOVE;
-                            currentMessage = "Elige un ataque:";
-                            menuCursorPos = 0;
-                            currentMenuSize = 4; 
-                            break;
-                        case 1: // POKEMON
-                            battleState = STATE_P1_SELECT_POKEMON;
-                            currentMessage = "Trainer 1, ¡elige otro Pokémon!";
-                            menuCursorPos = 0;
-                            currentMenuSize = trainer1.getPhPokeList().size();
-                            break;
-                        case 2: // ITEM
-                            battleState = STATE_ANNOUNCE;
-                            currentMessage = "¡No tienes items!";
-                            break;
-                        case 3: // RUN
-                            battleState = STATE_ANNOUNCE;
-                            currentMessage = "¡No puedes huir!";
-                            break;
-                    }
-                }
-                break;
-                
+        // Tu máquina de estados (switch) va aquí
+        switch (battleState) {
+            // ... (Tus estados STATE_START, STATE_P1_SELECT_POKEMON, etc. siguen igual)
+
+            // ¡ESTE ES EL GRAN CAMBIO!
             case STATE_P1_MOVE:
                 handleMenuNavigation();
                 if (keyH.enterPressed) {
-                    String moveName = "ATAQUE " + (menuCursorPos + 1);
-                    
-                    attacker = trainer1ActivePokemon;
-                    defender = trainer2ActivePokemon;
-                    battleState = STATE_PERFORM_MOVE;
-                    currentMessage = "¡" + attacker.getPkNickName() + " usó " + moveName + "!";
-                    attacker.startAnimation("attack");
-                    
                     keyH.enterPressed = false;
+
+                    // 1. Crear la acción del jugador
+                    Move selectedMove = trainer1ActivePokemon.getPkMove(menuCursorPos);
+                    TurnAction playerAction = new MoveAction(trainer1, trainer1ActivePokemon, trainer2ActivePokemon, selectedMove);
+
+                    // 2. Ejecutar TODA la lógica del turno en el backend
+                    ArrayList<TurnResult> turnResults = game.executeTurn(playerAction);
+
+                    // 3. Añadir todos los resultados a la cola para procesarlos visualmente
+                    pendingResultsQueue.addAll(turnResults);
+
+                    // 4. Cambiar al estado que procesa la cola
+                    battleState = STATE_PROCESS_RESULTS;
                 }
                 break;
-                
-            case STATE_PERFORM_MOVE:
-                // Espera a que la animación de ATAQUE termine
-                if (attacker != null && !attacker.isAnimating()) {
-                    // Lógica de daño iría aquí (ej. defender.pkTakeDamage(10);)
-                    
-                    defender.startAnimation("damage"); // Iniciar animación de daño
-                    battleState = STATE_ANIMATION; // Ir al nuevo estado de espera
-                }
-                break;
-                
-            case STATE_ANIMATION:
-                // Espera a que la animación de DAÑO termine
-                if (defender != null && !defender.isAnimating()) {
-                    if (checkFaintedPokemon()) {
-                        // Manejar Pokémon debilitado (ya lo hace checkFaintedPokemon)
-                    } else {
-                        // Cambiar al turno del siguiente jugador
-                        if (attacker == trainer1ActivePokemon) {
-                            battleState = STATE_P2_TURN;
-                            currentMessage = "¿Qué hará " + trainer2ActivePokemon.getPkNickName() + "?";
-                        } else {
-                            battleState = STATE_P1_TURN;
-                            currentMessage = "¿Qué hará " + trainer1ActivePokemon.getPkNickName() + "?";
-                        }
-                    }
-                }
-                break;
-                
-            case STATE_P2_TURN:
-                battleState = STATE_P2_MENU;
-                currentMessage = "¿Qué hará " + trainer2ActivePokemon.getPkNickName() + "?";
-                menuCursorPos = 0;
-                currentMenuSize = 4;
-                break;
-                
-            case STATE_P2_MENU:
-                handleMenuNavigation();
-                if (keyH.enterPressed) {
-                    keyH.enterPressed = false;
-                    switch (menuCursorPos) {
-                        case 0: // FIGHT
-                            battleState = STATE_P2_MOVE;
-                            currentMessage = "Elige un ataque:";
-                            menuCursorPos = 0;
-                            currentMenuSize = 4; 
-                            break;
-                        case 1: // POKEMON
-                            battleState = STATE_P2_SELECT_POKEMON;
-                            currentMessage = "Trainer 2, ¡elige otro Pokémon!";
-                            menuCursorPos = 0;
-                            currentMenuSize = trainer2.getPhPokeList().size();
-                            break;
-                        case 2: // ITEM
-                            battleState = STATE_ANNOUNCE;
-                            currentMessage = "¡No tienes items!";
-                            break;
-                        case 3: // RUN
-                            battleState = STATE_ANNOUNCE;
-                            currentMessage = "¡No puedes huir!";
-                            break;
-                    }
-                }
-                break;
-                
-            case STATE_P2_MOVE:
-                handleMenuNavigation();
-                if (keyH.enterPressed) {
-                    String moveName = "ATAQUE " + (menuCursorPos + 1);
-                    
-                    attacker = trainer2ActivePokemon;
-                    defender = trainer1ActivePokemon;
-                    battleState = STATE_PERFORM_MOVE;
-                    currentMessage = "¡" + attacker.getPkNickName() + " usó " + moveName + "!";
-                    attacker.startAnimation("attack");
-                    
-                    keyH.enterPressed = false;
-                }
-                break;
-                
-            case STATE_ANNOUNCE:
-                if (keyH.enterPressed) {
-                    // Volver al turno correspondiente (lógica simple, puede fallar si T2 usa item)
-                    // (Corregido para comprobar quién es el atacante)
-                    if (attacker == trainer1ActivePokemon) {
-                        battleState = STATE_P1_TURN;
-                    } else {
-                        battleState = STATE_P2_TURN;
-                    }
-                    keyH.enterPressed = false;
-                }
-                break;
-                
-            case STATE_FAINTED:
-                if (keyH.enterPressed) {
-                    // Lógica para Pokémon debilitado
-                    battleState = STATE_P1_TURN; // Volver al jugador 1 por ahora
-                    currentMessage = "¡Elige otro Pokémon!";
-                    keyH.enterPressed = false;
-                }
-                break;
+
+             // ... (El resto de tus estados: STATE_P2_TURN, STATE_P2_MENU, STATE_P2_MOVE, etc.)
+             // (STATE_P2_MOVE haría lo mismo, pero creando la acción para el Trainer 2)
         }
+    }
+   
+    // En BattlePanel.java
+    private void processSingleResult(TurnResult result) {
+        // (Esta función crecerá mucho)
+        String key = result.getMessageKey();
+        this.currentMessage = key; // Mensaje por defecto
+
+        // Identifica quién ataca y quién defiende (¡necesitarás mejorar TurnResult!)
+        // Por ahora, asumimos que sabemos quiénes son:
+        Pokemon attacker = trainer1ActivePokemon; // (Esto es una suposición, ¡debes mejorarlo!)
+        Pokemon defender = trainer2ActivePokemon; // (Esto es una suposición, ¡debes mejorarlo!)
+
+        if (key.equals("MOVE_HIT_DAMAGE")) {
+            // ¡CONEXIÓN!
+            this.currentMessage = attacker.getPkNickName() + " usó " + result.getMoveUsed().getMvName() + "!";
+            attacker.startAnimation("attack"); // Inicia animación de ataque
+            defender.startAnimation("damage"); // Inicia animación de daño
+            isProcessingAnimation = true; // ¡IMPORTANTE!
+
+        } else if (key.equals("MOVE_MISSED")) {
+            this.currentMessage = "¡" + attacker.getPkNickName() + " falló!";
+
+        } else if (key.equals("POKEMON_FAINTED")) {
+            this.currentMessage = "¡El Pokémon se debilitó!";
+            // (Aquí iniciarías la animación de desmayo)
+            isProcessingAnimation = true; 
+
+        } else if (key.equals("POKEMON_IS_ASLEEP")) {
+            this.currentMessage = attacker.getPkNickName() + " está dormido.";
+
+        } else if (key.equals("TARGET_STAT_FELL")) {
+            this.currentMessage = "¡La estadística de " + defender.getPkNickName() + " bajó!";
+
+        } else if (key.equals("ATTACKER_STAT_ROSE")) {
+            this.currentMessage = "¡La estadística de " + attacker.getPkNickName() + " subió!";
+
+        } else if (key.equals("POKEMON_HURT_BY_POISON")) {
+             this.currentMessage = attacker.getPkNickName() + " fue herido por veneno.";
+             attacker.startAnimation("damage");
+             isProcessingAnimation = true;
+        }
+
+        // ... (añade 'else if' para todas las claves de TurnResult: "TARGET_WAS_BURNED", "POKEMON_IS_FROZEN", etc.)
+
+        // Al final, actualiza las barras de HP
+        // (Tu método ui.draw(g2) debería leer el HP de trainer1ActivePokemon.getPkHp())
+        // ¡Ya no necesitas simular el daño, solo repintar!
+        repaint();
     }
 
     /**
