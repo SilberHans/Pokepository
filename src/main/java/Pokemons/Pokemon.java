@@ -305,7 +305,7 @@ public abstract class Pokemon {
     }
     
     public void pkClearEffects(){
-        this.pkEffects.clear();
+        this.pkEffects.clear(); 
     }
     
     public abstract String pkNoise();
@@ -489,6 +489,3 @@ public abstract class Pokemon {
         }
     }      
 }
-
-
-
