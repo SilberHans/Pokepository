@@ -32,6 +32,11 @@ public class Trader extends Person{
         this.mPriceMultiplier = mPriceMultiplier;
         this.mInventory = mInventory;
     }
+    
+    public java.util.ArrayList<Item> getAvailableItems() {
+    // Devuelve una nueva ArrayList que contiene todas las claves (Item) del HashMap
+    return new java.util.ArrayList<>(this.mInventory.keySet());
+    }
 
     public void setmPriceMultiplier(double mPriceMultiplier) {
         this.mPriceMultiplier = mPriceMultiplier;

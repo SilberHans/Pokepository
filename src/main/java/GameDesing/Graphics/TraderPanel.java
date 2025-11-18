@@ -1,9 +1,9 @@
 package GameDesing.Graphics;
 
 import GameDesing.Game;
+import Pokemons.Logic.Items.Item; // ¡Importación corregida!
 import Persons.Trader;
 import Persons.Trainer;
-import Pokemons.Logic.Items.Item;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList; // ¡Importación añadida!
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -30,22 +31,6 @@ public class TraderPanel extends JPanel implements Runnable {
     private Trader trader;
     
     // SYSTEM
-    public TraderPanel(Game game) {
-        this.game=game;
-        this.trainer1=game.getgTrainer1();
-        this.trainer2=game.getgTrainer2();
-        this.trader=game.getgTrader();
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.addKeyListener(keyH);
-        this.setFocusable(true);
-        this.loadResources();
-        this.itemNames= trader.getmInventoryStr();
-        this.itemDescriptions= trader.getmInventoryDescription();
-        this.itemIMG= trader.getmInventoryIMG();
-        gameState = t1State;
-    }    
-    
-    String t1Index,t2Index;
     UI ui = new UI(this); 
     BufferedImage background,t1,t2;
     Font menuFont;
@@ -59,23 +44,64 @@ public class TraderPanel extends JPanel implements Runnable {
     //TRANCISION
     private boolean battleReady = false;
     private long battleStartTime = 0;
-    private final long DELAY = 3000;
+    private final long DELAY = 3000; // 3 segundos
 
-    //TURNOS, ITEMS
+    // --- LÓGICA DE DRAFT DE ITEMS (MODIFICADA) ---
+    private ArrayList<Item> availableItems; // ¡NUEVO! Lista de objetos Item
     String[] itemNames; 
     String[] itemDescriptions; 
     BufferedImage[] itemIMG;
+    
+    // Estos contadores están perfectos
     String[] trainer1Items = new String[4];
     String[] trainer2Items = new String[4];
     int t1ItemIndex = 0;
     int t2ItemIndex = 0;
-    String traderDialog = "¡Bienvenido! ¿Qué necesitas hoy?"; // Diálogo inicial
+    String traderDialog = "¡Bienvenido! Elige 4 items, " + "Player 1."; // Diálogo inicial
 
     // GAME STATES
     public int gameState;
     public final int t1State = 1;
     public final int t2State = 2;
-    public final int infoState = 3; 
+    public final int infoState = 3; // Estado para mostrar mensaje final antes de la transición
+
+    public TraderPanel(Game game) {
+        this.game = game;
+        this.trainer1 = game.getgTrainer1();
+        this.trainer2 = game.getgTrainer2();
+        this.trader = game.getgTrader();
+        
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
+        this.loadResources();
+
+        // --- LÓGICA DE CARGA DE ITEMS (MODIFICADA) ---
+        
+        // 1. Obtenemos la lista de OBJETOS Item desde el Trader
+        this.availableItems = trader.getAvailableItems(); 
+        
+        // 2. Llenamos los arrays de strings e imágenes basados en esta lista
+        this.itemNames = new String[availableItems.size()];
+        this.itemDescriptions = new String[availableItems.size()];
+        this.itemIMG = new BufferedImage[availableItems.size()];
+
+        for (int i = 0; i < availableItems.size(); i++) {
+            Item item = availableItems.get(i);
+            if (item != null) {
+                this.itemNames[i] = item.getItName();
+                this.itemDescriptions[i] = item.getItDescription();
+                this.itemIMG[i] = item.getImg();
+            }
+        }
+        // --- FIN DE LA LÓGICA MODIFICADA ---
+        
+        // Actualiza el diálogo inicial con el nombre real del Trainer 1
+        this.traderDialog = "¡Bienvenido! Elige 4 items, " + trainer1.getpName() + ".";
+        gameState = t1State;
+    }    
+    
+    String t1Index,t2Index;
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -84,18 +110,16 @@ public class TraderPanel extends JPanel implements Runnable {
 
     private void loadResources() {
         try {
+            t1Index = trainer1.num;
+            t2Index = trainer2.num;
             
-            t1Index=trainer1.num;
-            t2Index=trainer2.num;
+            // Carga de imágenes de entrenadores (asegúrate que .num esté asignado)
+            if (t1Index != null)
+                t1 = ImageIO.read(getClass().getResourceAsStream("/util/"+t1Index+".png")); 
+            if (t2Index != null)
+                t2 = ImageIO.read(getClass().getResourceAsStream("/util/"+t2Index+".png")); 
             
-            InputStream t12 = getClass().getResourceAsStream("/util/"+t1Index+".png"); 
-            t1 = ImageIO.read(t12);
-            
-            InputStream t21 = getClass().getResourceAsStream("/util/"+t2Index+".png"); 
-            t2 = ImageIO.read(t21);
-            
-            InputStream bgStream = getClass().getResourceAsStream("/images/traderBG.png"); 
-            background = ImageIO.read(bgStream);
+            background = ImageIO.read(getClass().getResourceAsStream("/images/traderBG.png")); 
 
             InputStream fontStream = getClass().getResourceAsStream("/fonts/Pokemon Classic.ttf");
             menuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(20f);
@@ -107,7 +131,17 @@ public class TraderPanel extends JPanel implements Runnable {
         }
     }
 
+    // --- MÉTODO UPDATE (LÓGICA DE DRAFT CORREGIDA) ---
     public void update() {
+        // Si estamos en el estado final, solo esperamos la transición
+        if (gameState == infoState) {
+            if (battleReady && System.currentTimeMillis() - battleStartTime >= DELAY) {
+                startBattleTransition();
+            }
+            return; // No procesar más teclas
+        }
+
+        // Navegación
         if (keyH.upPressed) {
             selectedOption--;
             if (selectedOption < 0)
@@ -122,110 +156,82 @@ public class TraderPanel extends JPanel implements Runnable {
             keyH.downPressed = false;
         }
         
-        //LOGICA ESCAPE (arreglar)
+        // Salir
         if (keyH.escPressed) {
-            GraphicPart.cambiarPanel(GraphicPart.STATE_BATTLE);
-            System.out.println("Transición a Batalla (Implementar)");
+            // Esto se saltará la batalla, pero mantenemos tu lógica
+            startBattleTransition(); 
             keyH.escPressed = false; 
-            // Por ahora solo log, pero la idea es salir de la tienda
         }
 
-        // LOGICA DE ENTER
-        // En TraderPanel.java
-
+        // --- LÓGICA DE ENTER (SELECCIÓN DE DRAFT) ---
         if (keyH.enterPressed) {
-            // 1. Obtenemos el NOMBRE del item seleccionado (esto está correcto)
-            String selectedItemName = itemNames[selectedOption];
-
-            // 2. ELIMINA esta línea rota:
-            // Item selectedItemNames = trader.getmInventory().get(selectedOption);
-
-            // 3. Llama al método de lógica del Trader y obtén la respuesta
-            String resultMessage = "";
-
+            
+            // 1. Obtener el OBJETO Item seleccionado (no solo el nombre)
+            Item selectedItem = availableItems.get(selectedOption);
+            
+            // 2. Lógica de draft para Trainer 1
             if (gameState == t1State) {
                 if (t1ItemIndex < trainer1Items.length) {
-                    // Llama al método de lógica para que él haga la transacción
-                    resultMessage = trader.sellItem(trainer1, selectedItemName);
-                    traderDialog = resultMessage; // Muestra el resultado (¡Éxito! o ¡Sin dinero!)
-
-                    // Revisamos si la compra fue exitosa para actualizar el contador gráfico
-                    boolean purchaseSuccess = resultMessage.startsWith("Thanks") || 
-                                              resultMessage.startsWith("Much") || 
-                                              resultMessage.startsWith("Thank you");
-
-                    if (purchaseSuccess) {
-                        trainer1Items[t1ItemIndex] = selectedItemName; // Actualiza la lista gráfica
-                        t1ItemIndex++;
-                    }
-
-                    // Si T1 terminó de comprar, pasa a T2
+                    
+                    trainer1Items[t1ItemIndex] = selectedItem.getItName();
+                    trainer1.addtItem(selectedItem); // Añade el item al inventario real del trainer
+                    t1ItemIndex++;
+                    traderDialog = "¡"+trainer1.getpName()+ " eligió " + selectedItem.getItName() + "!";
+                    
+                    // Si T1 terminó, pasa a T2
                     if (t1ItemIndex == trainer1Items.length) {
                         gameState = t2State;
-                        traderDialog = "¡Turno de " + trainer2.getpName() + "! ¿Tú qué quieres?";
+                        traderDialog = "¡Turno de " + trainer2.getpName()+ "! Elige tus 4 items.";
+                        selectedOption = 0; // Resetea el cursor para T2
                     }
                 }
             } 
+            // 3. Lógica de draft para Trainer 2
             else if (gameState == t2State) {
                 if (t2ItemIndex < trainer2Items.length) {
-                    // Llama al método de lógica para que él haga la transacción
-                    resultMessage = trader.sellItem(trainer2, selectedItemName);
-                    traderDialog = resultMessage; // Muestra el resultado
-
-                    // Revisamos si la compra fue exitosa
-                    boolean purchaseSuccess = resultMessage.startsWith("Thanks") || 
-                                              resultMessage.startsWith("Much") || 
-                                              resultMessage.startsWith("Thank you");
-
-                    if (purchaseSuccess) {
-                        trainer2Items[t2ItemIndex] = selectedItemName; // Actualiza la lista gráfica
-                        t2ItemIndex++;
-                    }
-
+                    
+                    trainer2Items[t2ItemIndex] = selectedItem.getItName();
+                    trainer2.addtItem(selectedItem); // Añade el item al inventario real del trainer
+                    t2ItemIndex++;
+                    traderDialog ="¡"+trainer2.getpName()+ " eligió " + selectedItem.getItName() + "!";
+                    
                     // Si T2 terminó, la compra finaliza
                     if (t2ItemIndex == trainer2Items.length) {
-                        gameState = infoState; // Un estado "finalizado"
-                        traderDialog = "¡Gracias por su compra! ¡Listos para la batalla!";
+                        gameState = infoState; // Cambia a estado "finalizado"
+                        traderDialog = "¡Selección completa! ¡Listos para la batalla!";
+                        
+                        // Prepara la transición automática a la batalla
                         battleReady = true;
                         battleStartTime = System.currentTimeMillis();
-                        System.out.println("¡Ambos equipos completos! Iniciando batalla en 3 segundos...");
-
-                        // (OJO: Tu código original llamaba a startBattleTransition() aquí, 
-                        // pero también en el 'update()'. Asegúrate de llamarlo solo una vez)
-
-                        // Llama a la transición aquí directamente si ya no lo haces en update()
-                        startBattleTransition(); 
+                        System.out.println("¡Items seleccionados! Iniciando batalla en 3 segundos...");
                     }
                 }
             }
+            
             keyH.enterPressed = false;
         }
     }
     
     private void startBattleTransition() {
-        if (battleReady) {
-        battleReady = false;
-        
-        //DETENER
         if (gameThread != null) {
             gameThread.interrupt();
             gameThread = null;
         }
         
-        //LIMPIAR
         this.removeKeyListener(keyH);
         background = null;
-        itemNames=null;
-        itemDescriptions=null;
-        itemIMG=null;
-        trainer1Items= null;
+        itemNames = null;
+        itemDescriptions = null;
+        itemIMG = null;
+        availableItems = null; // Limpia la lista de items
+        trainer1Items = null;
         trainer2Items = null;
         System.out.println("Panel de compra limpiado");
-        GraphicPart.battlePanel=new BattlePanel(game);
         
+        // Crea el BattlePanel y cambia
+        GraphicPart.battlePanel = new BattlePanel(game);
         System.out.println("Cambiando a panel de Batalla...");
         GraphicPart.cambiarPanel(GraphicPart.STATE_BATTLE);
-        }
     }
     
 
@@ -248,33 +254,34 @@ public class TraderPanel extends JPanel implements Runnable {
         int baseX = (this.screenWidth / 2 - 40) + 30; 
         int baseY = (this.tileSize / 2) + 60; 
         
+        // Dibuja el menú
         for (int i = 0; i < itemNames.length; i++) {
             boolean selected = (i == selectedOption);
             drawMenuOption(g2, itemNames[i], i, baseX, baseY, selected);
         }
         
-        // Contador de items (simple)
+        // Dibuja el contador de items
         g2.setColor(ui.windowTextColor);
         g2.setFont(menuFont.deriveFont(12f));
-        String t1Count =t1ItemIndex + "/" + trainer1Items.length;
-        String t2Count =t2ItemIndex + "/" + trainer2Items.length;
+        String t1Count = t1ItemIndex + "/" + trainer1Items.length;
+        String t2Count = t2ItemIndex + "/" + trainer2Items.length;
         g2.drawString(t1Count, this.screenWidth - 66, this.screenHeight - 87);
         g2.drawString(t2Count, this.screenWidth - 66, this.screenHeight - 30);
 
 
-        if (keyH.spcPressed) {
+        // Dibuja la info del item si se presiona ESPACIO
+        if (keyH.spcPressed && gameState != infoState) {
             String info = itemNames[selectedOption];
             String desc = itemDescriptions[selectedOption];
-            BufferedImage img= itemIMG[selectedOption];
-            // null= imagen del item
-            ui.drawItemInfoBox(g2, info, desc, null);
+            BufferedImage img = itemIMG[selectedOption];
+            ui.drawItemInfoBox(g2, info, desc, img); // Pasamos la imagen real
         }
 
         g2.dispose();
     }
 
     private void drawMenuOption(Graphics2D g2, String text, int index, int baseX, int baseY, boolean selected) {
-        int y = baseY + index * 45; // Menos espaciado
+        int y = baseY + index * 45; 
         int x = baseX;
 
         if (selected) {
@@ -305,5 +312,4 @@ public class TraderPanel extends JPanel implements Runnable {
             }
         }
     }
-
 }
