@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.ImageIO;

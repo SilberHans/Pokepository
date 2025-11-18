@@ -1,7 +1,7 @@
 package Persons;
 
-import GameDesing.GenericDataBase;
-import Items.Item;
+import Pokemons.Logic.Items.Item;
+import Utility.DataBase.GenericDataBase;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -97,8 +97,15 @@ public class Trader extends Person {
     }
 
     @Override
-    public void genericDialogue() {
-
+    public String genericDialogue() {
+        switch(ThreadLocalRandom.current().nextInt(4)){
+            case 0 -> {return "Welcome! How can I help you today?";}
+            case 1 -> {return "I've got just what you need! Take a look.";}
+            case 2 -> {return "If you have the money, I have the goods.";}
+            case 3 -> {return "Potions! Antidotes! You name it!";}
+            default -> {return "Uhh...";}
+            
+        }
     }
 
     public String sellItem(Trainer mTrainer, int mItemPst) {

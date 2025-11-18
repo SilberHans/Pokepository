@@ -1,9 +1,9 @@
 package GameDesing.Graphics;
 
 import GameDesing.Game;
-import Items.Item;
 import Persons.Trader;
 import Persons.Trainer;
+import Pokemons.Logic.Items.Item;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -133,7 +133,7 @@ public class TraderPanel extends JPanel implements Runnable {
         // LOGICA DE ENTER
         if (keyH.enterPressed) {
             String selectedItemName = itemNames[selectedOption];
-            Item selectedItemNames = trader.getmInventory().get(selectedOption);
+            Item selectedItemNames = (Item) trader.getmInventory().get(selectedOption);
             
             if (gameState == t1State) {
                 if (t1ItemIndex < trainer1Items.length) {

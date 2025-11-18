@@ -33,4 +33,12 @@ public class PkStatus {
             this.setPkStatusTurnsLeft(pkStatusTurnsLeft--);
         }
     }
+
+    public int getStatusCounter() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Utility.Constants.PkStatusEnum getStatus() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -1,7 +1,7 @@
 package Persons;
 
 import Iinterfaces.MoneyHandler; // Importar la interfaz
-import Utility.PersonValidations;
+import Utility.Validations.PersonValidations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -76,7 +76,7 @@ public abstract class Person implements MoneyHandler {
         return "\nName:\t\t\t" + this.getpName() + "\nRegion:\t\t\t" + this.getpRegion() + "\nID:\t\t\t" + this.getpID() + "\nBirth Date:\t\t" + this.getpBirthDateStr() + "\nAge:\t\t\t" + this.getpAge() + "\nPokeDollars:\t\t" + this.getpPokeDollars();
     }
     
-    public abstract void genericDialogue();
+    public abstract String genericDialogue();
 
     // --- MÉTODOS DE MONEYHANDLER IMPLEMENTADOS ---
     
@@ -109,7 +109,6 @@ public abstract class Person implements MoneyHandler {
      * (Implementado por compatibilidad de interfaz)
      * Reemplazado por setpPokeDollars(int amount)
      */
-    @Override
     public void setMoney(int amount) {
         this.setpPokeDollars(amount);
     }
@@ -118,7 +117,6 @@ public abstract class Person implements MoneyHandler {
      * (Implementado por compatibilidad de interfaz)
      * Reemplazado por getpPokeDollars()
      */
-    @Override
     public void getMoney(int amount) {
         // Este método en la interfaz parece estar mal definido (debería ser getMoney() y retornar int)
         // Lo implementamos vacío y usamos getpPokeDollars() en su lugar.

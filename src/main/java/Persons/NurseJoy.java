@@ -1,6 +1,6 @@
 package Persons;
 
-import GameDesing.GenericDataBase;
+import Utility.DataBase.GenericDataBase;
 import Pokemons.Chansey;
 import Pokemons.Pokemon;
 import java.awt.image.BufferedImage; // Importar
@@ -127,8 +127,15 @@ public class NurseJoy extends PokemonHandler{
         return str;
     }
     @Override
-    public void genericDialogue(){
-    
+    public String genericDialogue(){
+        switch(ThreadLocalRandom.current().nextInt(5)){
+        case 0 -> {return "Welcome to the Pokémon Center. Would you like me to heal your Pokémon?";}
+            case 1 -> {return "Don't worry, your Pokémon will be good as new in just a moment.";}
+            case 2 -> {return "Okay, I'll take your Pokémon. We'll begin the treatment.";}
+            case 3 -> {return "Oh, you poor things, they look exhausted. We'll take good care of them.";}
+            case 4 -> {return "We hope to see you again soon!";}
+            default -> {return "Uhh...";}
+        }
     }  
     
     public void njHealPokemons(){

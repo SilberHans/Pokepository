@@ -1,13 +1,13 @@
 package Pokemons;
 
-import GameDesing.GenericDataBase;
-import Pokemons.Logic.PkStatsEnum;
-import Pokemons.Logic.PkStatus;
-import Pokemons.Logic.PkStatusEnum;
-import Pokemons.Logic.PkTypeEnum;
-import Pokemons.Movements.Move;
-import Pokemons.Movements.PkEffectsEnum;
-import Utility.PokemonValidations;
+import Utility.Constants.PkStatsEnum;
+import Utility.Constants.PkTypeEnum;
+import Utility.Constants.PkStatusEnum;
+import Pokemons.Logic.Movements.Move;
+import Utility.Constants.PkEffectsEnum;
+import Utility.DataBase.GenericDataBase;
+import Pokemons.Logic.*;
+import Utility.Validations.PokemonValidations;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
+
 
 public abstract class Pokemon {
     protected String pkNickName;
@@ -32,17 +33,12 @@ public abstract class Pokemon {
     protected final PkTypeEnum pkType1;
     protected final PkTypeEnum pkType2;
     protected ArrayList<Move> pkMoveSet;
-    protected PkStatus pkStatus;
+    protected Status pkStatus;
     protected Map<PkEffectsEnum, Integer> pkEffects;
-    protected Map<PkStatsEnum, Integer> pkStatsStages;
-    protected BufferedImage afront;
-    protected BufferedImage aback;
-    public String[] actions={"ATTACK 1","ATTACK 2","DEFEND","ÄTTACK 3"};
-    
-    public abstract void loadSprites();
-    
+    protected Map<PkStatsEnum, Integer> pkStatsStages;   
+            
     public Pokemon(int pkLevel, PkTypeEnum pkType1, PkTypeEnum pkType2, int pkBaseHp, int pkBaseAttack, int pkBaseSpecialAttack, int pkBaseDefense, int pkBaseSpecialDefense, int pkBaseSpeed){
-        this.pkNickName = null;
+        this.pkNickName = GenericDataBase.getRndmPokemonNickName();
         this.pkType1 = pkType1;
         this.pkType2 = pkType2;
         this.pkLevel = pkLevel;
@@ -55,14 +51,13 @@ public abstract class Pokemon {
         this.pkDefense = (int) (((2*pkBaseDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpecialDefense = (int) (((2*pkBaseSpecialDefense + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
         this.pkSpeed = (int) (((2*pkBaseSpeed + this.pkIV + (this.pkEV/24))*this.pkLevel)/100 + 5);
-        this.pkMoveSet = new ArrayList<>(4);
+        this.pkMoveSet = PokemonValidations.pkMovemntsSelection(pkType1, pkType2);
         this.pkStatus = null;
         this.pkEffects = new HashMap<>();
         this.pkStatsStages = new HashMap<>();
         for(PkStatsEnum tryStat: PkStatsEnum.values()){
             this.pkStatsStages.put(tryStat, 0);
         }
-        this.loadSprites();
     }
 
     public void setPkNickName(String pkNickName){
@@ -86,7 +81,7 @@ public abstract class Pokemon {
             if((pkStatus == PkStatusEnum.Poisoned || pkStatus == PkStatusEnum.BadlyPoisoned) && (this.hasPkType(PkTypeEnum.Poison) || this.hasPkType(PkTypeEnum.Steel))){return;}
             if(pkStatus == PkStatusEnum.Paralyzed && this.hasPkType(PkTypeEnum.Electric)){return;}
             if(pkStatus == PkStatusEnum.Frozen && this.hasPkType(PkTypeEnum.Ice)){return;}
-            this.pkStatus = new PkStatus(pkStatus, pkStatusTurnsLeft);
+            this.pkStatus = new Status(pkStatus, pkStatusTurnsLeft);
         }
     }
     public void setPkEffect(PkEffectsEnum pkEffect, int pkEffectTurnsLeft){
@@ -197,7 +192,7 @@ public abstract class Pokemon {
         }
         return str;
     }
-    public PkStatus getPkStatus(){
+    public Status getPkStatus(){
         if (this.pkStatus == null){
             return null;
         }
@@ -236,6 +231,29 @@ public abstract class Pokemon {
             default -> {return 1.0;}
         }
     }
+    public int getEffectivePkSpeed() {
+        int pkEffectiveSpeed = (int) (this.getPkSpeed() * getPkStatStageMultiplier(PkStatsEnum.Speed));
+        if (this.pkStatus != null && this.pkStatus.getStatus() == PkStatusEnum.Paralyzed) {
+            pkEffectiveSpeed *= 0.5;
+    }
+    return pkEffectiveSpeed;
+    }
+    public int getEffectivePkAttack() {
+        int pkEffectiveAttack = (int) (this.getPkAttack() * getPkStatStageMultiplier(PkStatsEnum.Attack));
+        return pkEffectiveAttack;
+    }
+    public int getEffectivePkDefense() {
+        int pkEffectiveDefense = (int) (this.getPkDefense() * getPkStatStageMultiplier(PkStatsEnum.Defense));
+        return pkEffectiveDefense;
+    }
+    public int getEffectivePkSpecialAttack() {
+        int pkEffectiveSpAttack = (int) (this.getPkSpecialAttack() * getPkStatStageMultiplier(PkStatsEnum.SpecialAttack));
+        return pkEffectiveSpAttack;
+    }
+    public int getEffectivePkSpecialDefense() {
+        int pkEffectiveSpDefense = (int) (this.getPkSpecialDefense() * getPkStatStageMultiplier(PkStatsEnum.SpecialDefense));
+        return pkEffectiveSpDefense;
+    }
             
     @Override
     public String toString(){
@@ -259,9 +277,11 @@ public abstract class Pokemon {
     
     public void pkUpdateStatus(){
         if(this.pkStatus == null){return;}
-        this.pkStatus.decreasePkStatusTurnsLeft();
-        if(this.pkStatus.getPkStatusTurnsLeft() == 0){
-            this.pkStatus = null;
+        this.pkStatus.updateStatusCounter();
+        if (this.pkStatus.getStatus() == PkStatusEnum.Asleep || this.pkStatus.getStatus() == PkStatusEnum.Frozen){
+            if(this.pkStatus.getStatusCounter() == 0){
+                this.pkStatus = null;
+            }
         }
     }
     
@@ -289,8 +309,32 @@ public abstract class Pokemon {
     }
     
     public abstract String pkNoise();
+
     
-    ////GRAFICOS DEL POKEMONNN
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      ////GRAFICOS DEL POKEMONNN
 
     public int x, y; // posicion 
     public int defaultX, defaultY; // posicion default
@@ -303,6 +347,12 @@ public abstract class Pokemon {
     private int animationState = 0; // Para animaciones multiples
     private int currentDrawSize = BATTLE_SPRITE_SIZE; // NUEVO: Tamaño actual para escalar
     private final int MAX_GROWTH=40;
+    protected BufferedImage afront;
+    protected BufferedImage aback;
+    public String[] actions={"ATTACK 1","ATTACK 2","DEFEND","ÄTTACK 3"};
+    
+    public abstract void loadSprites();
+    //this.loadSprites();
     
     public void setDefaultBattlePosition(int x, int y) {
         this.x = x;
@@ -437,7 +487,7 @@ public abstract class Pokemon {
                 break;
             // --- FIN DE NUEVO CÓDIGO ---
         }
-    }  
+    }      
 }
 
 
