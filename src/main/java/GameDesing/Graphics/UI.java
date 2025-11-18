@@ -255,6 +255,9 @@ public class UI {
     
     // El método draw() es el único que debe ser llamado desde BattlePanel
     public void draw(Graphics2D g2) throws IOException {
+        // No dibujes las barras si los Pokémon no han sido enviados
+        if (!bp.battleStarted) return; 
+        
         drawEnemyUI(g2);
         drawPlayerUI(g2);
     }
@@ -274,9 +277,7 @@ public class UI {
     Color hpRed = new Color(220, 40, 30);
 
 
-    /**
-     * Dibuja la barra de estado del POKÉMON ENEMIGO (Trainer 2)
-     */
+ 
     private void drawEnemyUI(Graphics2D g2) throws IOException {
         int boxX = 0;
         int boxY = 40;
@@ -284,7 +285,7 @@ public class UI {
 
         BufferedImage box = ImageIO.read(getClass().getResourceAsStream("/util/bar2.png"));
         g2.drawImage(box, boxX, boxY, 122 * 3, 34 * 3, null);
-        g2.setFont(mainFont);
+        g2.setFont(mainFont); // Usa la fuente de 18f de la UI de Batalla
         g2.setColor(new Color(66, 66, 66));
 
         // Obtiene el Pokémon del oponente desde el BattlePanel
@@ -297,23 +298,27 @@ public class UI {
             // Calcula el porcentaje de HP
             double hpPercent = (double) pk.getPkHp() / pk.getPkMaxHp();
             int hpBarWidth = (int) (barWidth * hpPercent);
+            
+            // Asegúrate de que la barra no sea negativa
+            if (hpBarWidth < 0) hpBarWidth = 0;
 
             // Elige el color de la barra
-            if (hpPercent > 0.5) {
-                g2.setColor(hpGreen);
-            } else if (hpPercent > 0.2) {
-                g2.setColor(hpYellow);
-            } else {
-                g2.setColor(hpRed);
-            }
+            if (hpPercent > 0.5) g2.setColor(hpGreen);
+            else if (hpPercent > 0.2) g2.setColor(hpYellow);
+            else g2.setColor(hpRed);
 
             // Dibuja la barra de HP
             g2.fillRect(boxX + 15, boxY + 50, hpBarWidth, 10);
-
-            // (El texto de HP numérico no es estándar en este tipo de barra)
-            // g2.setFont(smallFont);
-            // g2.setColor(Color.BLACK);
-            // g2.drawString("HP: " + pk.getPkHp() + " / " + pk.getPkMaxHp(), boxX + 15, boxY + 80);
+            
+            // Dibuja el borde de la barra de HP
+            g2.setColor(new Color(66, 66, 66));
+            g2.drawRect(boxX + 15, boxY + 50, barWidth, 10);
+            
+            // Dibuja el texto de HP (numérico)
+            if (smallFont == null) smallFont = mainFont.deriveFont(14f); // Fallback por si smallFont es null
+            g2.setFont(smallFont);
+            g2.setColor(new Color(66, 66, 66));
+            g2.drawString("HP: " + pk.getPkHp() + " / " + pk.getPkMaxHp(), boxX + 55, boxY + 80);
 
         } else {
             // Si no hay Pokémon, solo muestra el nombre vacío
@@ -323,6 +328,7 @@ public class UI {
 
     /**
      * Dibuja la barra de estado del POKÉMON DEL JUGADOR (Trainer 1)
+     * ¡CORREGIDO PARA LEER DATOS REALES!
      */
     private void drawPlayerUI(Graphics2D g2) throws IOException {
         int boxX = bp.getWidth() - 122 * 3;
@@ -331,7 +337,7 @@ public class UI {
 
         BufferedImage box = ImageIO.read(getClass().getResourceAsStream("/util/bar1.png"));
         g2.drawImage(box, boxX, boxY, 122 * 3, 34 * 3, null);
-        g2.setFont(mainFont);
+        g2.setFont(mainFont); // Usa la fuente de 18f
         g2.setColor(new Color(66, 66, 66));
 
         // Obtiene el Pokémon del jugador desde el BattlePanel
@@ -345,19 +351,23 @@ public class UI {
             double hpPercent = (double) pk.getPkHp() / pk.getPkMaxHp();
             int hpBarWidth = (int) (barWidth * hpPercent);
 
+            // Asegúrate de que la barra no sea negativa
+            if (hpBarWidth < 0) hpBarWidth = 0;
+            
             // Elige el color de la barra
-            if (hpPercent > 0.5) {
-                g2.setColor(hpGreen);
-            } else if (hpPercent > 0.2) {
-                g2.setColor(hpYellow);
-            } else {
-                g2.setColor(hpRed);
-            }
+            if (hpPercent > 0.5) g2.setColor(hpGreen);
+            else if (hpPercent > 0.2) g2.setColor(hpYellow);
+            else g2.setColor(hpRed);
             
             // Dibuja la barra de HP
             g2.fillRect(boxX + 55, boxY + 50, hpBarWidth, 10);
+            
+            // Dibuja el borde de la barra de HP
+            g2.setColor(new Color(66, 66, 66));
+            g2.drawRect(boxX + 55, boxY + 50, barWidth, 10);
 
             // Dibuja el texto de HP (numérico)
+            if (smallFont == null) smallFont = mainFont.deriveFont(14f); // Fallback por si smallFont es null
             g2.setFont(smallFont);
             g2.setColor(new Color(66, 66, 66));
             g2.drawString("HP: " + pk.getPkHp() + " / " + pk.getPkMaxHp(), boxX + 55, boxY + 80);
@@ -374,26 +384,18 @@ public class UI {
     public void drawBattleLayout(Graphics2D g2, int panelWidth, int panelHeight, BufferedImage battleBg) {
 
         // 1. DIBUJAR FONDO
-        if (battleBg != null) {
-            int bgOriginalW = battleBg.getWidth();
-            int bgOriginalH = battleBg.getHeight();
-            double ratio = (double) bgOriginalW / bgOriginalH;
-            int bgWidth = panelWidth;
-            int bgHeight = (int) (bgWidth / ratio);
-            g2.drawImage(battleBg, 0, 0, bgWidth, bgHeight, null);
-        } else {
-            // Fondo de emergencia si falla la carga
-            g2.setColor(Color.DARK_GRAY);
-            g2.fillRect(0, 0, panelWidth, panelHeight);
-        }
+        int bgOriginalW = battleBg.getWidth();
+        int bgOriginalH = battleBg.getHeight();
+        double ratio = (double) bgOriginalW / bgOriginalH;
+        int bgWidth = panelWidth;
+        int bgHeight = (int) (bgWidth / ratio);
+        g2.drawImage(battleBg, 0, 0, bgWidth, bgHeight, null);
 
 
         // 2. CUADRO GRANDE INFERIOR
         // (Asumimos que la altura del fondo es donde termina la escena)
-        int bgHeight = (int) (panelWidth / (256.0/144.0)); // Proporción 256x144
         int bigBoxY = bgHeight;
         int bigBoxHeight = panelHeight - bgHeight;
-        
         g2.setColor(new Color(31, 29, 42));
         g2.fillRect(0, bigBoxY, panelWidth, bigBoxHeight);
         g2.setColor(Color.BLACK);
@@ -406,29 +408,28 @@ public class UI {
         int innerH = bigBoxHeight - 20;
         g2.setColor(new Color(61, 58, 75));
         g2.fillRoundRect(innerX, innerY, innerW, innerH, 20, 20);
-        g2.setColor(windowBgColor); // Reusa el color de la tienda
-        g2.setStroke(new BasicStroke(2)); // Borde más sutil
-        g2.drawRoundRect(innerX, innerY, innerW, innerH, 20, 20); // Ajuste de tamaño de borde
+        g2.setColor(windowBgColor);
+        g2.drawRoundRect(innerX, innerY, innerW + 5, innerH + 5, 20, 20);
 
         // 4. SUBDIVISIÓN
         int boxMargin = 10;
         int half = innerW / 2;
 
         // --------------------------
-        // TEXTO (izquierda) - Guarda las coordenadas
+        // TEXTO (izquierda) - Dibuja la caja vacía
         // --------------------------
         textX = innerX + boxMargin;
         textY = innerY + boxMargin;
         textW = (half - (boxMargin * 2)) + 50;
         textH = innerH - (boxMargin * 2);
-
+        
         g2.setColor(windowFillColor2);
         g2.fillRoundRect(textX, textY, textW, textH, 15, 15);
         g2.setColor(windowBorderColor2);
         g2.drawRoundRect(textX, textY, textW, textH, 15, 15);
 
         // --------------------------
-        // OPCIONES (derecha) - Guarda las coordenadas
+        // OPCIONES (derecha) - Dibuja la caja vacía
         // --------------------------
         optX = innerX + half + boxMargin + 40;
         optY = innerY + boxMargin;

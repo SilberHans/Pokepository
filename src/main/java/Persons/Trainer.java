@@ -355,7 +355,7 @@ public class Trainer extends PokemonHandler {
     public final int STATE_THROWING = 1;
     public final int STATE_THROW_COMPLETE = 2;
     
-    private int trainerState = STATE_IDLE;
+    public int trainerState = STATE_IDLE;
     private int throwProgress = 0; // 0 a 100
     private BufferedImage[] sprites = new BufferedImage[5]; // a1, a2, a3, a4, a5
     private boolean spritesLoaded = false;
@@ -371,6 +371,7 @@ public class Trainer extends PokemonHandler {
         spriteCounter = 0;
         throwProgress = 0;
         exitProgress = 0f;
+        isExiting = false;
         
         // Guardar posición inicial
         initialX = this.x;
@@ -415,6 +416,7 @@ public class Trainer extends PokemonHandler {
             }
         }
     }
+    
 
     public boolean isFullyExited(boolean isPlayerOne) {
         if (isPlayerOne) {
@@ -428,15 +430,14 @@ public class Trainer extends PokemonHandler {
      * Actualiza el estado del trainer (animaciones, etc.)
      */
     public void update() {
-        if (trainerState == STATE_THROWING) {
-            updateThrowAnimation();
+        if (trainerState == 1) { // trainerState 1 es STATE_THROWING
+            updateThrowAnimation(); 
+        } else {
+            static_update(); // trainerState 0 o 2 (IDLE o COMPLETE)
         }
-        // ... resto de tu lógica de update existente ...
     }
-    
-    /**
-     * Verifica si la animación de lanzamiento ha terminado
-     */
+
+
     public boolean isThrowComplete() {
         return trainerState == STATE_THROW_COMPLETE;
     }
@@ -535,7 +536,7 @@ public class Trainer extends PokemonHandler {
         if (turn) {
             x = 90; y = 158 ; direction = "left";
         } else {
-            x = 500; y = 60; direction = "right";
+            x = 475; y = 20; direction = "right";
         }
         battleSpriteSize = 200; 
         speed = 0;
