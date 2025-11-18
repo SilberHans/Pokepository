@@ -71,118 +71,60 @@ public final class PersonValidations {
     }
     
     public static HashMap<Item, Integer> mInventoryGenerator(){
-        ArrayList<Item> pkItems = new ArrayList<>();
+        HashMap<Item, Integer> pkItemsMap = new HashMap<>();
+
+        // 1. Separa las listas (esto estaba bien)
         ArrayList<Item> pkHealingItems = new ArrayList<>();
         ArrayList<Item> pkStatusItems = new ArrayList<>();
         ArrayList<Item> pkBattleItems = new ArrayList<>();
+
+        // Asegúrate de que ItemsDataBase.pkItemsList se esté cargando
+        if (ItemsDataBase.pkItemsList.isEmpty()) {
+            System.out.println("DEBUG: ¡ERROR! ItemsDataBase.pkItemsList está vacía.");
+            return pkItemsMap; // Devuelve un mapa vacío si la BD de items no cargó
+        }
+
         for(Item tryItem: ItemsDataBase.pkItemsList){
             if(tryItem.getItEffect() == PkEffectsEnum.HealFixedAmount || tryItem.getItEffect() == PkEffectsEnum.HealPercentage){
                 pkHealingItems.add(tryItem);
             }
-            if(tryItem.getItEffect() == PkEffectsEnum.CurePoison || tryItem.getItEffect() == PkEffectsEnum.CureParalysis || tryItem.getItEffect() == PkEffectsEnum.CureSleep || tryItem.getItEffect() == PkEffectsEnum.CureBurn || tryItem.getItEffect() == PkEffectsEnum.CureFreeze || tryItem.getItEffect() == PkEffectsEnum.CureAllStatus){
+            else if(tryItem.getItEffect() == PkEffectsEnum.CurePoison || tryItem.getItEffect() == PkEffectsEnum.CureParalysis || tryItem.getItEffect() == PkEffectsEnum.CureSleep || tryItem.getItEffect() == PkEffectsEnum.CureBurn || tryItem.getItEffect() == PkEffectsEnum.CureFreeze || tryItem.getItEffect() == PkEffectsEnum.CureAllStatus){
                 pkStatusItems.add(tryItem);
             }
-            if(tryItem.getItEffect() == PkEffectsEnum.AttackUp2 || tryItem.getItEffect() == PkEffectsEnum.DefenseUp2 || tryItem.getItEffect() == PkEffectsEnum.SpeedUp2 || tryItem.getItEffect() == PkEffectsEnum.SpecialAttackUp2 || tryItem.getItEffect() == PkEffectsEnum.SpecialDefenseUp2 || tryItem.getItEffect() == PkEffectsEnum.AccuracyUp1){
+            else if(tryItem.getItEffect() == PkEffectsEnum.AttackUp2 || tryItem.getItEffect() == PkEffectsEnum.DefenseUp2 || tryItem.getItEffect() == PkEffectsEnum.SpeedUp2 || tryItem.getItEffect() == PkEffectsEnum.SpecialAttackUp2 || tryItem.getItEffect() == PkEffectsEnum.SpecialDefenseUp2 || tryItem.getItEffect() == PkEffectsEnum.AccuracyUp1){
                 pkBattleItems.add(tryItem);
             }
         }
-        switch(ThreadLocalRandom.current().nextInt(3)){
-            case 0 ->{        
-                do{
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    if(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2)){
-                        pkItems.set(0, null);
-                        pkItems.set(1, null);
-                        pkItems.set(2, null);
-                    }
-                }while(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2));
-                do{
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    if(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5)){
-                        pkItems.set(3, null);
-                        pkItems.set(4, null);
-                        pkItems.set(5, null);
-                    }
-                }while(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5));
-                do{
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    if(pkItems.get(6) == pkItems.get(7)){
-                        pkItems.set(6, null);
-                        pkItems.set(7, null);
-                    }
-                }while(pkItems.get(6) == pkItems.get(7));
-            }
-            case 1 ->{
-                do{
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    if(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2)){
-                        pkItems.set(0, null);
-                        pkItems.set(1, null);
-                        pkItems.set(2, null);
-                    }
-                }while(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2));
-                do{
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    if(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5)){
-                        pkItems.set(3, null);
-                        pkItems.set(4, null);
-                        pkItems.set(5, null);
-                    }
-                }while(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5));
-                do{
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    if(pkItems.get(6) == pkItems.get(7)){
-                        pkItems.set(6, null);
-                        pkItems.set(7, null);
-                    }
-                }while(pkItems.get(6) == pkItems.get(7));
-            }
-            case 2 ->{
-                do{
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    pkItems.add(pkStatusItems.get(ThreadLocalRandom.current().nextInt(pkStatusItems.size())));
-                    if(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2)){
-                        pkItems.set(0, null);
-                        pkItems.set(1, null);
-                        pkItems.set(2, null);
-                    }
-                }while(pkItems.get(0) == pkItems.get(1) || pkItems.get(0) == pkItems.get(2) || pkItems.get(1) == pkItems.get(2));
-                do{
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    pkItems.add(pkBattleItems.get(ThreadLocalRandom.current().nextInt(pkBattleItems.size())));
-                    if(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5)){
-                        pkItems.set(3, null);
-                        pkItems.set(4, null);
-                        pkItems.set(5, null);
-                    }
-                }while(pkItems.get(3) == pkItems.get(4) || pkItems.get(3) == pkItems.get(5) || pkItems.get(4) == pkItems.get(5));
-                do{
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    pkItems.add(pkHealingItems.get(ThreadLocalRandom.current().nextInt(pkHealingItems.size())));
-                    if(pkItems.get(6) == pkItems.get(7)){
-                        pkItems.set(6, null);
-                        pkItems.set(7, null);
-                    }
-                }while(pkItems.get(6) == pkItems.get(7));
-            }
-            default -> {return null;}
+
+        // 2. Lógica de selección ¡CORREGIDA!
+        // Barajamos las listas y tomamos los primeros items.
+        // Esto evita bucles infinitos y garantiza items únicos.
+        java.util.Collections.shuffle(pkHealingItems);
+        java.util.Collections.shuffle(pkStatusItems);
+        java.util.Collections.shuffle(pkBattleItems);
+
+        // 3. Añadimos un número aleatorio de items
+        // Usamos un Set temporalmente para asegurarnos de que no hay duplicados
+        java.util.Set<Item> itemsToAdd = new java.util.HashSet<>();
+
+        // Añade 3 items de curación (si hay tantos)
+        for (int i = 0; i < 3 && i < pkHealingItems.size(); i++) {
+            itemsToAdd.add(pkHealingItems.get(i));
         }
-        HashMap<Item, Integer> pkItemsMap = new HashMap<>();
-        for(Item tryItem: pkItems){
-            pkItemsMap.put(tryItem, (Integer) ThreadLocalRandom.current().nextInt(1, 5));
+        // Añade 3 items de estado (si hay tantos)
+        for (int i = 0; i < 3 && i < pkStatusItems.size(); i++) {
+            itemsToAdd.add(pkStatusItems.get(i));
         }
+        // Añade 2 items de batalla (si hay tantos)
+        for (int i = 0; i < 2 && i < pkBattleItems.size(); i++) {
+            itemsToAdd.add(pkBattleItems.get(i));
+        }
+
+        // 4. Asigna un stock aleatorio a cada item seleccionado
+        for(Item tryItem: itemsToAdd){
+            pkItemsMap.put(tryItem, ThreadLocalRandom.current().nextInt(1, 5));
+        }
+
         return pkItemsMap;
     }
 }

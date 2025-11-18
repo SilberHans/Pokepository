@@ -52,10 +52,13 @@ public class GraphicPart {
     }
     
     public static void createGame(String trainer1Name, String trainer2Name) {
-        game = new Game(trainer1Name, trainer2Name);
-        System.out.println("¡New Game creado con Pokémon y Trainers!");
-
+        System.out.println("DEBUG: [GraphicPart] 1. Creando Game(name1, name2)...");
+        game = new Game(trainer1Name, trainer2Name); // <- El error podría estar aquí
+        System.out.println("DEBUG: [GraphicPart] 2. Game Creado.");
+        
+        System.out.println("DEBUG: [GraphicPart] 3. Creando pkSelectorPanel...");
         selectorPanel = new pkSelectorPanel(game);
+        System.out.println("DEBUG: [GraphicPart] 4. pkSelectorPanel Creado.");
     }
         
     public static void cambiarPanel(int nuevoEstado) {

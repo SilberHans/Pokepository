@@ -15,8 +15,12 @@ public class Trader extends Person{
     public Trader(){
         String mRndmTempRegion = GenericDataBase.getRndmPersonRegion();
         super(GenericDataBase.getRndmTraderName(),mRndmTempRegion, GenericDataBase.genRndmPersonID(2, mRndmTempRegion), GenericDataBase.genRndmDateByCrrntYears(50, 80), ThreadLocalRandom.current().nextInt(2500, 50001));
+        System.out.println("DEBUG: [Trader] 1. Iniciando constructor de Trader.");
         this.mPriceMultiplier = (ThreadLocalRandom.current().nextInt(5, 21)) / 10.0;
-        this.mInventory = PersonValidations.mInventoryGenerator();
+        
+        System.out.println("DEBUG: [Trader] 2. Llamando a mInventoryGenerator()...");
+        this.mInventory = PersonValidations.mInventoryGenerator(); // <- SOSPECHOSO #2
+        System.out.println("DEBUG: [Trader] 3. mInventoryGenerator() terminado.");
     }
     public Trader(double mPriceMultiplier, String pName, String pID, String pRegion, LocalDate pBirthDate, int pPokeDollars) {
         super(pName, pID, pRegion, pBirthDate, pPokeDollars);

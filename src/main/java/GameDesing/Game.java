@@ -33,20 +33,32 @@ public class Game {
     private ArrayList<PkEffectsEnum> gPlayer2Hazards;
     
     public Game(String name1,String name2){
+        System.out.println("DEBUG: [Game] 1. Iniciando constructor de Game...");
         this.gTrainerList = new ArrayList<>();
         this.gTrainer1 = new Trainer(name1);
         this.gTrainerList.add(gTrainer1);
         this.gTrainer2 = new Trainer(name2);
         this.gTrainerList.add(gTrainer2);
-        this.gTrader = new Trader();
+        System.out.println("DEBUG: [Game] 2. Trainers creados.");
+
+        System.out.println("DEBUG: [Game] 3. Creando Trader...");
+        this.gTrader = new Trader(); // <- SOSPECHOSO #1
+        System.out.println("DEBUG: [Game] 4. Trader Creado.");
+        
+        System.out.println("DEBUG: [Game] 5. Creando NurseJoy...");
         this.gNurseJoy = new NurseJoy();
-        this.gPokemonList = new ArrayList<>();
+        System.out.println("DEBUG: [Game] 6. NurseJoy Creada.");
+        
+        System.out.println("DEBUG: [Game] 7. Cargando PokemonDataBase...");
         this.gPokemonList = PokemonDataBase.pkPokemonList;
+        System.out.println("DEBUG: [Game] 8. PokemonDataBase Cargada.");
+        
         this.gBattleWeather = new Weather();
         this.gBattleTerrain = new Terrain();
         this.gTurnResults = new ArrayList<>();
         this.gPlayer1Hazards = new ArrayList<>();
         this.gPlayer2Hazards = new ArrayList<>();
+        System.out.println("DEBUG: [Game] 9. Fin del constructor de Game.");
     }
 
     public Game(Trainer gTrainer1, Trainer gTrainer2, Trader gTrader, NurseJoy gNurseJoy, ArrayList<Pokemon> gPokemonList, ArrayList<Trainer> gTrainerList) {
@@ -65,14 +77,15 @@ public class Game {
     
     
     public void startBattle() {
-    this.gPlayer1Hazards.clear();
-    this.gPlayer2Hazards.clear();
-    this.gTurnResults.clear();
-    this.gTurnResults.add(new TurnResult("BATTLE_START")); 
+        this.gPlayer1Hazards.clear();
+        this.gPlayer2Hazards.clear();
+        this.gTurnResults.clear();
+        // CORREGIDO: Añadido mensaje de texto
+        this.gTurnResults.add(new TurnResult("BATTLE_START", "¡La batalla va a comenzar!")); 
 
-    // Asigna el primer Pokémon activo (¡importante!)
-    this.gTrainer1.getActivePokemon(); 
-    this.gTrainer2.getActivePokemon();
+        // Asigna el primer Pokémon activo (¡importante!)
+        this.gTrainer1.getActivePokemon(); 
+        this.gTrainer2.getActivePokemon();
     }
     
     
@@ -100,11 +113,13 @@ public class Game {
             ArrayList<PkEffectsEnum> hazardsOnSwitch = (firstAction.getTrainer() == this.gTrainer1) ? gPlayer1Hazards : gPlayer2Hazards;
             handleSwitchAction(firstAction, hazardsOnSwitch); 
         } else {
+            // execute() devuelve ArrayList<TurnResult>
             ArrayList<TurnResult> results1 = firstAction.execute(firstTarget, gBattleWeather, gBattleTerrain, firstTargetHazards);
             gTurnResults.addAll(results1);
         }
 
         // 4. Revisar si alguien se debilitó
+        // (La lógica de 'handleFaint' se encarga de los mensajes)
         if (pk1.getPkHp() <= 0 || pk2.getPkHp() <= 0) {
             if (pk1.getPkHp() <= 0) handleFaint(this.gTrainer1, gPlayer1Hazards);
             if (pk2.getPkHp() <= 0) handleFaint(this.gTrainer2, gPlayer2Hazards);
@@ -116,7 +131,7 @@ public class Game {
         ArrayList<PkEffectsEnum> secondTargetHazards = (secondAction.getTrainer() == this.gTrainer1) ? gPlayer2Hazards : gPlayer1Hazards;
 
         // Comprueba que el atacante no se haya debilitado y que el objetivo tampoco
-        if (secondAttacker.getPkHp() > 0 && secondTarget.getPkHp() > 0 && !secondAttacker.getPkEffects().contains(PkEffectsEnum.Flinch)) {
+        if (secondAttacker.getPkHp() > 0 && secondTarget != null && secondTarget.getPkHp() > 0 && !secondAttacker.getPkEffects().contains(PkEffectsEnum.Flinch)) {
             if(secondAction instanceof SwitchAction) {
                 ArrayList<PkEffectsEnum> hazardsOnSwitch = (secondAction.getTrainer() == this.gTrainer1) ? gPlayer1Hazards : gPlayer2Hazards;
                 handleSwitchAction(secondAction, hazardsOnSwitch);
@@ -134,25 +149,31 @@ public class Game {
         if (this.gTrainer1.hastAlivePokemon() && this.gTrainer2.hastAlivePokemon()) {
             pk1 = this.gTrainer1.getActivePokemon(); // Re-obtener por si hubo un switch
             pk2 = this.gTrainer2.getActivePokemon();
+            
+            if (pk1 != null && pk2 != null) { // Asegurarse de que ambos sigan en pie
+                Pokemon fasterPk = (pk1.getEffectivePkSpeed() > pk2.getEffectivePkSpeed()) ? pk1 : pk2;
+                Pokemon slowerPk = (fasterPk == pk1) ? pk2 : pk1;
 
-            Pokemon fasterPk = (pk1.getEffectivePkSpeed() > pk2.getEffectivePkSpeed()) ? pk1 : pk2;
-            Pokemon slowerPk = (fasterPk == pk1) ? pk2 : pk1;
+                if (fasterPk.getPkHp() > 0)
+                    gTurnResults.addAll(BattleSystem.applyEndOfTurnEffects(fasterPk, slowerPk, gBattleWeather, gBattleTerrain));
+                if (slowerPk.getPkHp() > 0)
+                    gTurnResults.addAll(BattleSystem.applyEndOfTurnEffects(slowerPk, fasterPk, gBattleWeather, gBattleTerrain));
 
-            if (fasterPk.getPkHp() > 0)
-                gTurnResults.addAll(BattleSystem.applyEndOfTurnEffects(fasterPk, slowerPk, gBattleWeather, gBattleTerrain));
-            if (slowerPk.getPkHp() > 0)
-                gTurnResults.addAll(BattleSystem.applyEndOfTurnEffects(slowerPk, fasterPk, gBattleWeather, gBattleTerrain));
+                gBattleWeather.updateBsWeatherTurnsLeft();
+                gBattleTerrain.updateBsTerrainTurnsLeft();
 
-            gBattleWeather.updateBsWeatherTurnsLeft();
-            gBattleTerrain.updateBsTerrainTurnsLeft();
-
-            if (pk1.getPkHp() <= 0) handleFaint(this.gTrainer1, gPlayer1Hazards);
-            if (pk2.getPkHp() <= 0) handleFaint(this.gTrainer2, gPlayer2Hazards);
+                if (pk1.getPkHp() <= 0) handleFaint(this.gTrainer1, gPlayer1Hazards);
+                if (pk2.getPkHp() <= 0) handleFaint(this.gTrainer2, gPlayer2Hazards);
+            }
         }
 
         // 8. Revisar Fin de Batalla
-        if (!this.gTrainer1.hastAlivePokemon()) gTurnResults.add(new TurnResult("BATTLE_WON_PLAYER_2"));
-        else if (!this.gTrainer2.hastAlivePokemon()) gTurnResults.add(new TurnResult("BATTLE_WON_PLAYER_1"));
+        // CORREGIDO: Añadido mensaje de texto
+        if (!this.gTrainer1.hastAlivePokemon()) {
+            gTurnResults.add(new TurnResult("BATTLE_WON_PLAYER_2", gTrainer2.getpName() + " ha ganado la batalla."));
+        } else if (!this.gTrainer2.hastAlivePokemon()) {
+            gTurnResults.add(new TurnResult("BATTLE_WON_PLAYER_1", gTrainer1.getpName() + " ha ganado la batalla."));
+        }
 
         // 9. Devolver la lista de todo lo que pasó
         return this.gTurnResults;
@@ -160,7 +181,10 @@ public class Game {
 
     // Handles the logic for a switch-in
     private void handleSwitchAction(TurnAction switchAction, ArrayList<PkEffectsEnum> hazardsOnField) {
-        switchAction.execute(null, gBattleWeather, gBattleTerrain, null); // Perform the switch
+        // (Este método ya añade "TRAINER_SWITCHED_POKEMON" desde SwitchAction.execute)
+        ArrayList<TurnResult> switchResults = switchAction.execute(null, gBattleWeather, gBattleTerrain, null); // Perform the switch
+        gTurnResults.addAll(switchResults);
+        
         Pokemon newPokemon = switchAction.getTarget(); // The Pokémon entering
         
         // --- HAZARD LOGIC ON ENTRY ---
@@ -168,12 +192,14 @@ public class Game {
             double effectiveness = TypeChart.getPkEffectiveness(PkTypeEnum.Rock, newPokemon.getPkType1(), newPokemon.getPkType2());
             int damage = (int) (newPokemon.getPkMaxHp() * (effectiveness / 8.0));
             newPokemon.pkTakeDamage(damage);
-            gTurnResults.add(new TurnResult("POKEMON_HURT_BY_HAZARD"));
+            // CORREGIDO: Usado constructor de 3 parámetros (key, message, target)
+            gTurnResults.add(new TurnResult("POKEMON_HURT_BY_HAZARD", newPokemon.getPkNickName() + " fue herido por las rocas.", newPokemon));
         }
         
         if (hazardsOnField.contains(PkEffectsEnum.SetHazardToxicSpikes)) {
              newPokemon.setPkStatus(PkStatusEnum.Poisoned, -1);
              // (Missing logic for 2 layers -> BadlyPoisoned)
+             // (Falta TurnResult de envenenamiento)
         }
         
         // (Add logic for Spikes, Sticky Web)
@@ -185,16 +211,19 @@ public class Game {
     
     // Handles the logic for a fainted Pokémon
     private void handleFaint(Trainer trainer, ArrayList<PkEffectsEnum> opponentHazards) {
-        gTurnResults.add(new TurnResult("POKEMON_FAINTED"));
+        // No añadimos "POKEMON_FAINTED" aquí, porque BattleSystem.executeMove ya lo hace.
+        // Este método solo se encarga del *reemplazo*.
+        
         if (trainer.hastAlivePokemon()) {
             // Simulating: switch to next available Pokémon
             trainer.settActivePokemon(null); // Force getActivePokemon to find the next alive one
             Pokemon newPk = trainer.getActivePokemon();
-            gTurnResults.add(new TurnResult("TRAINER_SWITCHED_POKEMON"));
-            // Apply hazard damage to the new Pokémon
+            
+            // CORREGIDO: El mensaje de "switch" se maneja en handleSwitchAction
             handleSwitchAction(new SwitchAction(trainer, newPk), opponentHazards);
         } else {
-            gTurnResults.add(new TurnResult("TRAINER_HAS_NO_POKEMON"));
+            // CORREGIDO: Añadido mensaje de texto
+            gTurnResults.add(new TurnResult("TRAINER_HAS_NO_POKEMON", trainer.getpName() + " no tiene más Pokémon."));
         }
     }
 
@@ -206,6 +235,8 @@ public class Game {
                         .thenComparing(a -> a.getAttacker().getEffectivePkSpeed(), Comparator.reverseOrder())) // 2. By Speed
                 .toList();
     }
+
+    // --- GETTERS Y SETTERS ---
 
     public Trainer getgTrainer1() {
         return gTrainer1;
@@ -247,4 +278,12 @@ public class Game {
         this.gPokemonList = gPokemonList;
     }
 
+    /**
+     * Devuelve la lista de resultados del turno más reciente.
+     * BattlePanel lo usa para llenar su cola de animaciones.
+     * @return La lista de TurnResult.
+     */
+    public ArrayList<TurnResult> getgTurnResults() {
+        return this.gTurnResults;
+    }
 }

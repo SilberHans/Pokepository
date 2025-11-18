@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import GameDesing.Graphics.*;
+import Pokemons.Logic.Movements.Move;
 import java.awt.geom.AffineTransform;
 import Pokemons.Pokemon;
 import Utility.Constants.TMedalsEnum;
@@ -179,6 +180,38 @@ public class Trainer extends PokemonHandler {
         return pokemonNames;
     }
 
+    // Añade este método a Trainer.java para que el menú "FIGHT" funcione
+    public String[] getPokemonMoveNames() {
+        Pokemon activePk = getActivePokemon();
+        if (activePk == null) {
+            return new String[]{"-"};
+        }
+        
+        // Asume que pkMoveSet es un ArrayList<Move> de 4 posiciones
+        ArrayList<Move> moveSet = activePk.getPkMoveSet();
+        String[] moveNames = new String[4]; // Siempre 4
+        
+        for (int i = 0; i < 4; i++) {
+            if (i < moveSet.size() && moveSet.get(i) != null) {
+                moveNames[i] = moveSet.get(i).getMvName();
+            } else {
+                moveNames[i] = "-";
+            }
+        }
+        return moveNames;
+    }
+    
+    
+    @Override
+    public void addPhPokemon(Pokemon phPokemon){
+        if (phPokemon != null) {
+            phPokemon.setTrainer(this); // ¡LÍNEA IMPORTANTE!
+            this.phPokeList.add(phPokemon);
+        }
+    }
+    
+    
+    
 
     //GRAPHICSS
     

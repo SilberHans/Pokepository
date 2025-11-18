@@ -1,5 +1,6 @@
 package Pokemons;
 
+import Persons.Trainer;
 import Utility.Constants.PkStatsEnum;
 import Utility.Constants.PkTypeEnum;
 import Utility.Constants.PkStatusEnum;
@@ -38,7 +39,17 @@ public abstract class Pokemon {
     protected BufferedImage afront;
     protected BufferedImage aback;
     public String[] actions={"ATTACK 1","ATTACK 2","DEFEND","ÄTTACK 3"};
+    protected Trainer pkTrainer; 
+
+    // Añade este método
+    public Trainer getTrainer() {
+        return this.pkTrainer;
+    }
     
+    // Añade este método
+    public void setTrainer(Trainer trainer) {
+        this.pkTrainer = trainer;
+    }
     public abstract void loadSprites();
     
     public Pokemon(int pkLevel, PkTypeEnum pkType1, PkTypeEnum pkType2, int pkBaseHp, int pkBaseAttack, int pkBaseSpecialAttack, int pkBaseDefense, int pkBaseSpecialDefense, int pkBaseSpeed){
