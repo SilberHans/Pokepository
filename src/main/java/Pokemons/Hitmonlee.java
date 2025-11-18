@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Hitmonlee extends Pokemon{
@@ -11,7 +11,7 @@ public class Hitmonlee extends Pokemon{
     
     @Override
     public String toString(){
-        return "\t-----Machop-----" + super.toString();
+        return "\t-----Hitmonlee-----" + super.toString();
     }
     
     @Override

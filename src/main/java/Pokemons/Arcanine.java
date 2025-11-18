@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Arcanine extends Pokemon{
@@ -11,7 +11,7 @@ public class Arcanine extends Pokemon{
     
     @Override
     public String toString(){
-        return "\t-----Eevee-----" + super.toString();
+        return "\t-----Arcanine-----" + super.toString();
     }
     
     @Override

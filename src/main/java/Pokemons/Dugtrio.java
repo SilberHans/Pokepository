@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Dugtrio extends Pokemon{
@@ -11,7 +11,7 @@ public class Dugtrio extends Pokemon{
     
     @Override
     public String toString(){
-        return "\t-----Vulpix-----" + super.toString();
+        return "\t-----Dugtrio-----" + super.toString();
     }
     
     @Override

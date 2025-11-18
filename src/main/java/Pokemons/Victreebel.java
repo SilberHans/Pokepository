@@ -1,6 +1,6 @@
 package Pokemons;
 
-import Pokemons.Logic.PkTypeEnum;
+import Utility.Constants.PkTypeEnum;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Victreebel extends Pokemon{
@@ -11,7 +11,7 @@ public class Victreebel extends Pokemon{
     
     @Override
     public String toString(){
-        return "\t-----Gastly-----" + super.toString();
+        return "\t-----Victreebel-----" + super.toString();
     }
     
     @Override
