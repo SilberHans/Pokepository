@@ -44,8 +44,16 @@ public class Trader extends Person{
     public HashMap<Item, Integer> getmInventory() {
         return this.mInventory;
     }
-    public int getmItem(Item mItemKey){
+    public int getmItemStock(Item mItemKey){
         return this.mInventory.get(mItemKey);
+    }
+    public Item getmItem(String mItemName){
+        for(HashMap.Entry<Item, Integer> entryItem: this.mInventory.entrySet()){
+            if(entryItem.getKey().getItName().equals(mItemName)){
+                return entryItem.getKey();
+            }
+        }
+        return null;
     }
     public String getmInventoryStr(){
         if(this.mInventory.isEmpty()){
@@ -76,13 +84,7 @@ public class Trader extends Person{
     }
     
     public String sellItem(Trainer mTrainer, String itemName){
-        Item itemToSell = null;
-        for (Item itemInStock : this.mInventory.keySet()){
-            if (itemInStock.getItName().equals(itemName)){
-                itemToSell = itemInStock;
-                break;
-            }
-        }
+        Item itemToSell = this.getmItem(itemName);
         if (itemToSell == null) {
             return "Uhh... Sorry, I don’t carry that item";
         }
